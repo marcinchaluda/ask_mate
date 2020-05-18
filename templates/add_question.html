@@ -1,0 +1,14 @@
+{% extends 'modify_data_layout.html' %}
+{% block title %}
+    Add question
+{% endblock title %}
+{% block header %}
+    Add new question
+{% endblock header %}
+{% block form %}
+    <form action="/add_question" method="post">
+        <label for="question-input">Question:</label>
+        <textarea id="question-input" name="question" rows="4" cols="50"></textarea>
+        {{ super() }}
+    </form>
+{% endblock form %}

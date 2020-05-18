@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+    <h1>{% block header %}{% endblock header %}</h1>
+    {% block form %}
+        <button type="submit">Save</button>
+    {% endblock form %}
+</body>
+</html>
