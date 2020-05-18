@@ -1,0 +1,24 @@
+{% extends 'display_data/display_data_layout.html' %}
+{% block title %}
+    Answers List | Ask-Mate
+{% endblock title %}
+{% block header %}
+    Answers List
+{% endblock header %}
+{% block title_header %}
+    <h2>Question title: {{ question_title }}</h2>
+    <h2>Question message: {{ question_message }}</h2>
+{% endblock title_header %}
+{% block content %}
+    {% for answer in data_to_display %}
+        <tr>
+        {% for answer_key, answer_value in answer.items() %}
+            {% if answer_key == "title" %}
+            <td><a href = "/question/{{ question['id'] }}">{{ question_value }}</a></td>
+            {% else %}
+                <td>{{ question_value }}</td>
+            {% endif %}
+        {% endfor %}
+        </tr>
+    {% endfor %}
+{% endblock content %}
