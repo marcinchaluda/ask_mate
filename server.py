@@ -1,7 +1,6 @@
 from flask import Flask, render_template, redirect, request
 import data_manager
 
-
 app = Flask(__name__)
 
 
@@ -32,6 +31,16 @@ def add_new_answer():
     return render_template('modify_data_layout/new_answer.html', text_id=id, text_name=name)
 
 
+@app.route("/<data_type>/<data_id>/delete")
+def delete(data_type, data_id):
+    data_manager.delete_dictionary(data_type + '.csv', data_id)
+    if data_type == 'question':
+        redirect('/')
+    else:
+        question_id = request.args.get('question_id')
+        redirect('question/' + question_id)
+
+
 @app.route("/")
 @app.route('/list')
 def display_data():
@@ -46,7 +55,8 @@ def display_answers(question_id):
     questions = data_manager.get_all_questions()
     answer_details = data_manager.fetch_dictionary(question_id, answers)
     question_details = data_manager.fetch_dictionary(question_id, questions)
-    return render_template('display_data/list_answers.html', answer_details=answer_details, question_details=question_details)
+    return render_template('display_data/list_answers.html', answer_details=answer_details,
+                           question_details=question_details)
 
 
 if __name__ == "__main__":
