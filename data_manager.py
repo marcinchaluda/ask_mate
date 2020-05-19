@@ -20,3 +20,11 @@ def fetch_dictionary(key_to_find, dictionary_list):
         for key, value in dictionary.items():
             if key == key_to_find:
                 return dictionary
+
+
+def delete_dictionary(filename, id):
+    data = connection.read_data(filename)
+    dict_to_delete = fetch_dictionary(id, data)
+    del data.remove(dict_to_delete)
+    connection.overwrite_data(filename, data)
+    return None
