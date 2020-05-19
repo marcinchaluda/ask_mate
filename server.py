@@ -42,13 +42,13 @@ def delete(data_type, data_id):
         return redirect('/question/' + question_id)
 
 
-@app.route("/list?sort_by=<sorting_key>&sort_descending=<reverse_bool>")
+@app.route("/list?sort_by=<sorting_key>&order_descending=<reverse_bool>")
 def sort_questions(sorting_key, reverse_bool):
     questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
-
+@app.route('/')
 def home():
     return render_template('index.html')
 

@@ -7,7 +7,25 @@
 {% endblock header %}
 {% block title_header %}
     {% for header in question_headers %}
-        <th>{{ header.replace("_", " ").title() }}</th>
+        {% if header in ['submission_time', 'view_number', 'vote_number', 'title', 'message'] %}  {# sorting headers #}
+            <th>
+                {{ header.replace("_", " ").title() }}
+                <form action="/list" method="get" class="sorting_form">
+                    <input type="hidden" name="sort_by" value="{{ header }}">
+                    <input type="hidden" name="order_descending" value="False">
+                    <input class="sort_triangle_up" type="submit" alt="Sort by {{ header }}, ascending"
+                           src="{{ url_for('static', filename='images/triangle.png') }}">
+                </form>
+                <form action="/list" method="get" class="sorting_form">
+                    <input type="hidden" name="sort_by" value="{{ header }}">
+                    <input type="hidden" name="order_descending" value="True">
+                    <input class="sort_triangle_down" type="submit" alt="Sort by {{ header }}, ascending"
+                           src="{{ url_for('static', filename='images/triangle.png') }}">
+                </form>
+            </th>
+        {%  else %}
+            <th>{{ header.replace("_", " ").title() }}</th>
+        {% endif %}
     {% endfor %}
 {% endblock title_header %}
 {% block content %}
