@@ -6,19 +6,40 @@ app = Flask(__name__)
 
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
+    id = "question_input"
+    name = "question"
     if request.method == "POST":
         return redirect('/')
-    return render_template('modify_data_layout/add_question.html')
+    return render_template('modify_data_layout/add_question.html', text_id=id, text_name=name)\
+
+
+@app.route("/update_question", methods=['GET', 'POST'])
+def update_question():
+    id = "question_input"
+    name = "question"
+    if request.method == "POST":
+        return redirect('/')
+    return render_template('modify_data_layout/update_question.html', text_id=id, text_name=name)
+
+
+@app.route("/new_answer", methods=['GET', 'POST'])
+def add_new_answer():
+    id = "question_input"
+    name = "question"
+    if request.method == "POST":
+        return redirect('/')
+    return render_template('modify_data_layout/new_answer.html', text_id=id, text_name=name)
 
 
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
-    data_manager.delete_dictionary(data_type + '.csv', data_id)
+    filepath = data_manager.QUESTIONS_FILE if data_type == 'question' else data_manager.ANSWERS_FILE
+    data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
-        redirect('/')
+        return redirect('/')
     else:
-        question_id = request.args.get('question_id')
-        redirect('question/' + question_id)
+        question_id = data_id
+        return redirect('/question/' + question_id)
 
 
 @app.route("/")

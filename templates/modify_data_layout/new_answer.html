@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'modify_data_layout/modify_data_layout.html' %}
+{% block title %}
+    Add answer
+{% endblock title %}
+{% block header %}
+    Add new answer
+{% endblock header %}
+{% block label %}
+    Answer
+{% endblock label %}
+{% block action %}
+    "/add_answer"
+{% endblock action %}
+{% block button %}
+    Post answer
+{% endblock button %}

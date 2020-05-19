@@ -1,9 +1,7 @@
 import util
 import csv
 
-QUESTIONS_FILE = "question.csv"
 QUESTIONS_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-ANSWERS_FILE = "answer.csv"
 ANSWERS_HEADERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
@@ -18,7 +16,7 @@ def read_data(file_name):
 
 def overwrite_data(file_name, data):
     with open(util.is_file_exist(file_name), 'w') as data_from_file:
-        if file_name == 'question.csv':
+        if 'question' in file_name:
             fieldnames = QUESTIONS_HEADERS
         else:
             fieldnames = ANSWERS_HEADERS
