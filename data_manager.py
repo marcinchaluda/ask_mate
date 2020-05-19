@@ -18,7 +18,7 @@ def get_all_answers():
 def fetch_dictionary(key_to_find, dictionary_list):
     for dictionary in dictionary_list:
         for key, value in dictionary.items():
-            if key == key_to_find:
+            if value == key_to_find:
                 return dictionary
 
 

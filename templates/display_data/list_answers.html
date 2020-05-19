@@ -6,19 +6,23 @@
     Answers List
 {% endblock header %}
 {% block title_header %}
-    <h2>Question title: {{ question_title }}</h2>
-    <h2>Question message: {{ question_message }}</h2>
+    <p>Question title: {{ question_details['title'] }}</p>
+    <p>Question message: {{ question_details['message'] }}</p>
 {% endblock title_header %}
 {% block content %}
-    {% for answer in data_to_display %}
-        <tr>
-        {% for answer_key, answer_value in answer.items() %}
-            {% if answer_key == "title" %}
-            <td><a href = "/question/{{ question['id'] }}">{{ question_value }}</a></td>
-            {% else %}
-                <td>{{ question_value }}</td>
-            {% endif %}
-        {% endfor %}
-        </tr>
-    {% endfor %}
+    <p>Given answers for above question:</p>
+    <ul>
+        {% if answer_details == None %}
+            <li><p>No answers have been given for above questions</p></li>
+        {% else %}
+            {% for answer_key, answer_value in answer_details.items() %}
+                {% if answer_key == "message" %}
+                    <li><p>{{ answer_value }}</p></li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </ul>
 {% endblock content %}
+{% block go_back_button %}
+    <input type="button" value="Go Back!" onclick="history.back()">
+{% endblock go_back_button %}

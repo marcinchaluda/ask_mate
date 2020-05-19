@@ -7,9 +7,9 @@ ANSWERS_FILE = "answer.csv"
 ANSWERS_HEADERS = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def read_data():
+def read_data(file_name):
     data = []
-    with open(util.is_file_exist(QUESTIONS_FILE), 'r') as data_from_file:
+    with open(file_name, 'r') as data_from_file:
         csv_reader = csv.DictReader(data_from_file, delimiter=',')
         for datum in csv_reader:
             data.append(datum)
