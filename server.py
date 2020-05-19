@@ -12,7 +12,7 @@ def hello():
 def add_new_question():
     if request.method == "POST":
         return redirect('/')
-    return render_template('add_question.html')
+    return render_template('modify_data_layout/add_question.html')
 
 
 if __name__ == "__main__":
