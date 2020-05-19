@@ -11,6 +11,10 @@ def get_all_questions():
     return connection.read_data(QUESTIONS_FILE)
 
 
+def get_sorted_questions(sorting_key, reverse_bool):
+    return sorted(get_all_questions(), key=lambda i: i[sorting_key], reverse=reverse_bool)
+
+
 def get_all_answers():
     return connection.read_data(ANSWERS_FILE)
 
