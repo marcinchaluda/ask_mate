@@ -7,9 +7,11 @@ app = Flask(__name__)
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
     id = "question_input"
-    name = "question"
+    name = "message"
     if request.method == "POST":
-        return redirect('/')
+        question = data_manager.add_question_with_basic_headers()
+        data_manager.save_new_question(question)
+        return redirect('/list')
     return render_template('modify_data_layout/add_question.html', text_id=id, text_name=name)\
 
 
