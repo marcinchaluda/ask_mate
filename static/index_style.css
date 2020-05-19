@@ -1,0 +1,81 @@
+* {
+   margin: 0;
+   padding: 0;
+   background-color: #47A9FF;
+   max-width: 1024px;
+   font-family: Arial;
+}
+
+.wrapper {
+    position: relative;
+    left: 50%;
+}
+
+div h1 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    text-align: center;
+    font-family: 'Contrail One', cursive;
+    font-size: 80px;
+    color: white;
+}
+
+.avatar p {
+    width: 19vw;
+    background-color: white;
+    padding: 25px;
+    border-radius: 35px;
+    text-transform: uppercase;
+}
+
+.circle_container {
+    position: relative;
+}
+
+.circle {
+    position: relative;
+    left: 410px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+
+}
+
+.small_circle {
+    position: relative;
+    left: 440px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.ghost {
+    display: flex;
+    justify-content: center;
+}
+
+aside {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.input_container {
+    position: relative;
+}
+
+.input_container button {
+    position: absolute;
+    left: 50%;
+    top: 5vh;
+    font-size: 20px;
+    transform: translate(-50%)
+}
+
+button {
+    padding: 10px 30px;
+    border-radius: 20px;
+    background-color: white;
+}

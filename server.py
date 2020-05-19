@@ -22,6 +22,10 @@ def delete(data_type, data_id):
 
 
 @app.route("/")
+def home():
+    return render_template('index.html')
+
+
 @app.route('/list')
 def display_data():
     questions = data_manager.get_all_questions()

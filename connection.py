@@ -15,6 +15,7 @@ def read_data(file_name):
             data.append(datum)
     return data
 
+
 def overwrite_data(file_name, data):
     with open(util.is_file_exist(file_name), 'w') as data_from_file:
         if file_name == 'question.csv':

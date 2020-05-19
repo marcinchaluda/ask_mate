@@ -13,7 +13,7 @@
     <p>Given answers for above question:</p>
     <ul>
         {% if answer_details == None %}
-            <li><p>No answers have been given for above questions</p></li>
+            <li><p>No answers has been given for above questions</p></li>
         {% else %}
             {% for answer_key, answer_value in answer_details.items() %}
                 {% if answer_key == "message" %}
