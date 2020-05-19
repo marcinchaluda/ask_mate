@@ -17,7 +17,7 @@
             {% if question_key == "title" %}
             <td><a href = "/question/{{ question['id'] }}">{{ question_value }}</a></td>
             {% else %}
-                <td>{{ question_value }}</td>
+            <td><p>{{ question_value }}</p></td>
             {% endif %}
         {% endfor %}
         </tr>
