@@ -33,12 +33,13 @@ def add_new_answer():
 
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
-    data_manager.delete_dictionary(data_type + '.csv', data_id)
+    filepath = data_manager.QUESTIONS_FILE if data_type == 'question' else data_manager.ANSWERS_FILE
+    data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
-        redirect('/')
+        return redirect('/')
     else:
         question_id = data_id
-        redirect('question/' + question_id)
+        return redirect('question/' + question_id)
 
 
 @app.route("/")
