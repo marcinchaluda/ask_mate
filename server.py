@@ -36,13 +36,19 @@ def delete(data_type, data_id):
     filepath = data_manager.QUESTIONS_FILE if data_type == 'question' else data_manager.ANSWERS_FILE
     data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
-        return redirect('/')
+        return redirect('/list')
     else:
         question_id = data_id
         return redirect('/question/' + question_id)
 
 
-@app.route("/")
+@app.route("/list?sort_by=<sorting_key>&sort_descending=<reverse_bool>")
+def sort_questions(sorting_key, reverse_bool):
+    questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
+    question_headers = data_manager.QUESTION_HEADERS
+    return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
+
+
 def home():
     return render_template('index.html')
 
