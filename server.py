@@ -64,9 +64,8 @@ def display_data():
 
 @app.route('/question/<question_id>')
 def display_answers(question_id):
-    answers = data_manager.get_all_answers()
     questions = data_manager.get_all_questions()
-    answer_details = data_manager.fetch_dictionary(question_id, answers)
+    answer_details = data_manager.fetch_answers(question_id)
     question_details = data_manager.fetch_dictionary(question_id, questions)
     return render_template('display_data/list_answers.html', answer_details=answer_details,
                            question_details=question_details)
