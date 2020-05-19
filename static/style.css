@@ -7,3 +7,14 @@ table, th, td {
     border-collapse: collapse;
     padding: 10px;
 }
+
+a {
+    text-decoration: none;
+    color: darkblue;
+    font-weight: bold;
+}
+
+a:hover {
+    color: cornsilk;
+    background-color: #2c38ff
+}
