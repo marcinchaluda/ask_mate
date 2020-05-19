@@ -37,7 +37,7 @@ def delete(data_type, data_id):
     if data_type == 'question':
         redirect('/')
     else:
-        question_id = request.args.get('question_id')
+        question_id = data_id
         redirect('question/' + question_id)
 
 
