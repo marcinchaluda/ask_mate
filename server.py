@@ -39,7 +39,7 @@ def delete(data_type, data_id):
         return redirect('/')
     else:
         question_id = data_id
-        return redirect('question/' + question_id)
+        return redirect('/question/' + question_id)
 
 
 @app.route("/")
