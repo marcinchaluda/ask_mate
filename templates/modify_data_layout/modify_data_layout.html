@@ -7,10 +7,10 @@
 <body>
     <h1>{% block header %}{% endblock header %}</h1>
         <form action={% block action %}  {% endblock action %} method="post">
-        <label for="question-input">Question:</label>
-        <textarea id="question-input" name="question" rows="4" cols="50"></textarea>
-            <button type="submit">Save</button>
+            {% block optional_title %}{% endblock optional_title %}
+            <label for={{text_id}}>{% block label %}{% endblock label %}:</label><br>
+            <textarea id={{text_id}} name={{text_name}} rows="4" cols="50"></textarea><br>
+            <button type="submit">{% block button %}  {% endblock button %}</button>
         </form>
-
 </body>
 </html>

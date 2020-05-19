@@ -5,6 +5,16 @@
 {% block header %}
     Add new question
 {% endblock header %}
+{% block optional_title %}
+    <label for="title">Title</label><br>
+    <input type="text" name="title" id="title" size="10" min="5" required><br>
+{% endblock optional_title %}
+{% block label %}
+    Question
+{% endblock label %}
 {% block action %}
     "/add_question"
 {% endblock action %}
+{% block button %}
+    Post question
+{% endblock button %}

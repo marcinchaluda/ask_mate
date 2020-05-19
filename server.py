@@ -7,9 +7,29 @@ app = Flask(__name__)
 
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
+    id = "question_input"
+    name = "question"
     if request.method == "POST":
         return redirect('/')
-    return render_template('modify_data_layout/add_question.html')
+    return render_template('modify_data_layout/add_question.html', text_id=id, text_name=name)\
+
+
+@app.route("/update_question", methods=['GET', 'POST'])
+def update_question():
+    id = "question_input"
+    name = "question"
+    if request.method == "POST":
+        return redirect('/')
+    return render_template('modify_data_layout/update_question.html', text_id=id, text_name=name)
+
+
+@app.route("/new_answer", methods=['GET', 'POST'])
+def add_new_answer():
+    id = "question_input"
+    name = "question"
+    if request.method == "POST":
+        return redirect('/')
+    return render_template('modify_data_layout/new_answer.html', text_id=id, text_name=name)
 
 
 @app.route("/")
