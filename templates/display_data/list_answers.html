@@ -12,10 +12,14 @@
 {% block content %}
     <p>Given answers for above question:</p>
     <ul>
-    {% for answer_key, answer_value in answer_details.items() %}
-        {% if answer_key == "message" %}
-            <li><p>{{ answer_value }}</p></li>
+        {% if answer_details == None %}
+            <li><p>No answers have been given for above questions</p></li>
+        {% else %}
+            {% for answer_key, answer_value in answer_details.items() %}
+                {% if answer_key == "message" %}
+                    <li><p>{{ answer_value }}</p></li>
+                {% endif %}
+            {% endfor %}
         {% endif %}
-    {% endfor %}
     </ul>
 {% endblock content %}
