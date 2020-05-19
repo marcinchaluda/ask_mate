@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+    <h1>{% block header %}{% endblock header %}</h1>
+        <form action={% block action %}  {% endblock action %} method="post">
+        <label for="question-input">Question:</label>
+        <textarea id="question-input" name="question" rows="4" cols="50"></textarea>
+            <button type="submit">Save</button>
+        </form>
+
+</body>
+</html>
