@@ -6,7 +6,9 @@
     Question List
 {% endblock header %}
 {% block main_menu %}
-    <a href="/add_question">Add question</a>
+    <a href="/add_question">
+        <button type="button">Add new question</button>
+    </a>
 {% endblock main_menu %}
 {% block title_header %}
     {% for header in question_headers %}

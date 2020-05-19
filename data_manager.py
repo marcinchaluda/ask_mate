@@ -38,7 +38,7 @@ def add_question_with_basic_headers():
     question = {}
     for header in QUESTION_HEADERS:
         if header == 'id':
-            question[header] = util.generate_id()
+            question[header] = '6'
         elif header == 'submission_time':
             question[header] = "sadfasf"
         elif header == 'view_number' or header == 'vote_number':

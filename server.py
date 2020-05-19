@@ -6,13 +6,13 @@ app = Flask(__name__)
 
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
-    id = "question_input"
+    text_id = "question_input"
     name = "message"
     if request.method == "POST":
         question = data_manager.add_question_with_basic_headers()
         data_manager.save_new_question(question)
-        return redirect('/list')
-    return render_template('modify_data_layout/add_question.html', text_id=id, text_name=name)\
+        return redirect('/question/' + question['id'])
+    return render_template('modify_data_layout/add_question.html', text_id=text_id, text_name=name)
 
 
 @app.route("/update_question", methods=['GET', 'POST'])
@@ -24,8 +24,8 @@ def update_question():
     return render_template('modify_data_layout/update_question.html', text_id=id, text_name=name)
 
 
-@app.route("/new_answer", methods=['GET', 'POST'])
-def add_new_answer():
+@app.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
+def add_new_answer(data_id):
     id = "question_input"
     name = "question"
     if request.method == "POST":
