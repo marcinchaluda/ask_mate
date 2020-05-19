@@ -14,12 +14,10 @@
         <h1>Ask mate</h1>
         <div class="ghost">
             <section class="avatar">
-                <div>
-                    <p>Hi there! What would You like to know?</p>
-                    <div class="circle_container">
-                        <div class="circle"></div>
-                        <div class="small_circle"></div>
-                    </div>
+                <p>Hi there! What would You like to ask?</p>
+                <div class="circle_container">
+                    <div class="circle"></div>
+                    <div class="small_circle"></div>
                 </div>
             </section>
             <aside>
@@ -27,7 +25,12 @@
             </aside>
         </div>
         <div class='input_container'>
-            <button onclick="location.href = '/list';" class="display_questions">Display Questions</button>
+            <form class='question_form' action="#">
+                <label for="question">Type your question below</label><br>
+                <input type="text" id="question" name="question" placeholder="Insert a question" required><br>
+                <button type="submit">Get answers!</button>
+            </form>
+            <button onclick="location.href = '/list';" class="display_questions">Display All Questions</button>
         </div>
     </div>
 </body>

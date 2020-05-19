@@ -26,6 +26,14 @@ def fetch_dictionary(key_to_find, dictionary_list):
                 return dictionary
 
 
+def fetch_answers(key_to_find):
+    dictionaries = []
+    for dictionary in get_all_answers():
+        if dictionary["question_id"] == key_to_find:
+            dictionaries.append(dictionary)
+    return dictionaries
+
+
 def delete_dictionary(filename, id):
     data = connection.read_data(filename)
     dict_to_delete = fetch_dictionary(id, data)
@@ -52,3 +60,7 @@ def add_question_with_basic_headers():
 
 def save_new_question(question):
     connection.add_data(QUESTIONS_FILE, question)
+
+
+if __name__ == "__main__":
+    print(fetch_answers("1"))
