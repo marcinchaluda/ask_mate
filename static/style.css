@@ -1,0 +1,9 @@
+body {
+    background-color: #47A9FF;
+}
+
+table, th, td {
+    border: 1px dashed antiquewhite;
+    border-collapse: collapse;
+    padding: 10px;
+}
