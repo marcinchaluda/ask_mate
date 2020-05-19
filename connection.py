@@ -25,3 +25,13 @@ def overwrite_data(file_name, data):
         for entry in data:
             writer.writerow(entry)
     return None
+
+
+def add_data(file_name, data):
+    with open(util.is_file_exist(file_name), 'a') as data_from_file:
+        if 'question' in file_name:
+            fieldnames = QUESTIONS_HEADERS
+        else:
+            fieldnames = ANSWERS_HEADERS
+        writer = csv.DictWriter(data_from_file, fieldnames)
+        writer.writerow(data)

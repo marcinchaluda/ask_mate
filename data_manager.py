@@ -1,6 +1,6 @@
 import connection
-
-
+import util
+from flask import request
 QUESTIONS_FILE = "sample_data/question.csv"
 ANSWERS_FILE = "sample_data/answer.csv"
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -32,3 +32,23 @@ def delete_dictionary(filename, id):
     data.remove(dict_to_delete)
     connection.overwrite_data(filename, data)
     return None
+
+
+def add_question_with_basic_headers():
+    question = {}
+    for header in QUESTION_HEADERS:
+        if header == 'id':
+            question[header] = util.generate_id()
+        elif header == 'submission_time':
+            question[header] = "sadfasf"
+        elif header == 'view_number' or header == 'vote_number':
+            question[header] = 0
+        elif header == 'image':
+            question[header] = ''
+        else:
+            question[header] = request.form.get(header)
+    return question
+
+
+def save_new_question(question):
+    connection.add_data(QUESTIONS_FILE, question)
