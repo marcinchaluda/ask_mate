@@ -18,7 +18,9 @@
             {% for dictionary in answer_details %}
                 {% for answer_key, answer_value in dictionary.items() %}
                     {% if answer_key == "message" %}
-                        <li><p>{{ answer_value }}</p></li>
+                        <li><p>{{ answer_value }}<a href="/answer/{{ answer_details['id'] }}/delete">
+                            <button type="button">Delete this answer</button>
+                            </a></p></li>
                     {% endif %}
                 {% endfor %}
             {% endfor %}
