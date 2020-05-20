@@ -11,7 +11,7 @@
 {% endblock title_header %}
 {% block content %}
     <p>Given answers for above question:</p>
-    <ul>
+    <ul class="answers">
         {% if answer_details == [] %}
             <li><p>No answers has been given for above questions</p></li>
         {% else %}
@@ -20,10 +20,11 @@
                     {% if answer_key == "message" %}
                         <li>
                             <div>{{ answer_value }}
-                                <div class="vote">
                                 <a href="/answer/{{ dictionary['question_id'] }}/delete">
-                                    <button type="button">Delete this answer</button>
+                                    <img class="trashico" src="{{ url_for('static', filename='images/trash.png') }}"
+                                         title="delete this answer">
                                 </a>
+                                <div class="vote">
                                 <a href="/question/<question_id>/vote_up">
                                     <button type="button">Vote up</button>
                                 </a>

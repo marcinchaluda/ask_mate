@@ -41,7 +41,7 @@
         {% for question_key, question_value in question.items() %}
             {% if question_key == "title" %}
                 <td>
-                    <a href = "/question/{{ question['id'] }}">{{ question_value }}</a>
+                    <a href="/question/{{ question['id'] }}" class="hover_highlight">{{ question_value }}</a>
                     <div class="vote">
                         <a href="/question/<question_id>/vote_up">
                             <button type="button">Vote up</button>
