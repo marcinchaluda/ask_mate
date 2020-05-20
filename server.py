@@ -37,9 +37,7 @@ def delete(data_type, data_id):
     data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
         return redirect('/list')
-    else:
-        question_id = data_id
-        return redirect('/question/' + question_id)
+    return redirect('/question/' + data_id)
 
 
 @app.route("/list?sort_by=<sorting_key>&order_descending=<reverse_bool>")
