@@ -41,7 +41,7 @@ def delete(data_type, data_id):
     data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
         filepath = data_manager.ANSWERS_FILE
-        data_manager.delete_dictionary(filepath, data_id)
+        data_manager.delete_related_answers(filepath, data_id)
         return redirect('/list')
     return redirect('/question/' + data_id)
 

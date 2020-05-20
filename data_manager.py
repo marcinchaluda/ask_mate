@@ -39,6 +39,14 @@ def fetch_answers(key_to_find):
 
 
 def delete_dictionary(filename, id):
+    data = connection.read_data(filename)
+    dict_to_delete = fetch_dictionary(id, data)
+    data.remove(dict_to_delete)
+    connection.overwrite_data(filename, data)
+    return None
+
+
+def delete_related_answers(filename, id):
     if 'question' in filename:
         data = connection.read_data(filename)
         dict_to_delete = fetch_dictionary(id, data)
