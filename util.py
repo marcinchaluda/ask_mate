@@ -9,4 +9,4 @@ def is_file_exist(file_name):
 
 
 def generate_id():
-    return uuid.uuid4()
+    return str(uuid.uuid4())

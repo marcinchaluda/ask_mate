@@ -69,7 +69,7 @@ def add_question_with_basic_headers():
     question = {}
     for header in QUESTION_HEADERS:
         if header == 'id':
-            question[header] = '6'
+            question[header] = util.generate_id()
         elif header == 'submission_time':
             question[header] = "sadfasf"
         elif header == 'view_number' or header == 'vote_number':
@@ -89,7 +89,7 @@ def add_answer_with_basic_headers(question_id):
     answer = {}
     for header in ANSWER_HEADER:
         if header == 'id':
-            answer[header] = '3'
+            answer[header] = util.generate_id()
         elif header == 'submission_time':
             answer[header] = 'sdalj'
         elif header == 'vote_number':
