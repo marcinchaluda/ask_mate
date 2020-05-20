@@ -26,11 +26,13 @@ def update_question():
 
 @app.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
 def add_new_answer(data_id):
-    id = "question_input"
-    name = "question"
+    text_id = "answer_input"
+    name = "message"
     if request.method == "POST":
-        return redirect('/')
-    return render_template('modify_data_layout/new_answer.html', text_id=id, text_name=name)
+        answer = data_manager.add_answer_with_basic_headers(data_id)
+        data_manager.save_new_answer(answer)
+        return redirect('/question/' + data_id)
+    return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
 
 
 @app.route("/<data_type>/<data_id>/delete")
@@ -39,9 +41,7 @@ def delete(data_type, data_id):
     data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
         return redirect('/list')
-    else:
-        question_id = data_id
-        return redirect('/question/' + question_id)
+    return redirect('/question/' + data_id)
 
 
 @app.route("/list?sort_by=<sorting_key>&order_descending=<reverse_bool>")

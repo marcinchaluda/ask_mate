@@ -11,8 +11,12 @@ def get_all_questions():
     return connection.read_data(QUESTIONS_FILE)
 
 
+def sort_condition(element, key):
+    return int(element[key]) if key in ['view_number', 'vote_number', 'submission_time'] else element[key]
+
+
 def get_sorted_questions(sorting_key, reverse_bool):
-    return sorted(get_all_questions(), key=lambda i: i[sorting_key], reverse=reverse_bool)
+    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=reverse_bool)
 
 
 def get_all_answers():
@@ -60,6 +64,28 @@ def add_question_with_basic_headers():
 
 def save_new_question(question):
     connection.add_data(QUESTIONS_FILE, question)
+
+
+def add_answer_with_basic_headers(question_id):
+    answer = {}
+    for header in ANSWER_HEADER:
+        if header == 'id':
+            answer[header] = '3'
+        elif header == 'submission_time':
+            answer[header] = 'sdalj'
+        elif header == 'vote_number':
+            answer[header] = 0
+        elif header == 'question_id':
+            answer[header] = question_id
+        elif header == 'image':
+            answer[header] = ''
+        else:
+            answer[header] = request.form.get(header)
+    return answer
+
+
+def save_new_answer(answer):
+    connection.add_data(ANSWERS_FILE, answer)
 
 
 def update_dictionary(file_name, data, key_to_find):
