@@ -11,8 +11,12 @@ def get_all_questions():
     return connection.read_data(QUESTIONS_FILE)
 
 
+def sort_condition(element, key):
+    return int(element[key]) if key in ['view_number', 'vote_number', 'submission_time'] else element[key]
+
+
 def get_sorted_questions(sorting_key, reverse_bool):
-    return sorted(get_all_questions(), key=lambda i: i[sorting_key], reverse=reverse_bool)
+    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=reverse_bool)
 
 
 def get_all_answers():
