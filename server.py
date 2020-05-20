@@ -43,15 +43,10 @@ def delete(data_type, data_id):
     filepath = data_manager.QUESTIONS_FILE if data_type == 'question' else data_manager.ANSWERS_FILE
     data_manager.delete_dictionary(filepath, data_id)
     if data_type == 'question':
+        filepath = data_manager.ANSWERS_FILE
+        data_manager.delete_related_answers(filepath, data_id)
         return redirect('/list')
     return redirect('/question/' + data_id)
-
-
-@app.route("/list?sort_by=<sorting_key>&order_descending=<reverse_bool>")
-def sort_questions(sorting_key, reverse_bool):
-    questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
-    question_headers = data_manager.QUESTION_HEADERS
-    return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
 
 @app.route('/')
@@ -61,7 +56,12 @@ def home():
 
 @app.route('/list')
 def display_data():
-    questions = data_manager.get_all_questions()
+    if request.args:
+        sorting_key = request.args['sort_by']
+        reverse_bool = request.args['order_descending']
+        questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
+    else:
+        questions = data_manager.get_all_questions()
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
@@ -75,6 +75,24 @@ def display_answers(question_id):
     data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "view_number")
     return render_template('display_data/list_answers.html', answer_details=answer_details,
                            question_details=question_details)
+
+
+@app.route('/question/<question_id>/vote_up')
+def vote_up(question_id):
+    questions = data_manager.get_all_questions()
+    question_details = data_manager.fetch_dictionary(question_id, questions)
+    question_details['vote_number'] = int(question_details['vote_number']) + 1
+    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number")
+    return redirect('/list')
+
+
+@app.route("/question/<question_id>/vote_down")
+def vote_down(question_id):
+    questions = data_manager.get_all_questions()
+    question_details = data_manager.fetch_dictionary(question_id, questions)
+    question_details['vote_number'] = int(question_details['vote_number']) - 1
+    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number", True)
+    return redirect('/list')
 
 
 if __name__ == "__main__":

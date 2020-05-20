@@ -1,3 +1,4 @@
+
 import connection
 import util
 from flask import request
@@ -15,8 +16,12 @@ def sort_condition(element, key):
     return int(element[key]) if key in ['view_number', 'vote_number', 'submission_time'] else element[key]
 
 
+def str_to_bool(source_string):
+    return source_string.lower() in 'true'
+
+
 def get_sorted_questions(sorting_key, reverse_bool):
-    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=reverse_bool)
+    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=str_to_bool(reverse_bool))
 
 
 def get_all_answers():
@@ -43,6 +48,20 @@ def delete_dictionary(filename, id):
     dict_to_delete = fetch_dictionary(id, data)
     data.remove(dict_to_delete)
     connection.overwrite_data(filename, data)
+    return None
+
+
+def delete_related_answers(filename, id):
+    if 'question' in filename:
+        data = connection.read_data(filename)
+        dict_to_delete = fetch_dictionary(id, data)
+        data.remove(dict_to_delete)
+        connection.overwrite_data(filename, data)
+    else:
+        data = connection.read_data(filename)
+        for dict in fetch_answers(id):
+            data.remove(dict)
+        connection.overwrite_data(filename, data)
     return None
 
 
@@ -88,10 +107,15 @@ def save_new_answer(answer):
     connection.add_data(ANSWERS_FILE, answer)
 
 
-def update_dictionary(file_name, data, key_to_find):
+def update_dictionary(file_name, data, key_to_find, vote_down=False):
     for dictionary in data:
         if dictionary["view_number"] == key_to_find:
             dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
+        elif dictionary["vote_number"] == key_to_find:
+            if vote_down:
+                dictionary[key_to_find] = int(dictionary[key_to_find]) - 1
+            else:
+                dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
     connection.overwrite_data(file_name, data)
 
 
