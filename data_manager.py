@@ -62,5 +62,27 @@ def save_new_question(question):
     connection.add_data(QUESTIONS_FILE, question)
 
 
+def add_answer_with_basic_headers(question_id):
+    answer = {}
+    for header in ANSWER_HEADER:
+        if header == 'id':
+            answer[header] = '3'
+        elif header == 'submission_time':
+            answer[header] = 'sdalj'
+        elif header == 'vote_number':
+            answer[header] = 0
+        elif header == 'question_id':
+            answer[header] = question_id
+        elif header == 'image':
+            answer[header] = ''
+        else:
+            answer[header] = request.form.get(header)
+    return answer
+
+
+def save_new_answer(answer):
+    connection.add_data(ANSWERS_FILE, answer)
+
+
 if __name__ == "__main__":
     print(fetch_answers("1"))
