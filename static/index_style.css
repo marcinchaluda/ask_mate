@@ -2,13 +2,13 @@
    margin: 0;
    padding: 0;
    background-color: #47A9FF;
-   max-width: 1024px;
    font-family: Arial;
 }
 
 .wrapper {
+    margin: 10vh auto 10vh auto;
     position: relative;
-    left: 50%;
+    width: 800px;
 }
 
 div h1 {
@@ -26,15 +26,13 @@ div h1 {
     padding: 25px;
     border-radius: 35px;
     text-transform: uppercase;
-}
-
-.circle_container {
-    position: relative;
+    text-align: center;
 }
 
 .circle {
-    position: relative;
-    left: 410px;
+    position: absolute;
+    left: 495px;
+    top: 208px;
     width: 20px;
     height: 20px;
     background-color: white;
@@ -43,9 +41,9 @@ div h1 {
 }
 
 .small_circle {
-    position: relative;
-    left: 440px;
-    top: 5px;
+    position: absolute;
+    left: 525px;
+    top: 230px;
     width: 10px;
     height: 10px;
     background-color: white;
@@ -62,20 +60,40 @@ aside {
     margin-top: 15px;
 }
 
-.input_container {
+.input_container, .question_form {
     position: relative;
-}
-
-.input_container button {
-    position: absolute;
-    left: 50%;
-    top: 5vh;
-    font-size: 20px;
-    transform: translate(-50%)
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    height: 20vh;
 }
 
 button {
-    padding: 10px 30px;
-    border-radius: 20px;
+    width: 210px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: white;
+    text-transform: uppercase;
+}
+
+.question_form input {
+    padding: 10px 20px;
+    font-size: 20px;
+    color: black;
+}
+
+.question_form label {
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+::placeholder {
+    color: dark-grey;
+}
+
+input[type="text"] {
     background-color: white;
 }

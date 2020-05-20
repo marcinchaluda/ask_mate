@@ -12,18 +12,15 @@
 {% block content %}
     <p>Given answers for above question:</p>
     <ul>
-        {% if answer_details == None %}
+        {% if answer_details == [] %}
             <li><p>No answers has been given for above questions</p></li>
         {% else %}
-            {% for answer_key, answer_value in answer_details.items() %}
-                {% if answer_key == "message" %}
-                    <li><p>
-                            {{ answer_value }}
-                            <a href="/answer/{{ answer_details['id'] }}/delete">
-                            <button type="button">Delete this answer</button>
-                            </a>
-                        </p></li>
-                {% endif %}
+            {% for dictionary in answer_details %}
+                {% for answer_key, answer_value in dictionary.items() %}
+                    {% if answer_key == "message" %}
+                        <li><p>{{ answer_value }}</p></li>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         {% endif %}
     </ul>
@@ -31,6 +28,11 @@
 {% block go_back_button %}
     <input type="button" value="Go Back!" onclick="history.back()">
 {% endblock go_back_button %}
+{% block new_answer_button %}
+    <a href="{{ question_details['id'] }}/new_answer">
+        <button type="button">Add new answer</button>
+    </a>
+{% endblock new_answer_button %}
 {% block  delete_question_buton %}
     <a href="{{ question_details['id'] }}/delete">
         <button type="button">Delete this question</button>

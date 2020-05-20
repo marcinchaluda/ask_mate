@@ -5,6 +5,11 @@
 {% block header %}
     Question List
 {% endblock header %}
+{% block main_menu %}
+    <a href="/add_question">
+        <button type="button">Add new question</button>
+    </a>
+{% endblock main_menu %}
 {% block title_header %}
     {% for header in question_headers %}
         {% if header in ['submission_time', 'view_number', 'vote_number', 'title', 'message'] %}  {# sorting headers #}
