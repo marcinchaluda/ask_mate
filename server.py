@@ -50,6 +50,7 @@ def sort_questions(sorting_key, reverse_bool):
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -67,6 +68,8 @@ def display_answers(question_id):
     questions = data_manager.get_all_questions()
     answer_details = data_manager.fetch_answers(question_id)
     question_details = data_manager.fetch_dictionary(question_id, questions)
+    question_details['view_number'] = int(question_details['view_number']) + 1
+    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "view_number")
     return render_template('display_data/list_answers.html', answer_details=answer_details,
                            question_details=question_details)
 

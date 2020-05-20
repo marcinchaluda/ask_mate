@@ -3,6 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=git,flask,python,pycharm+all
 
 venv/
+node_modules/
 
 ### Flask ###
 instance/*

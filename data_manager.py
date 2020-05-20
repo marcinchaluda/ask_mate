@@ -62,5 +62,8 @@ def save_new_question(question):
     connection.add_data(QUESTIONS_FILE, question)
 
 
-if __name__ == "__main__":
-    print(fetch_answers("1"))
+def update_dictionary(file_name, data, key_to_find):
+    for dictionary in data:
+        if dictionary["view_number"] == key_to_find:
+            dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
+    connection.overwrite_data(file_name, data)
