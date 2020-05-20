@@ -15,8 +15,12 @@ def sort_condition(element, key):
     return int(element[key]) if key in ['view_number', 'vote_number', 'submission_time'] else element[key]
 
 
+def str_to_bool(source_string):
+    return source_string.lower() in 'true'
+
+
 def get_sorted_questions(sorting_key, reverse_bool):
-    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=reverse_bool)
+    return sorted(get_all_questions(), key=lambda i: sort_condition(i, sorting_key), reverse=str_to_bool(reverse_bool))
 
 
 def get_all_answers():
