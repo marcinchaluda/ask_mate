@@ -74,5 +74,23 @@ def display_answers(question_id):
                            question_details=question_details)
 
 
+@app.route('/question/<question_id>/vote_up')
+def vote_up(question_id):
+    questions = data_manager.get_all_questions()
+    question_details = data_manager.fetch_dictionary(question_id, questions)
+    question_details['vote_number'] = int(question_details['vote_number']) + 1
+    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number")
+    return redirect('/list')
+
+
+@app.route("/question/<question_id>/vote_down")
+def vote_down(question_id):
+    questions = data_manager.get_all_questions()
+    question_details = data_manager.fetch_dictionary(question_id, questions)
+    question_details['vote_number'] = int(question_details['vote_number']) - 1
+    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number", True)
+    return redirect('/list')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

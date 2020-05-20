@@ -43,10 +43,10 @@
                 <td>
                     <a href="/question/{{ question['id'] }}" class="hover_highlight">{{ question_value }}</a>
                     <div class="vote">
-                        <a href="/question/<question_id>/vote_up">
+                        <a href="/question/{{ question['id'] }}/vote_up">
                             <button type="button">Vote up</button>
                         </a>
-                        <a href="/question/<question_id>/vote_down">
+                        <a href="/question/{{ question['id'] }}/vote_down">
                             <button type="button">Vote down</button>
                         </a>
                     </div>
