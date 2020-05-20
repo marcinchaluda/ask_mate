@@ -20,7 +20,7 @@
                     {% if answer_key == "message" %}
                         <li>
                             <div>{{ answer_value }}
-                                <a href="/answer/{{ dictionary['question_id'] }}/delete">
+                                <a href="/answer/{{ dictionary['id'] }}/delete">
                                     <img class="trashico" src="{{ url_for('static', filename='images/trash.png') }}"
                                          title="delete this answer">
                                 </a>
