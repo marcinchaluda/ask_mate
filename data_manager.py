@@ -1,3 +1,4 @@
+
 import connection
 import util
 from flask import request
@@ -115,4 +116,12 @@ def update_dictionary(file_name, data, key_to_find, vote_down=False):
                 dictionary[key_to_find] = int(dictionary[key_to_find]) - 1
             else:
                 dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
+    connection.overwrite_data(file_name, data)
+
+
+def update_question(file_name, data, key_to_find):
+    for dictionary in data:
+        if dictionary['id'] == key_to_find:
+            dictionary['message'] = request.form.get('message')
+            dictionary['title'] = request.form.get('title')
     connection.overwrite_data(file_name, data)

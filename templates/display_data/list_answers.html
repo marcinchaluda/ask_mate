@@ -50,6 +50,11 @@
         <button type="button">Add new answer</button>
     </a>
 {% endblock new_answer_button %}
+{% block edit_button %}
+    <a href="{{ question_details['id'] }}/edit">
+        <button type="button">Edit this question</button>
+    </a>
+{% endblock edit_button %}
 {% block  delete_question_buton %}
     <a href="{{ question_details['id'] }}/delete">
         <button type="button">Delete this question</button>

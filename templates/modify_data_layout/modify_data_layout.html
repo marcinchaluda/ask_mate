@@ -9,7 +9,7 @@
         <form action={% block action %}  {% endblock action %} method="post">
             {% block optional_title %}{% endblock optional_title %}
             <label for={{text_id}}>{% block label %}{% endblock label %}:</label><br>
-            <textarea id={{text_id}} name={{text_name}} rows="4" cols="50"></textarea><br>
+            <textarea id={{text_id}} name={{text_name}} rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
             <button type="submit">{% block button %}  {% endblock button %}</button>
         </form>
 </body>
