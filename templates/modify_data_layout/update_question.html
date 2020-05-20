@@ -7,14 +7,15 @@
 {% endblock header %}
 {% block optional_title %}
     <label for="title">Title</label><br>
-    <input type="text" name="title" id="title" size="10" min="5" required><br>
+    <input type="text" name="title" id="title" size="10" min="5" value="{{ question['title']}}" required><br>
 {% endblock optional_title %}
 {% block label %}
     Question
 {% endblock label %}
 {% block action %}
-    "/update_question"
+    "/question/{{ question['id'] }}/edit"
 {% endblock action %}
+{% block content %}{{ question['message'] }}{% endblock content %}
 {% block button %}
     Update question
 {% endblock button %}
