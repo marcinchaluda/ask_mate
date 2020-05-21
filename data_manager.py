@@ -117,8 +117,7 @@ def update_dictionary(file_name, data, key_to_find, vote_down=False):
         if dictionary[key_to_find] == key_to_find:
             if vote_down:
                 dictionary[key_to_find] = int(dictionary[key_to_find]) - 1
-            else:
-                dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
+            dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
     connection.overwrite_data(file_name, data)
 
 
