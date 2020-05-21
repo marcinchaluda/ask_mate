@@ -86,36 +86,28 @@ def display_answers(question_id):
 @app.route('/question/<question_id>/vote_up')
 def question_vote_up(question_id):
     questions = data_manager.get_all_questions()
-    question_details = data_manager.fetch_dictionary(question_id, questions)
-    question_details['vote_number'] = int(question_details['vote_number']) + 1
-    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number")
+    data_manager.update_value_on_given_key('vote_number', question_id, questions, False, False)
     return redirect('/list')
 
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
     questions = data_manager.get_all_questions()
-    question_details = data_manager.fetch_dictionary(question_id, questions)
-    question_details['vote_number'] = int(question_details['vote_number']) - 1
-    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number", True)
+    data_manager.update_value_on_given_key('vote_number', question_id, questions, True, False)
     return redirect('/list')
 
 
 @app.route('/answer/<answer_id>/vote_up')
 def answer_vote_up(answer_id):
     answers = data_manager.get_all_answers()
-    answer_details = data_manager.fetch_dictionary(answer_id, answers)
-    answer_details['vote_number'] = int(answer_details['vote_number']) + 1
-    data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number")
+    data_manager.update_value_on_given_key('vote_number', answer_id, answers)
     return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def answer_vote_down(answer_id):
     answers = data_manager.get_all_answers()
-    answer_details = data_manager.fetch_dictionary(answer_id, answers)
-    answer_details['vote_number'] = int(answer_details['vote_number']) - 1
-    data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number", True)
+    data_manager.update_value_on_given_key('vote_number', answer_id, answers, True)
     return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
 
 

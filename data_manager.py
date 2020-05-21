@@ -128,3 +128,17 @@ def update_question(file_name, data, key_to_find):
             dictionary['message'] = request.form.get('message')
             dictionary['title'] = request.form.get('title')
     connection.overwrite_data(file_name, data)
+
+
+def update_value_on_given_key(key_to_find, datum_id, data, vote_down=False, answers_file=True):
+    data_details = fetch_dictionary(datum_id, data)
+    if vote_down and answers_file:
+        data_details[key_to_find] = int(data_details[key_to_find]) - 1
+        file_name = ANSWERS_FILE
+    elif not vote_down and answers_file:
+        data_details[key_to_find] = int(data_details[key_to_find]) + 1
+        file_name = ANSWERS_FILE
+    else:
+        data_details[key_to_find] = int(data_details[key_to_find]) + 1
+        file_name = QUESTIONS_FILE
+    update_dictionary(file_name, data, key_to_find, True)
