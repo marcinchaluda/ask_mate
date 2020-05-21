@@ -107,7 +107,7 @@ def answer_vote_up(answer_id):
     answer_details = data_manager.fetch_dictionary(answer_id, answers)
     answer_details['vote_number'] = int(answer_details['vote_number']) + 1
     data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number")
-    return redirect('/question/' + answer_id)
+    return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
 
 
 @app.route('/answer/<answer_id>/vote_down')
@@ -116,7 +116,7 @@ def answer_vote_down(answer_id):
     answer_details = data_manager.fetch_dictionary(answer_id, answers)
     answer_details['vote_number'] = int(answer_details['vote_number']) - 1
     data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number", True)
-    return redirect('/question/' + answer_id)
+    return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
 
 
 if __name__ == "__main__":
