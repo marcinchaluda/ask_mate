@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, request, url_for
 import data_manager, util
+import os
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'static/images/'
 
 
 @app.route("/add_question", methods=['GET', 'POST'])
@@ -109,6 +111,18 @@ def answer_vote_down(answer_id):
     answers = data_manager.get_all_answers()
     data_manager.update_value_on_given_key('vote_number', answer_id, answers, True)
     return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
+
+
+@app.route('/question/<question_id>/add_image', methods=['GET', 'POST'])
+def add_image(question_id):
+    questions = data_manager.get_all_questions()
+    if request.method == 'POST':
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        img_path = 'static/images/' + filename
+        data_manager.update_question_img(data_manager.QUESTIONS_FILE, questions, img_path, question_id)
+        return redirect('/list')
 
 
 if __name__ == "__main__":
