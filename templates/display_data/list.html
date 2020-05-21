@@ -56,13 +56,8 @@
                 {% if question_key == "submission_time" %}
                     <p>{{ current_time_function(question_value) }}</p>
                 {% elif question_key == 'image' %}
-                    {% if question_value == '' %}
-                        <form action="/question/{{ question['id'] }}/add_image" method=post enctype=multipart/form-data>
-                        <p><input type=file name=file>
-                            <button type="submit" value="Upload">Submit</button>
-                        </form>
-                    {% else %}
-                        <img src="{{ question_value }}">
+                    {% if question_value != '' %}
+                        <img src="{{ question_value }}" height="100px">
                     {% endif %}
                 {% else %}
                     <p>{{ question_value }}</p>

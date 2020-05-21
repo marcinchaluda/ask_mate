@@ -12,6 +12,12 @@ def add_new_question():
     name = "message"
     if request.method == "POST":
         question = data_manager.add_question_with_basic_headers()
+        file = request.files['file']
+        filename = file.filename
+        if filename != '':
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            img_path = 'static/images/' + filename
+            question['image'] = img_path
         data_manager.save_new_question(question)
         return redirect('/question/' + question['id'])
     return render_template('modify_data_layout/add_question.html', text_id=text_id, text_name=name)
@@ -35,6 +41,12 @@ def add_new_answer(data_id):
     name = "message"
     if request.method == "POST":
         answer = data_manager.add_answer_with_basic_headers(data_id)
+        file = request.files['file']
+        filename = file.filename
+        if filename != '':
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            img_path = 'static/images/' + filename
+            answer['image'] = img_path
         data_manager.save_new_answer(answer)
         return redirect('/question/' + data_id)
     return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
@@ -111,18 +123,6 @@ def answer_vote_down(answer_id):
     answers = data_manager.get_all_answers()
     data_manager.update_value_on_given_key('vote_number', answer_id, answers, True)
     return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
-
-
-@app.route('/question/<question_id>/add_image', methods=['GET', 'POST'])
-def add_image(question_id):
-    questions = data_manager.get_all_questions()
-    if request.method == 'POST':
-        file = request.files['file']
-        filename = file.filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        img_path = 'static/images/' + filename
-        data_manager.update_question_img(data_manager.QUESTIONS_FILE, questions, img_path, question_id)
-        return redirect('/list')
 
 
 if __name__ == "__main__":

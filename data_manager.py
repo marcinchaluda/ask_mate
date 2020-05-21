@@ -129,13 +129,6 @@ def update_question(file_name, data, key_to_find):
     connection.overwrite_data(file_name, data)
 
 
-def update_question_img(file_name, data, img_path, question_id):
-    for dictionary in data:
-        if dictionary['id'] == question_id:
-            dictionary["image"] = img_path
-    connection.overwrite_data(file_name, data)
-
-    
 def update_value_on_given_key(key_to_find, datum_id, data, vote_down=False, answers_file=True):
     data_details = fetch_dictionary(datum_id, data)
     if vote_down and answers_file:

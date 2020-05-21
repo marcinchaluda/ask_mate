@@ -48,7 +48,15 @@
                         </div>
                     </td>
                 {% else %}
-                    <td><p>{{ answer_value }}</p></td>
+                    <td>
+                    {% if answer_key == 'image' %}
+                        {% if answer_value != '' %}
+                            <img src="/{{ answer_value }}" height="100px">
+                        {% endif %}
+                    {% else %}
+                        <p>{{ answer_value }}</p>
+                    {% endif %}
+                    </td>
                 {% endif %}
             {% endfor %}
             </tr>

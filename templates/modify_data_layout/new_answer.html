@@ -11,6 +11,9 @@
 {% block action %}
     "/question/{{ data_id }}/new_answer"
 {% endblock action %}
+{% block file_input %}
+    <input type="file" name="file">
+{% endblock file_input %}
 {% block button %}
     Post answer
 {% endblock button %}
