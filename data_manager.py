@@ -43,6 +43,11 @@ def fetch_answers(key_to_find):
     return dictionaries
 
 
+def get_question_id_for_answer(data_id):
+    answer = fetch_dictionary(data_id, get_all_answers())
+    return answer['question_id']
+
+
 def delete_dictionary(filename, id):
     data = connection.read_data(filename)
     dict_to_delete = fetch_dictionary(id, data)
@@ -71,7 +76,7 @@ def add_question_with_basic_headers():
         if header == 'id':
             question[header] = util.generate_id()
         elif header == 'submission_time':
-            question[header] = "sadfasf"
+            question[header] = util.generate_seconds_since_epoch()
         elif header == 'view_number' or header == 'vote_number':
             question[header] = 0
         elif header == 'image':
@@ -91,7 +96,7 @@ def add_answer_with_basic_headers(question_id):
         if header == 'id':
             answer[header] = util.generate_id()
         elif header == 'submission_time':
-            answer[header] = 'sdalj'
+            answer[header] = util.generate_seconds_since_epoch()
         elif header == 'vote_number':
             answer[header] = 0
         elif header == 'question_id':
