@@ -128,3 +128,10 @@ def update_question(file_name, data, key_to_find):
             dictionary['message'] = request.form.get('message')
             dictionary['title'] = request.form.get('title')
     connection.overwrite_data(file_name, data)
+
+
+def update_question_img(file_name, data, img_path, question_id):
+    for dictionary in data:
+        if dictionary['id'] == question_id:
+            dictionary["image"] = img_path
+    connection.overwrite_data(file_name, data)
