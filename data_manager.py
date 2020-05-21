@@ -43,6 +43,11 @@ def fetch_answers(key_to_find):
     return dictionaries
 
 
+def get_question_id_for_answer(data_id):
+    answer = fetch_dictionary(data_id, get_all_answers())
+    return answer['question_id']
+
+
 def delete_dictionary(filename, id):
     data = connection.read_data(filename)
     dict_to_delete = fetch_dictionary(id, data)
