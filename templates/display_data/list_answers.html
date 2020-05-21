@@ -14,20 +14,16 @@
             {% for header in answer_headers %}
                 <th>
                     {{ header.replace("_", " ").title() }}
-                    <form action="/question/{{ answer_details['id'] }}" method="get" class="sorting_form">
-                    <input type="hidden" name="sort_by" value="{{ header }}">
-                    <input type="hidden" name="order_descending" value="False">
-                    <input class="sort_triangle_up" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
-                           src="{{ url_for('static', filename='images/triangle.png') }}"
-                           title="Sort by {{ header | replace('_', ' ') }}, ascending">
-                    </form>
-                    <form action="/question/{{ answer_details['id'] }}" method="get" class="sorting_form">
-                        <input type="hidden" name="sort_by" value="{{ header }}">
-                        <input type="hidden" name="order_descending" value="True">
-                        <input class="sort_triangle_down" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, descending"
-                               src="{{ url_for('static', filename='images/triangle.png') }}"
-                               title="Sort by {{ header | replace('_', ' ') }}, descending">
-                    </form>
+                    <a href="/list?sort_by={{ header }}&order_descending=False">
+                        <img class="sort_triangle_up" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
+                             src="{{ url_for('static', filename='images/triangle.png') }}"
+                             title="Sort by {{ header | replace('_', ' ') }}, ascending">
+                    </a>
+                    <a href="/list?sort_by={{ header }}&order_descending=True">
+                        <img class="sort_triangle_down" alt="Sort by {{ header | replace('_', ' ') }}, descending"
+                             src="{{ url_for('static', filename='images/triangle.png') }}"
+                             title="Sort by {{ header | replace('_', ' ') }}, descending">
+                    </a>
                 </th>
             {% endfor %}
     {% endif %}
