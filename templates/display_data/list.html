@@ -52,7 +52,13 @@
                     </div>
                 </td>
             {% else %}
-            <td><p>{{ question_value }}</p></td>
+            <td>
+                {% if question_key == "submission_time" %}
+                    <p>{{ current_time_function(question_value) }}</p>
+                {% else %}
+                    <p>{{ question_value }}</p>
+                {% endif %}
+            </td>
             {% endif %}
         {% endfor %}
         </tr>

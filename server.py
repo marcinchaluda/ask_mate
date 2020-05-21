@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for
-import data_manager
+import data_manager, util
 
 app = Flask(__name__)
 
@@ -62,8 +62,9 @@ def display_data():
         questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     else:
         questions = data_manager.get_all_questions()
+    current_time_function = util.convert_str_to_time
     question_headers = data_manager.QUESTION_HEADERS
-    return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
+    return render_template('display_data/list.html', questions=questions, question_headers=question_headers, current_time_function=current_time_function)
 
 
 @app.route('/question/<question_id>')
