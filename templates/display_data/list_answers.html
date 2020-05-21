@@ -8,37 +8,56 @@
 {% block title_header %}
     <p>Question title: {{ question_details['title'] }}</p>
     <p>Question message: {{ question_details['message'] }}</p>
+    {% if answer_details == [] %}
+            <p>No answers has been given for above questions</p>
+        {% else %}
+            {% for header in answer_headers %}
+                <th>
+                    {{ header.replace("_", " ").title() }}
+                    <form action="/question/{{ answer_details['id'] }}" method="get" class="sorting_form">
+                    <input type="hidden" name="sort_by" value="{{ header }}">
+                    <input type="hidden" name="order_descending" value="False">
+                    <input class="sort_triangle_up" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
+                           src="{{ url_for('static', filename='images/triangle.png') }}"
+                           title="Sort by {{ header | replace('_', ' ') }}, ascending">
+                    </form>
+                    <form action="/question/{{ answer_details['id'] }}" method="get" class="sorting_form">
+                        <input type="hidden" name="sort_by" value="{{ header }}">
+                        <input type="hidden" name="order_descending" value="True">
+                        <input class="sort_triangle_down" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, descending"
+                               src="{{ url_for('static', filename='images/triangle.png') }}"
+                               title="Sort by {{ header | replace('_', ' ') }}, descending">
+                    </form>
+                </th>
+            {% endfor %}
+    {% endif %}
 {% endblock title_header %}
 {% block content %}
     <p>Given answers for above question:</p>
-    <ul class="answers">
-        {% if answer_details == [] %}
-            <li><p>No answers has been given for above questions</p></li>
-        {% else %}
-            {% for dictionary in answer_details %}
-                {% for answer_key, answer_value in dictionary.items() %}
-                    {% if answer_key == "message" %}
-                        <li>
-                            <div>{{ answer_value }}
-                                <a href="/answer/{{ dictionary['id'] }}/delete">
-                                    <img class="trashico" src="{{ url_for('static', filename='images/trash.png') }}"
-                                         title="delete this answer">
-                                </a>
-                                <div class="vote">
-                                <a href="/question/<question_id>/vote_up">
-                                    <button type="button">Vote up</button>
-                                </a>
-                                <a href="/question/<question_id>/vote_down">
-                                    <button type="button">Vote down</button>
-                                </a>
-                                </div>
-                            </div>
-                        </li>
-                    {% endif %}
-                {% endfor %}
+        {% for dictionary in answer_details %}
+            <tr>
+            {% for answer_key, answer_value in dictionary.items() %}
+                {% if answer_key == "message" %}
+                    <td>{{ answer_value }}
+                        <a href="/answer/{{ dictionary['id'] }}/delete">
+                            <img class="trashico" src="{{ url_for('static', filename='images/trash.png') }}"
+                                 title="delete this answer">
+                        </a>
+                        <div class="vote">
+                        <a href="/answer/{{ dictionary['id'] }}/vote_up">
+                            <button type="button">Vote up</button>
+                        </a>
+                        <a href="/answer/{{ dictionary['id'] }}/vote_down">
+                            <button type="button">Vote down</button>
+                        </a>
+                        </div>
+                    </td>
+                {% else %}
+                    <td><p>{{ answer_value }}</p></td>
+                {% endif %}
             {% endfor %}
-        {% endif %}
-    </ul>
+            </tr>
+        {% endfor %}
 {% endblock content %}
 {% block go_back_button %}
     <a href="/list">

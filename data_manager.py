@@ -109,9 +109,7 @@ def save_new_answer(answer):
 
 def update_dictionary(file_name, data, key_to_find, vote_down=False):
     for dictionary in data:
-        if dictionary["view_number"] == key_to_find:
-            dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
-        elif dictionary["vote_number"] == key_to_find:
+        if dictionary[key_to_find] == key_to_find:
             if vote_down:
                 dictionary[key_to_find] = int(dictionary[key_to_find]) - 1
             else:

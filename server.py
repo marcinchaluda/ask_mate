@@ -69,16 +69,17 @@ def display_data():
 @app.route('/question/<question_id>')
 def display_answers(question_id):
     questions = data_manager.get_all_questions()
+    answer_headers = data_manager.ANSWER_HEADER
     answer_details = data_manager.fetch_answers(question_id)
     question_details = data_manager.fetch_dictionary(question_id, questions)
     question_details['view_number'] = int(question_details['view_number']) + 1
     data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "view_number")
     return render_template('display_data/list_answers.html', answer_details=answer_details,
-                           question_details=question_details)
+                           question_details=question_details, answer_headers=answer_headers)
 
 
 @app.route('/question/<question_id>/vote_up')
-def vote_up(question_id):
+def question_vote_up(question_id):
     questions = data_manager.get_all_questions()
     question_details = data_manager.fetch_dictionary(question_id, questions)
     question_details['vote_number'] = int(question_details['vote_number']) + 1
@@ -87,12 +88,30 @@ def vote_up(question_id):
 
 
 @app.route("/question/<question_id>/vote_down")
-def vote_down(question_id):
+def question_vote_down(question_id):
     questions = data_manager.get_all_questions()
     question_details = data_manager.fetch_dictionary(question_id, questions)
     question_details['vote_number'] = int(question_details['vote_number']) - 1
     data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "vote_number", True)
     return redirect('/list')
+
+
+@app.route('/answer/<answer_id>/vote_up')
+def answer_vote_up(answer_id):
+    answers = data_manager.get_all_answers()
+    answer_details = data_manager.fetch_dictionary(answer_id, answers)
+    answer_details['vote_number'] = int(answer_details['vote_number']) + 1
+    data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number")
+    return redirect('/question/' + answer_id)
+
+
+@app.route('/answer/<answer_id>/vote_down')
+def answer_vote_down(answer_id):
+    answers = data_manager.get_all_answers()
+    answer_details = data_manager.fetch_dictionary(answer_id, answers)
+    answer_details['vote_number'] = int(answer_details['vote_number']) - 1
+    data_manager.update_dictionary(data_manager.ANSWERS_FILE, answers, "vote_number", True)
+    return redirect('/question/' + answer_id)
 
 
 if __name__ == "__main__":
