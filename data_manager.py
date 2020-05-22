@@ -137,6 +137,9 @@ def update_value_on_given_key(key_to_find, datum_id, data, vote_down=False, answ
     elif not vote_down and answers_file:
         data_details[key_to_find] = int(data_details[key_to_find]) + 1
         file_name = ANSWERS_FILE
+    elif vote_down and not answers_file:
+        data_details[key_to_find] = int(data_details[key_to_find]) - 1
+        file_name = QUESTIONS_FILE
     else:
         data_details[key_to_find] = int(data_details[key_to_find]) + 1
         file_name = QUESTIONS_FILE
