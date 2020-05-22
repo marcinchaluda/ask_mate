@@ -24,7 +24,6 @@ def overwrite_data(file_name, data):
         writer.writeheader()
         for entry in data:
             writer.writerow(entry)
-    return None
 
 
 def add_data(file_name, data):

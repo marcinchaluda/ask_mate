@@ -53,7 +53,6 @@ def delete_dictionary(filename, id):
     dict_to_delete = fetch_dictionary(id, data)
     data.remove(dict_to_delete)
     connection.overwrite_data(filename, data)
-    return None
 
 
 def delete_related_answers(filename, id):
@@ -67,7 +66,6 @@ def delete_related_answers(filename, id):
         for dict in fetch_answers(id):
             data.remove(dict)
         connection.overwrite_data(filename, data)
-    return None
 
 
 def add_question_with_basic_headers():
