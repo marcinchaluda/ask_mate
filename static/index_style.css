@@ -79,6 +79,11 @@ button {
     text-transform: uppercase;
 }
 
+button:hover {
+    background-color: grey;
+    color: white;
+}
+
 .question_form input {
     padding: 10px 20px;
     font-size: 20px;

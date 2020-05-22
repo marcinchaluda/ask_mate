@@ -1,0 +1,115 @@
+* {
+   margin: 0;
+   padding: 0;
+   background-color: #47A9FF;
+   font-family: Arial;
+}
+
+.wrapper {
+    margin: 2vh auto 2vh auto;
+    position: relative;
+    width: 800px;
+}
+
+.wrapper h1 {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    text-align: center;
+    font-family: 'Contrail One', cursive;
+    font-size: 50px;
+    color: white;
+}
+
+.question_data p {
+    margin-bottom: 1%;
+    text-align: center;
+    font-family: 'Contrail One', cursive;
+    font-size: 22px;
+    color: white;
+}
+
+.data_table p {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    text-align: center;
+    font-family: 'Contrail One', cursive;
+    font-size: 28px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.vote button {
+    width: 80px;
+    border-radius: 1px;
+    background-color: white;
+    text-transform: uppercase;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    background-color: white;
+}
+
+.vote, td p {
+    background-color: white;
+}
+
+th {
+    white-space: nowrap;
+}
+
+.trashico {
+    width: 18px;
+    vertical-align: top;
+}
+
+.vote {
+    display: flex;
+    justify-content: center;
+}
+
+i {
+    padding: 3px;
+    font-size: 15px;
+    color: black;
+    background-color: white;
+}
+
+table {
+    display; flex;
+    width: auto;
+    justify-content: space-around;
+    background-color: white;
+}
+
+.table_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.buttons {
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons a {
+    width: 210px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    color: black;
+}
+
+.buttons a:hover {
+    color: white;
+    background-color: grey;
+}

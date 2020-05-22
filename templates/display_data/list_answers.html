@@ -1,4 +1,9 @@
 {% extends 'display_data/display_data_layout.html' %}
+{% block links%}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='display_data.css') }}" rel="stylesheet" type="text/css">
+{% endblock links %}
 {% block title %}
     Answers List | Ask-Mate
 {% endblock title %}
@@ -6,72 +11,63 @@
     Answers List
 {% endblock header %}
 {% block title_header %}
-    <p>Question title: {{ question_details['title'] }}</p>
-    <p>Question message: {{ question_details['message'] }}</p>
-    {% if answer_details == [] %}
-            <p>No answers has been given for above questions</p>
-        {% else %}
+    <div class="question_data">
+        <p>Question title: {{ question_details['title'] }}</p>
+        <p>Question message: {{ question_details['message'] }}</p>
+    </div>
+    {% if answer_details != [] %}
             {% for header in answer_headers %}
                 <th>
                     {{ header.replace("_", " ").title() }}
-                    <a href="/list?sort_by={{ header }}&order_descending=False">
-                        <img class="sort_triangle_up" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
-                             src="{{ url_for('static', filename='images/triangle.png') }}"
-                             title="Sort by {{ header | replace('_', ' ') }}, ascending">
-                    </a>
-                    <a href="/list?sort_by={{ header }}&order_descending=True">
-                        <img class="sort_triangle_down" alt="Sort by {{ header | replace('_', ' ') }}, descending"
-                             src="{{ url_for('static', filename='images/triangle.png') }}"
-                             title="Sort by {{ header | replace('_', ' ') }}, descending">
-                    </a>
                 </th>
             {% endfor %}
     {% endif %}
 {% endblock title_header %}
 {% block content %}
-    <p>Given answers for above question:</p>
+    <div class="data_table">
+        <p>Given answers for above question:</p>
+    </div>
+    {% if answer_details == [] %}
+            <p>No answers has been given for above questions</p>
+    {% else %}
         {% for dictionary in answer_details %}
             <tr>
             {% for answer_key, answer_value in dictionary.items() %}
                 {% if answer_key == "message" %}
                     <td>{{ answer_value }}
-                        <a href="/answer/{{ dictionary['id'] }}/delete">
-                            <img class="trashico" src="{{ url_for('static', filename='images/trash.png') }}"
-                                 title="delete this answer">
-                        </a>
                         <div class="vote">
-                        <a href="/answer/{{ dictionary['id'] }}/vote_up">
-                            <button type="button">Vote up</button>
-                        </a>
-                        <a href="/answer/{{ dictionary['id'] }}/vote_down">
-                            <button type="button">Vote down</button>
-                        </a>
+                            <a href="/answer/{{ dictionary['id'] }}/vote_up">
+                                <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
+                            </a>
+                            <a href="/answer/{{ dictionary['id'] }}/vote_down">
+                                <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
+                            </a>
+                            <a href="/answer/{{ dictionary['id'] }}/delete">
+                                <i class="fas fa-trash-alt" title="Delete Answer"></i>
+                            </a>
                         </div>
                     </td>
                 {% else %}
-                    <td><p>{{ answer_value }}</p></td>
+                    <td>
+                    {% if answer_key == 'image' %}
+                        {% if answer_value != '' %}
+                            <img src="/{{ answer_value }}" height="100px">
+                        {% endif %}
+                    {% else %}
+                        <p>{{ answer_value }}</p>
+                    {% endif %}
+                    </td>
                 {% endif %}
             {% endfor %}
             </tr>
         {% endfor %}
+    {% endif %}
 {% endblock content %}
-{% block go_back_button %}
-    <a href="/list">
-        <button type="button">Go Back!</button>
-    </a>
-{% endblock go_back_button %}
-{% block new_answer_button %}
-    <a href="{{ question_details['id'] }}/new_answer">
-        <button type="button">Add new answer</button>
-    </a>
-{% endblock new_answer_button %}
-{% block edit_button %}
-    <a href="{{ question_details['id'] }}/edit">
-        <button type="button">Edit this question</button>
-    </a>
-{% endblock edit_button %}
-{% block  delete_question_buton %}
-    <a href="{{ question_details['id'] }}/delete">
-        <button type="button">Delete this question</button>
-    </a>
-{% endblock  delete_question_buton %}
+{% block buttons %}
+    <div class="buttons">
+        <a href="/list" type="button">Go Back!</a>
+        <a href="{{ question_details['id'] }}/new_answer" type="button">Add new answer</a>
+        <a href="{{ question_details['id'] }}/edit" type="button">Edit this question</a>
+        <a href="{{ question_details['id'] }}/delete" type="button">Delete this question</a>
+    </div>
+{% endblock  buttons %}

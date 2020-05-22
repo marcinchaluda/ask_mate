@@ -1,4 +1,8 @@
 {% extends 'display_data/display_data_layout.html' %}
+{% block links%}
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+
+{% endblock links %}
 {% block title %}
     Questions List | Ask-Mate
 {% endblock title %}
@@ -15,20 +19,16 @@
         {% if header in ['submission_time', 'view_number', 'vote_number', 'title', 'message'] %}  {# sorting headers #}
             <th>
                 {{ header.replace("_", " ").title() }}
-                <form action="/list" method="get" class="sorting_form">
-                    <input type="hidden" name="sort_by" value="{{ header }}">
-                    <input type="hidden" name="order_descending" value="False">
-                    <input class="sort_triangle_up" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
-                           src="{{ url_for('static', filename='images/triangle.png') }}"
-                           title="Sort by {{ header | replace('_', ' ') }}, ascending">
-                </form>
-                <form action="/list" method="get" class="sorting_form">
-                    <input type="hidden" name="sort_by" value="{{ header }}">
-                    <input type="hidden" name="order_descending" value="True">
-                    <input class="sort_triangle_down" type="submit" alt="Sort by {{ header | replace('_', ' ') }}, descending"
-                           src="{{ url_for('static', filename='images/triangle.png') }}"
-                           title="Sort by {{ header | replace('_', ' ') }}, descending">
-                </form>
+                 <a href="/list?sort_by={{ header }}&order_descending=False">
+                    <img class="sort_triangle_up" alt="Sort by {{ header | replace('_', ' ') }}, ascending"
+                         src="{{ url_for('static', filename='images/triangle.png') }}"
+                         title="Sort by {{ header | replace('_', ' ') }}, ascending">
+                 </a>
+                <a href="/list?sort_by={{ header }}&order_descending=True">
+                    <img class="sort_triangle_down" alt="Sort by {{ header | replace('_', ' ') }}, descending"
+                         src="{{ url_for('static', filename='images/triangle.png') }}"
+                         title="Sort by {{ header | replace('_', ' ') }}, descending">
+                </a>
             </th>
         {%  else %}
             <th>{{ header.replace("_", " ").title() }}</th>
@@ -56,13 +56,8 @@
                 {% if question_key == "submission_time" %}
                     <p>{{ current_time_function(question_value) }}</p>
                 {% elif question_key == 'image' %}
-                    {% if question_value == '' %}
-                        <form action="/question/{{ question['id'] }}/add_image" method=post enctype=multipart/form-data>
-                        <p><input type=file name=file>
-                            <button type="submit" value="Upload">Submit</button>
-                        </form>
-                    {% else %}
-                        <img src="{{ question_value }}">
+                    {% if question_value != '' %}
+                        <img src="{{ question_value }}" height="100px">
                     {% endif %}
                 {% else %}
                     <p>{{ question_value }}</p>
