@@ -6,6 +6,12 @@ QUESTIONS_FILE = "sample_data/question.csv"
 ANSWERS_FILE = "sample_data/answer.csv"
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+VOTE_UP = 1
+VOTE_DOWN = -1
+
+
+def get_all_data(data_type):
+    return connection.read_data(data_type)
 
 
 def get_all_questions():
@@ -110,12 +116,10 @@ def save_new_answer(answer):
     connection.add_data(ANSWERS_FILE, answer)
 
 
-def update_dictionary(file_name, data, key_to_find, vote_down=False):
+def update_dictionary(file_name, data, key_to_find, vote=0):
     for dictionary in data:
         if dictionary[key_to_find] == key_to_find:
-            if vote_down:
-                dictionary[key_to_find] = int(dictionary[key_to_find]) - 1
-            dictionary[key_to_find] = int(dictionary[key_to_find]) + 1
+            dictionary[key_to_find] = int(dictionary[key_to_find]) + vote
     connection.overwrite_data(file_name, data)
 
 
@@ -127,18 +131,8 @@ def update_question(file_name, data, key_to_find):
     connection.overwrite_data(file_name, data)
 
 
-def update_value_on_given_key(key_to_find, datum_id, data, vote_down=False, answers_file=True):
-    data_details = fetch_dictionary(datum_id, data)
-    if vote_down and answers_file:
-        data_details[key_to_find] = int(data_details[key_to_find]) - 1
-        file_name = ANSWERS_FILE
-    elif not vote_down and answers_file:
-        data_details[key_to_find] = int(data_details[key_to_find]) + 1
-        file_name = ANSWERS_FILE
-    elif vote_down and not answers_file:
-        data_details[key_to_find] = int(data_details[key_to_find]) - 1
-        file_name = QUESTIONS_FILE
-    else:
-        data_details[key_to_find] = int(data_details[key_to_find]) + 1
-        file_name = QUESTIONS_FILE
-    update_dictionary(file_name, data, key_to_find, True)
+def update_value_on_given_key(file_name, data_library, datum_id, key_to_find, vote):
+    update_vote = VOTE_UP if vote == 'vote_up' else VOTE_DOWN
+    data_details = fetch_dictionary(datum_id, data_library)
+    data_details[key_to_find] = int(data_details[key_to_find]) + update_vote
+    update_dictionary(file_name, data_library, key_to_find, update_vote)

@@ -97,32 +97,13 @@ def display_answers(question_id):
                            question_details=question_details, answer_headers=answer_headers)
 
 
-@app.route('/question/<question_id>/vote_up')
-def question_vote_up(question_id):
-    questions = data_manager.get_all_questions()
-    data_manager.update_value_on_given_key('vote_number', question_id, questions, False, False)
-    return redirect('/list')
-
-
-@app.route("/question/<question_id>/vote_down")
-def question_vote_down(question_id):
-    questions = data_manager.get_all_questions()
-    data_manager.update_value_on_given_key('vote_number', question_id, questions, True, False)
-    return redirect('/list')
-
-
-@app.route('/answer/<answer_id>/vote_up')
-def answer_vote_up(answer_id):
-    answers = data_manager.get_all_answers()
-    data_manager.update_value_on_given_key('vote_number', answer_id, answers)
-    return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
-
-
-@app.route('/answer/<answer_id>/vote_down')
-def answer_vote_down(answer_id):
-    answers = data_manager.get_all_answers()
-    data_manager.update_value_on_given_key('vote_number', answer_id, answers, True)
-    return redirect('/question/' + data_manager.get_question_id_for_answer(answer_id))
+@app.route('/<library_type>/<datum_id>/<vote>')
+def get_vote(library_type, datum_id, vote):
+    data_library = data_manager.get_all_questions() if library_type == 'question' else data_manager.get_all_answers()
+    file_name = data_manager.QUESTIONS_FILE if library_type == 'question' else data_manager.ANSWERS_FILE
+    data_manager.update_value_on_given_key(file_name, data_library, datum_id, 'vote_number', vote)
+    return redirect('/list' if library_type == 'question' else '/question/'
+                                                               + data_manager.get_question_id_for_answer(datum_id))
 
 
 if __name__ == "__main__":
