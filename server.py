@@ -18,8 +18,8 @@ def add_new_question():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img_path = 'static/images/' + filename
             question['image'] = img_path
-        question = data_manager.save_new_question(question)
-        return redirect('/question/' + str(question['id']))
+        question_id = data_manager.save_new_question(question)
+        return redirect('/question/' + str(question_id))
     return render_template('modify_data_layout/add_question.html', text_id=text_id, text_name=name)
 
 
