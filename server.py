@@ -87,12 +87,10 @@ def display_data():
 
 @app.route('/question/<question_id>')
 def display_answers(question_id):
-    questions = data_manager.get_all_questions()
     answer_headers = data_manager.ANSWER_HEADER
     answer_details = data_manager.fetch_answers(question_id)
-    question_details = data_manager.fetch_dictionary(question_id, questions)
-    question_details['view_number'] = int(question_details['view_number']) + 1
-    data_manager.update_dictionary(data_manager.QUESTIONS_FILE, questions, "view_number")
+    question_details = data_manager.fetch_dictionary(question_id)
+    data_manager.update_view_number(question_id)
     return render_template('display_data/list_answers.html', answer_details=answer_details,
                            question_details=question_details, answer_headers=answer_headers)
 

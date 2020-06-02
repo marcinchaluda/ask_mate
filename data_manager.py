@@ -12,7 +12,7 @@ VOTE_DOWN = -1
 
 
 @connection.connection_handler
-def get_all_questions(cursor: RealDictCursor) -> list:
+def get_all_questions(cursor: RealDictCursor) -> dict:
     query = """
         SELECT * FROM question"""
     cursor.execute(query)
@@ -28,23 +28,22 @@ def get_sorted_questions(cursor: RealDictCursor, sorting_key, reverse_bool) -> l
     return cursor.fetchall()
 
 
-def get_all_answers():
-    return connection.read_data(ANSWERS_FILE)
+@connection.connection_handler
+def fetch_dictionary(cursor: RealDictCursor, key_to_find: str) -> dict:
+    query = """
+        SELECT * FROM question
+        WHERE id = %(key_to_find)s"""
+    cursor.execute(query, {'key_to_find': key_to_find})
+    return cursor.fetchall()
 
 
-def fetch_dictionary(key_to_find, dictionary_list):
-    for dictionary in dictionary_list:
-        for key, value in dictionary.items():
-            if value == key_to_find:
-                return dictionary
-
-
-def fetch_answers(key_to_find):
-    dictionaries = []
-    for dictionary in get_all_answers():
-        if dictionary["question_id"] == key_to_find:
-            dictionaries.append(dictionary)
-    return dictionaries
+@connection.connection_handler
+def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
+    query = """
+        SELECT * FROM answer
+        WHERE question_id = %(key_to_find)s"""
+    cursor.execute(query, {'key_to_find': key_to_find})
+    return cursor.fetchall()
 
 
 def get_question_id_for_answer(data_id):
@@ -114,11 +113,13 @@ def save_new_answer(answer):
     connection.add_data(ANSWERS_FILE, answer)
 
 
-def update_dictionary(file_name, data, key_to_find, vote=0):
-    for dictionary in data:
-        if dictionary[key_to_find] == key_to_find:
-            dictionary[key_to_find] = int(dictionary[key_to_find]) + vote
-    connection.overwrite_data(file_name, data)
+@connection.connection_handler
+def update_view_number(cursor: RealDictCursor, key_to_find: str):
+    query = """
+            UPDATE question
+            SET view_number = view_number + 1
+            WHERE  id = %(key_to_find)s"""
+    cursor.execute(query, {'key_to_find': key_to_find})
 
 
 def update_question(file_name, data, key_to_find):
