@@ -15,7 +15,7 @@ def generate_id():
 
 
 def generate_seconds_since_epoch():
-    current_time = datetime.datetime.now()
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return current_time
 
 
