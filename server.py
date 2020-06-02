@@ -18,8 +18,8 @@ def add_new_question():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img_path = 'static/images/' + filename
             question['image'] = img_path
-        question = data_manager.save_new_question(question)
-        return redirect('/question/' + str(question['id']))
+        question_id = data_manager.save_new_question(question)
+        return redirect('/question/' + str(question_id))
     return render_template('modify_data_layout/add_question.html', text_id=text_id, text_name=name)
 
 
@@ -47,7 +47,7 @@ def add_new_answer(data_id):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img_path = 'static/images/' + filename
             answer['image'] = img_path
-        data_manager.save_new_answer(answer)
+        data_manager.save_new_answer(answer, data_id)
         return redirect('/question/' + data_id)
     return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
 
@@ -62,7 +62,9 @@ def delete(data_type, data_id):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    questions = data_manager.fetch_n_number_of_rows(5)
+    print(questions)
+    return render_template('index.html', questions=questions)
 
 
 @app.route('/list')
@@ -73,7 +75,6 @@ def display_data():
         questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     else:
         questions = data_manager.get_all_questions()
-    # current_time_function = util.convert_str_to_time
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
@@ -90,11 +91,12 @@ def display_answers(question_id):
 
 @app.route('/<library_type>/<datum_id>/<vote>')
 def get_vote(library_type, datum_id, vote):
-    data_library = data_manager.get_all_questions() if library_type == 'question' else data_manager.get_all_answers()
-    file_name = data_manager.QUESTIONS_FILE if library_type == 'question' else data_manager.ANSWERS_FILE
-    data_manager.update_value_on_given_key(file_name, data_library, datum_id, 'vote_number', vote)
-    return redirect('/list' if library_type == 'question' else '/question/'
-                                                               + data_manager.get_question_id_for_answer(datum_id))
+    table_type = 'question' if library_type == 'question' else 'answer'
+    data_manager.update_votes(table_type, datum_id, vote)
+    if table_type == 'answer':
+        answers = data_manager.get_question_id_for_answer(datum_id)
+        return redirect('/question/' + str(answers[0]['question_id']))
+    return redirect('/list')
 
 
 if __name__ == "__main__":
