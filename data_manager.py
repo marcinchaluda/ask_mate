@@ -46,29 +46,27 @@ def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
     return cursor.fetchall()
 
 
-def get_question_id_for_answer(data_id):
-    answer = fetch_dictionary(data_id, get_all_answers())
-    return answer['question_id']
+# @connection.connection_handler
+# def get_question_id_for_answer(cursor: RealDictCursor, data_id):
+#     query = """
+#     SELECT question_id FROM answer WHERE id = {0}""".format(data_id)
+#     cursor.execute(query)
+#     return cursor.fetchone()
 
 
-def delete_dictionary(filename, id):
-    data = connection.read_data(filename)
-    dict_to_delete = fetch_dictionary(id, data)
-    data.remove(dict_to_delete)
-    connection.overwrite_data(filename, data)
+@connection.connection_handler
+def delete_dictionary(cursor: RealDictCursor, data_type, data_id):
+    query = """
+    DELETE FROM ONLY {0} WHERE id = {1}""".format(data_type, data_id)
+    cursor.execute(query)
 
 
-def delete_related_answers(filename, id):
-    if 'question' in filename:
-        data = connection.read_data(filename)
-        dict_to_delete = fetch_dictionary(id, data)
-        data.remove(dict_to_delete)
-        connection.overwrite_data(filename, data)
-    else:
-        data = connection.read_data(filename)
-        for dict in fetch_answers(id):
-            data.remove(dict)
-        connection.overwrite_data(filename, data)
+@connection.connection_handler
+def delete_related_answers(cursor: RealDictCursor, question_id):
+    query = """
+    DELETE FROM ONLY answer WHERE question_id = {0}""".format(question_id)
+    cursor.execute(query)
+
 
 
 def add_question_with_basic_headers():
