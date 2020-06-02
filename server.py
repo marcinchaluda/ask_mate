@@ -25,12 +25,11 @@ def add_new_question():
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def update_question(question_id):
-    questions = data_manager.get_all_questions()
-    question = data_manager.fetch_dictionary(question_id, questions)
+    question = data_manager.fetch_dictionary(question_id)[0]
     text_id = "question_input"
     name = "message"
     if request.method == "POST":
-        data_manager.update_question(data_manager.QUESTIONS_FILE, questions, question_id)
+        data_manager.update_question(question_id)
         return redirect('/question/' + question_id)
     return render_template('modify_data_layout/update_question.html', text_id=text_id, text_name=name, question=question)
 

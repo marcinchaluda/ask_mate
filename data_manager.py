@@ -122,12 +122,16 @@ def update_view_number(cursor: RealDictCursor, key_to_find: str):
     cursor.execute(query, {'key_to_find': key_to_find})
 
 
-def update_question(file_name, data, key_to_find):
-    for dictionary in data:
-        if dictionary['id'] == key_to_find:
-            dictionary['message'] = request.form.get('message')
-            dictionary['title'] = request.form.get('title')
-    connection.overwrite_data(file_name, data)
+@connection.connection_handler
+def update_question(cursor: RealDictCursor, question_id: str):
+    message = request.form.get('message')
+    title = request.form.get('title')
+    query = """
+        UPDATE question
+        SET message = %(m)s, title = %(t)s
+        WHERE id = %(q_i)s
+    """
+    cursor.execute(query, {'m': message, 'q_i': question_id, 't': title})
 
 
 @connection.connection_handler
