@@ -64,14 +64,14 @@ aside {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     color: white;
     height: 20vh;
 }
 
-button {
-    width: 210px;
+.input_container a{
+    width: 270px;
     padding: 10px 20px;
     margin-top: 10px;
     border-radius: 8px;
@@ -79,7 +79,7 @@ button {
     text-transform: uppercase;
 }
 
-button:hover {
+.input_container a:hover{
     background-color: grey;
     color: white;
 }
@@ -95,10 +95,31 @@ button:hover {
     text-transform: uppercase;
 }
 
-::placeholder {
-    color: dark-grey;
-}
-
 input[type="text"] {
     background-color: white;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.latest_questions {
+    display: none;
+    height: 50vh;
+}
+
+p span {
+    text-transform: uppercase;
+}
+
+.hidden:focus + .latest_questions {
+    flex-grow: 1;
+    display: flex;
+    margin: 5%;
+    font-family: 'Contrail One', cursive;
+    font-size: 20px;
+    color: white;
+    height: 50vh;
 }
