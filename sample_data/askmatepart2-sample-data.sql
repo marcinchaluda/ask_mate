@@ -62,13 +62,13 @@ CREATE TABLE tag (
 
 
 ALTER TABLE ONLY answer
-    ADD CONSTRAINT pk_answer_id PRIMARY KEY (id);
+    ADD CONSTRAINT pk_answer_id PRIMARY KEY (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY comment
     ADD CONSTRAINT pk_comment_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY question
-    ADD CONSTRAINT pk_question_id PRIMARY KEY (id);
+    ADD CONSTRAINT pk_question_id PRIMARY KEY (id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT pk_question_tag_id PRIMARY KEY (question_id, tag_id);

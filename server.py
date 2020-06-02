@@ -53,17 +53,12 @@ def add_new_answer(data_id):
 
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
-    if data_type == 'question':
-        filepath = data_manager.QUESTIONS_FILE
-    else:
-        filepath = data_manager.ANSWERS_FILE
+    if data_type == 'answer':
         question_id = data_manager.get_question_id_for_answer(data_id)
-    data_manager.delete_dictionary(filepath, data_id)
-    if data_type == 'question':
-        filepath = data_manager.ANSWERS_FILE
-        data_manager.delete_related_answers(filepath, data_id)
-        return redirect('/list')
-    return redirect('/question/' + question_id)
+    data_manager.delete_dictionary(data_type, data_id)
+    if data_type == 'answer':
+        return redirect('/question/' + question_id)
+    return redirect('/list')
 
 
 @app.route('/')
