@@ -1,5 +1,6 @@
 import os
 import uuid
+import datetime
 import time
 
 
@@ -14,8 +15,7 @@ def generate_id():
 
 
 def generate_seconds_since_epoch():
-    current_time = str(time.time())
-    current_time = current_time[0:10]
+    current_time = datetime.datetime.now()
     return current_time
 
 
