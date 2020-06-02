@@ -78,29 +78,31 @@ def delete_related_answers(filename, id):
 def add_question_with_basic_headers():
     question = {}
     for header in QUESTION_HEADERS:
-        if header == 'id':
-            question[header] = util.generate_id()
+        if header == 'view_number' or header == 'vote_number':
+            question[header] = 0
         elif header == 'submission_time':
             question[header] = util.generate_seconds_since_epoch()
-        elif header == 'view_number' or header == 'vote_number':
-            question[header] = 0
-        elif header == 'image':
-            question[header] = ''
         else:
             question[header] = request.form.get(header)
     return question
 
 
-def save_new_question(question):
-    connection.add_data(QUESTIONS_FILE, question)
+@connection.connection_handler
+def save_new_question(cursor: RealDictCursor, question: dict):
+    query = f"""
+    INSERT INTO question (submission_time ,view_number, vote_number, title, message, image) 
+    VALUES (%(s_t)s ,%(v_n)s, %(vo_n)s, %(t)s, %(m)s, %(i)s )
+    """
+    cursor.execute(query, {'s_t': question['submission_time'], 'v_n': question['view_number'], 'vo_n': question['vote_number'],
+                           't': question['title'], 'm': question['message'], 'i': question['image']})
+    question['id'] = cursor.lastrowid
+    return question
 
 
 def add_answer_with_basic_headers(question_id):
     answer = {}
     for header in ANSWER_HEADER:
-        if header == 'id':
-            answer[header] = util.generate_id()
-        elif header == 'submission_time':
+        if header == 'submission_time':
             answer[header] = util.generate_seconds_since_epoch()
         elif header == 'vote_number':
             answer[header] = 0
@@ -112,9 +114,14 @@ def add_answer_with_basic_headers(question_id):
             answer[header] = request.form.get(header)
     return answer
 
-
-def save_new_answer(answer):
-    connection.add_data(ANSWERS_FILE, answer)
+@connection.connection_handler
+def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
+    query = f"""
+    INSERT INTO answer (submission_time ,question_id, vote_number, message, image) 
+    VALUES (%(s_t)s ,%(q_i)s, %(vo_n)s, %(m)s, %(i)s )
+    """
+    cursor.execute(query, {'s_t': answer['submission_time'], 'q_i': data_id,
+                           'vo_n': answer['vote_number'], 'm': answer['message'], 'i': answer['image']})
 
 
 @connection.connection_handler
