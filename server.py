@@ -69,7 +69,9 @@ def delete(data_type, data_id):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    questions = data_manager.fetch_n_number_of_rows(5)
+    print(questions)
+    return render_template('index.html', questions=questions)
 
 
 @app.route('/list')

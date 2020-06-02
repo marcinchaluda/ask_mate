@@ -28,9 +28,21 @@
             <form class='question_form' action="#">
                 <label for="question">Type your question below</label><br>
                 <input type="text" id="question" name="question" placeholder="Insert a question" required><br>
-                <button type="submit">Get answers!</button>
+                <a href="#" type="button">Get answers!</a>
             </form>
-            <button onclick="location.href = '/list';" class="display_questions">Display All Questions</button>
+            <a href="/list" type="button">Display All Questions</a>
+            <a class="hidden" href="#" type="button" name="latest_questions" id="latest_questions">Display Latest Questions</a>
+            <div class="latest_questions">
+                <ol>
+                    {% for question in questions %}
+                    <li>
+                        <p><span>Title:</span> {{ question['title'] }}</p>
+                        <p><span>Message:</span> {{ question['message'] }}</p>
+                    </li>
+                    <br>
+                    {% endfor %}
+                </ol>
+            </div>
         </div>
     </div>
 </body>

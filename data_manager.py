@@ -1,10 +1,8 @@
-
 import connection
 import util
 from flask import request
 from psycopg2.extras import RealDictCursor
-QUESTIONS_FILE = "sample_data/question.csv"
-ANSWERS_FILE = "sample_data/answer.csv"
+
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 VOTE_UP = 1
@@ -13,8 +11,7 @@ VOTE_DOWN = -1
 
 @connection.connection_handler
 def get_all_questions(cursor: RealDictCursor) -> dict:
-    query = """
-        SELECT * FROM question"""
+    query = "SELECT * FROM question"
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -30,27 +27,21 @@ def get_sorted_questions(cursor: RealDictCursor, sorting_key, reverse_bool) -> l
 
 @connection.connection_handler
 def fetch_dictionary(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = """
-        SELECT * FROM question
-        WHERE id = %(key_to_find)s"""
+    query = "SELECT * FROM question WHERE id = %(key_to_find)s"
     cursor.execute(query, {'key_to_find': key_to_find})
     return cursor.fetchall()
 
 
 @connection.connection_handler
 def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = """
-        SELECT * FROM answer
-        WHERE question_id = %(key_to_find)s"""
+    query = "SELECT * FROM answer WHERE question_id = %(key_to_find)s"
     cursor.execute(query, {'key_to_find': key_to_find})
     return cursor.fetchall()
 
 
 @connection.connection_handler
 def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
-    query = """
-            SELECT question_id FROM answer
-            WHERE id = %(data_id)s"""
+    query = "SELECT question_id FROM answer WHERE id = %(data_id)s"
     cursor.execute(query, {'data_id': data_id})
     return cursor.fetchall()
 
@@ -126,10 +117,7 @@ def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
 
 @connection.connection_handler
 def update_view_number(cursor: RealDictCursor, key_to_find: str):
-    query = """
-            UPDATE question
-            SET view_number = view_number + 1
-            WHERE  id = %(key_to_find)s"""
+    query = "UPDATE question SET view_number = view_number + 1 WHERE  id = %(key_to_find)s"
     cursor.execute(query, {'key_to_find': key_to_find})
 
 
@@ -149,3 +137,10 @@ def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     else:
         query = f"UPDATE question SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
     cursor.execute(query)
+
+
+@connection.connection_handler
+def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
+    query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
+    cursor.execute(query)
+    return cursor.fetchall()
