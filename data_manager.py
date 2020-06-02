@@ -46,6 +46,13 @@ def delete_dictionary(cursor: RealDictCursor, data_type, data_id):
     cursor.execute(query)
 
 
+@connection.connection_handler
+def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
+    query = "SELECT question_id FROM answer WHERE id = {0}".format(data_id)
+    cursor.execute(query)
+    return str(cursor.fetchone()['question_id'])
+
+
 def add_question_with_basic_headers():
     question = {}
     for header in QUESTION_HEADERS:
