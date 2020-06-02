@@ -54,15 +54,7 @@
                 </td>
             {% else %}
             <td>
-                {% if question_key == "submission_time" %}
-                    <p>{{ current_time_function(question_value) }}</p>
-                {% elif question_key == 'image' %}
-                    {% if question_value != '' %}
-                        <img src="{{ question_value }}" height="100px">
-                    {% endif %}
-                {% else %}
                     <p>{{ question_value }}</p>
-                {% endif %}
             </td>
             {% endif %}
         {% endfor %}

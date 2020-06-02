@@ -74,15 +74,15 @@ def home():
 
 @app.route('/list')
 def display_data():
-    if request.args:
-        sorting_key = request.args['sort_by']
-        reverse_bool = request.args['order_descending']
-        questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
-    else:
-        questions = data_manager.get_all_questions()
-    current_time_function = util.convert_str_to_time
+    # if request.args:
+    #     sorting_key = request.args['sort_by']
+    #     reverse_bool = request.args['order_descending']
+    #     questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
+    # else:
+    questions = data_manager.get_all_questions()
+    # current_time_function = util.convert_str_to_time
     question_headers = data_manager.QUESTION_HEADERS
-    return render_template('display_data/list.html', questions=questions, question_headers=question_headers, current_time_function=current_time_function)
+    return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
 
 @app.route('/question/<question_id>')

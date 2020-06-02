@@ -2,6 +2,7 @@
 import connection
 import util
 from flask import request
+from psycopg2.extras import RealDictCursor
 QUESTIONS_FILE = "sample_data/question.csv"
 ANSWERS_FILE = "sample_data/answer.csv"
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -10,12 +11,12 @@ VOTE_UP = 1
 VOTE_DOWN = -1
 
 
-def get_all_data(data_type):
-    return connection.read_data(data_type)
-
-
-def get_all_questions():
-    return connection.read_data(QUESTIONS_FILE)
+@connection.connection_handler
+def get_all_questions(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT * FROM question"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 def sort_condition(element, key):
