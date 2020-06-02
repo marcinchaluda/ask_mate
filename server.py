@@ -47,7 +47,7 @@ def add_new_answer(data_id):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img_path = 'static/images/' + filename
             answer['image'] = img_path
-        data_manager.save_new_answer(answer)
+        data_manager.save_new_answer(answer, data_id)
         return redirect('/question/' + data_id)
     return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
 
