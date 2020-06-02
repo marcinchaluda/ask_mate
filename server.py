@@ -80,7 +80,6 @@ def display_data():
         questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     else:
         questions = data_manager.get_all_questions()
-    # current_time_function = util.convert_str_to_time
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
 
@@ -97,11 +96,12 @@ def display_answers(question_id):
 
 @app.route('/<library_type>/<datum_id>/<vote>')
 def get_vote(library_type, datum_id, vote):
-    data_library = data_manager.get_all_questions() if library_type == 'question' else data_manager.get_all_answers()
-    file_name = data_manager.QUESTIONS_FILE if library_type == 'question' else data_manager.ANSWERS_FILE
-    data_manager.update_value_on_given_key(file_name, data_library, datum_id, 'vote_number', vote)
-    return redirect('/list' if library_type == 'question' else '/question/'
-                                                               + data_manager.get_question_id_for_answer(datum_id))
+    table_type = 'question' if library_type == 'question' else 'answer'
+    data_manager.update_votes(table_type, datum_id, vote)
+    if table_type == 'answer':
+        answers = data_manager.get_question_id_for_answer(datum_id)
+        return redirect('/question/' + str(answers[0]['question_id']))
+    return redirect('/list')
 
 
 if __name__ == "__main__":

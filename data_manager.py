@@ -46,9 +46,13 @@ def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
     return cursor.fetchall()
 
 
-def get_question_id_for_answer(data_id):
-    answer = fetch_dictionary(data_id, get_all_answers())
-    return answer['question_id']
+@connection.connection_handler
+def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
+    query = """
+            SELECT question_id FROM answer
+            WHERE id = %(data_id)s"""
+    cursor.execute(query, {'data_id': data_id})
+    return cursor.fetchall()
 
 
 def delete_dictionary(filename, id):
@@ -130,8 +134,11 @@ def update_question(file_name, data, key_to_find):
     connection.overwrite_data(file_name, data)
 
 
-def update_value_on_given_key(file_name, data_library, datum_id, key_to_find, vote):
+@connection.connection_handler
+def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     update_vote = VOTE_UP if vote == 'vote_up' else VOTE_DOWN
-    data_details = fetch_dictionary(datum_id, data_library)
-    data_details[key_to_find] = int(data_details[key_to_find]) + update_vote
-    update_dictionary(file_name, data_library, key_to_find, update_vote)
+    if table_type == 'answer':
+        query = f"UPDATE answer SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
+    else:
+        query = f"UPDATE question SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
+    cursor.execute(query)
