@@ -88,11 +88,12 @@ def save_new_question(cursor: RealDictCursor, question: dict):
     query = f"""
     INSERT INTO question (submission_time ,view_number, vote_number, title, message, image) 
     VALUES (%(s_t)s ,%(v_n)s, %(vo_n)s, %(t)s, %(m)s, %(i)s )
+    RETURNING id
     """
     cursor.execute(query, {'s_t': question['submission_time'], 'v_n': question['view_number'], 'vo_n': question['vote_number'],
                            't': question['title'], 'm': question['message'], 'i': question['image']})
-    question['id'] = cursor.lastrowid
-    return question
+    question_id = cursor.fetchone()['id']
+    return question_id
 
 
 def add_answer_with_basic_headers(question_id):
