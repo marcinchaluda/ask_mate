@@ -9,8 +9,8 @@
     <h1>{% block header %}{% endblock header %}</h1>
         <form action={% block action %}  {% endblock action %} method="post"  enctype=multipart/form-data>
             {% block optional_title %}{% endblock optional_title %}
-            <label for={{text_id}}>{% block label %}{% endblock label %}:</label><br>
-            <textarea id={{text_id}} name={{text_name}} rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
+            <label for="question_input">{% block label %}{% endblock label %}:</label><br>
+            <textarea id="question_input" name="message" rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
             {% block file_input %}{% endblock file_input %}
             <button type="submit">{% block button %}{% endblock button %}</button>
         </form>

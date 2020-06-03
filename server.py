@@ -9,8 +9,6 @@ NUMBER_OF_LATEST_QUESTIONS = 5
 
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
-    text_id = "question_input"
-    name = "message"
     if request.method == "POST":
         question = data_manager.add_question_with_basic_headers()
         file = request.files['file']
@@ -21,24 +19,20 @@ def add_new_question():
             question['image'] = img_path
         question_id = data_manager.save_new_question(question)
         return redirect('/question/' + str(question_id))
-    return render_template('modify_data_layout/add_question.html', text_id=text_id, text_name=name)
+    return render_template('modify_data_layout/add_question.html')
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def update_question(question_id):
     question = data_manager.fetch_dictionary(question_id)[0]
-    text_id = "question_input"
-    name = "message"
     if request.method == "POST":
         data_manager.update_question(question_id)
         return redirect('/question/' + question_id)
-    return render_template('modify_data_layout/update_question.html', text_id=text_id, text_name=name, question=question)
+    return render_template('modify_data_layout/update_question.html')
 
 
 @app.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
 def add_new_answer(data_id):
-    text_id = "answer_input"
-    name = "message"
     if request.method == "POST":
         answer = data_manager.add_answer_with_basic_headers(data_id)
         file = request.files['file']
@@ -49,7 +43,7 @@ def add_new_answer(data_id):
             answer['image'] = img_path
         data_manager.save_new_answer(answer, data_id)
         return redirect('/question/' + data_id)
-    return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
+    return render_template('modify_data_layout/new_answer.html', data_id=data_id)
 
 
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
