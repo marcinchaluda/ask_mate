@@ -159,6 +159,11 @@ def save_new_comment(cursor: RealDictCursor, comment: dict):
                            'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
 
 
+def save_comment(data_id, is_question):
+    comment = add_comment_with_basic_headers(data_id, is_question)
+    save_new_comment(comment)
+
+
 @connection.connection_handler
 def update_view_number(cursor: RealDictCursor, key_to_find: str):
     query = "UPDATE question SET view_number = view_number + 1 WHERE  id = %(key_to_find)s"

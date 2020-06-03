@@ -28,7 +28,7 @@ def update_question(question_id):
     if request.method == "POST":
         data_manager.update_question(question_id)
         return redirect('/question/' + question_id)
-    return render_template('modify_data_layout/update_question.html')
+    return render_template('modify_data_layout/update_question.html', question=question)
 
 
 @app.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
@@ -46,24 +46,19 @@ def add_new_answer(data_id):
     return render_template('modify_data_layout/new_answer.html', data_id=data_id)
 
 
-@app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
-def add_new_comment_to_question(question_id):
+@app.route("/<data_type>/<data_id>/new-comment", methods=['GET', 'POST'])
+def add_new_comment_to_question(data_type, data_id):
     if request.method == "POST":
-        comment = data_manager.add_comment_with_basic_headers(question_id, True)
-        data_manager.save_new_comment(comment)
-        return redirect('/list')
-    return render_template('modify_data_layout/add_new_comment.html', question_id=question_id)
-
-
-@app.route("/answer/<answer_id>/new-comment", methods=['GET', 'POST'])
-def add_new_comment_to_answer(answer_id):
-    if request.method == "POST":
-        comment = data_manager.add_comment_with_basic_headers(answer_id, False)
-        data_manager.save_new_comment(comment)
-        answer = data_manager.fetch_answers_by_answer_id(answer_id)
-        question_id = answer['question_id']
-        return redirect('/question/' + str(question_id))
-    return render_template('modify_data_layout/add_new_comment.html', answer_id=answer_id)
+        is_question = data_type == "question"
+        if is_question:
+            data_manager.save_comment(data_id, is_question)
+            return redirect('/list')
+        else:
+            data_manager.save_comment(data_id, is_question)
+            answer = data_manager.fetch_answers_by_answer_id(data_id)
+            question_id = answer['question_id']
+            return redirect('/question/' + str(question_id))
+    return render_template('modify_data_layout/add_new_comment.html', data_type=data_type, data_id=data_id)
 
 
 @app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
@@ -138,3 +133,4 @@ def search_phrase():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
