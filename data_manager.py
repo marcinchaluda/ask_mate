@@ -6,6 +6,7 @@ from psycopg2.extras import RealDictCursor
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 COMMENTS_HEADERS = ['submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
+TAG_HEADERS = ['name']
 VOTE_UP = 1
 VOTE_DOWN = -1
 
@@ -111,7 +112,7 @@ def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
                            'vo_n': answer['vote_number'], 'm': answer['message'], 'i': answer['image']})
 
 
-def   add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
+def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
     comment = {}
     for header in COMMENTS_HEADERS:
         if header == 'submission_time':
@@ -125,6 +126,27 @@ def   add_comment_with_basic_headers(data_id: str, is_this_comment_for_question:
         else:
             comment[header] = request.form.get(header)
     return comment
+
+
+@connection.connection_handler
+def add_tag(cursor: RealDictCursor, tag_name: str):
+    query = """
+    INSERT INTO tag (name) 
+    VALUES name = %(tag_name)s
+    """
+    cursor.execute(query, {'name': tag_name})
+
+
+@connection.connection_handler
+def get_question_tags(cursor: RealDictCursor) -> dict:
+    cursor.execute("SELECT name FROM tag")
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_comments(cursor: RealDictCursor) -> dict:
+    cursor.execute("SELECT question_id, message, submission_time FROM comment")
+    return cursor.fetchall()
 
 
 @connection.connection_handler

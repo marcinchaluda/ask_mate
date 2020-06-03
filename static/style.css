@@ -64,7 +64,7 @@ a {
     color: black;
 }
 
-.hover_highlight:hover, .comments:hover {
+.hover_highlight:hover, .comment_redirect:hover {
     color: cornsilk;
     background-color: #47A9FF;
 }
@@ -121,7 +121,6 @@ input[type=submit] {
     padding: 0 1% 0 10%;
     margin: 2% 0 2% 0;
     color: grey;
-    border-right: 1px solid grey;
     text-align: left;
 }
 

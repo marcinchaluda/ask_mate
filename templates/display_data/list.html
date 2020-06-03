@@ -47,7 +47,12 @@
             {% elif question_key == "message" %}
                 <td>
                     <div class="message_container">
-                        <div class="tags"><p>Tags</p></div>
+                        <div class="tags">
+                            Tags |
+                            {% for tag in tags %}
+                                {{ tag }}
+                            {% endfor %}
+                        </div>
                         <div class="message"><p>{{ question_value }}</p></div>
                         <div class="vote">
                             <a href="/question/{{ question['id'] }}/vote_up">
@@ -64,7 +69,12 @@
                             </a>
                         </div>
                         <div class="comments">
-                            <p>Comments</p>
+                            <p class="comment_redirect">Comments</p>
+                            {% for comment in comments %}
+                                {% if comment['question_id'] == question['id'] %}
+                            <p>{{ comment['submission_time'] }}|    {{ comment['message'] }}</p>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </td>

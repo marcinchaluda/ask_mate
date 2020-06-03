@@ -72,6 +72,15 @@ def add_new_comment_to_answer(answer_id):
     return render_template('modify_data_layout/add_new_comment.html', answer_id=answer_id)
 
 
+@app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
+def add_new_tag(question_id):
+    if request.method == "POST":
+        tag_name = request.form.get('text_id')
+        data_manager.add_tag(tag_name, question_id)
+        return redirect('/list')
+    return render_template('modify_data_layout/add_tag.html')
+
+
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
     if data_type == 'answer':
@@ -85,11 +94,10 @@ def delete(data_type, data_id):
 @app.route('/')
 def home():
     questions = data_manager.fetch_n_number_of_rows(NUMBER_OF_LATEST_QUESTIONS)
-    print(questions)
     return render_template('index.html', questions=questions)
 
 
-@app.route('/list')
+@app.route('/list', methods=['GET', 'POST'])
 def display_data():
     if request.args:
         sorting_key = request.args['sort_by']
@@ -97,8 +105,12 @@ def display_data():
         questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     else:
         questions = data_manager.get_all_questions()
+    tags = data_manager.get_question_tags()
+    comments = data_manager.get_question_comments()
+    print(tags)
     question_headers = data_manager.QUESTION_HEADERS
-    return render_template('display_data/list.html', questions=questions, question_headers=question_headers)
+    return render_template('display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
+                           comments=comments)
 
 
 @app.route('/question/<question_id>')
