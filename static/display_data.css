@@ -77,8 +77,11 @@ i {
     background-color: white;
 }
 
+i:hover {
+    color: #47A9FF;
+}
+
 table {
-    display; flex;
     width: auto;
     justify-content: space-around;
     background-color: white;
