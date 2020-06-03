@@ -145,3 +145,16 @@ def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
     query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
+    question_query = """
+        SELECT 8 
+        FROM question
+        FULL JOIN answer ON answer.question_id = question.id 
+        WHERE question.title LIKE %(phrase)s 
+        OR question.message LIKE %(phrase)s
+        OR answer.message LIKE %(phrase)s"""
+    cursor.execute(question_query, {'phrase': '%' + phrase + '%'})
+    return cursor.fetchall()

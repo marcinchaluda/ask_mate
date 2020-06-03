@@ -79,7 +79,20 @@ aside {
     text-transform: uppercase;
 }
 
-.input_container a:hover{
+.input_submit{
+    width: 310px;
+    padding: 5px 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: white;
+    text-transform: uppercase;
+}
+
+.question_form input[type='submit'] {
+    font-size: 16px;
+}
+
+.input_container a:hover, .input_submit:hover{
     background-color: grey;
     color: white;
 }
