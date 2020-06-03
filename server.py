@@ -55,7 +55,7 @@ def add_new_answer(data_id):
 def delete(data_type, data_id):
     if data_type == 'answer':
         question_id = data_manager.get_question_id_for_answer(data_id)
-    data_manager.delete_dictionary(data_type, data_id)
+    data_manager.delete_entry(data_type, data_id)
     if data_type == 'answer':
         return redirect('/question/' + question_id)
     return redirect('/list')

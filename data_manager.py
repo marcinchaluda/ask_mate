@@ -40,9 +40,8 @@ def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
 
 
 @connection.connection_handler
-def delete_dictionary(cursor: RealDictCursor, data_type, data_id):
-    query = """
-    DELETE FROM ONLY {0} WHERE id = {1}""".format(data_type, data_id)
+def delete_entry(cursor: RealDictCursor, data_type, data_id):
+    query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
     cursor.execute(query)
 
 
