@@ -5,6 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+COMMENTS_HEADERS = ['id', 'submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
 VOTE_UP = 1
 VOTE_DOWN = -1
 
@@ -92,6 +93,7 @@ def add_answer_with_basic_headers(question_id):
             answer[header] = request.form.get(header)
     return answer
 
+
 @connection.connection_handler
 def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
     query = f"""
@@ -100,6 +102,32 @@ def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
     """
     cursor.execute(query, {'s_t': answer['submission_time'], 'q_i': data_id,
                            'vo_n': answer['vote_number'], 'm': answer['message'], 'i': answer['image']})
+
+
+def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
+    comment = {}
+    for header in COMMENTS_HEADERS:
+        if header == 'submission_time':
+            comment[header] = util.generate_seconds_since_epoch()
+        elif header == 'edited_count':
+            comment[header] = 0
+        elif header == 'question_id' and is_this_comment_for_question:
+            comment[header] = data_id
+        elif header == 'answer_id' and not is_this_comment_for_question:
+            comment[header] = data_id
+        else:
+            comment[header] = request.form.get(header)
+    return comment
+
+
+@connection.connection_handler
+def save_new_comment(cursor: RealDictCursor, comment: dict):
+    query = f"""
+    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
+    VALUES (%(s_t)s ,%(q_i)s, %(a_i)s, %(e_c)s, %(m)s)
+    """
+    cursor.execute(query, {'s_t': comment['submission_time'], 'q_i': comment['question_id'],
+                           'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
 
 
 @connection.connection_handler
