@@ -25,12 +25,11 @@ def add_new_question():
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def update_question(question_id):
-    questions = data_manager.get_all_questions()
-    question = data_manager.fetch_dictionary(question_id, questions)
+    question = data_manager.fetch_dictionary(question_id)[0]
     text_id = "question_input"
     name = "message"
     if request.method == "POST":
-        data_manager.update_question(data_manager.QUESTIONS_FILE, questions, question_id)
+        data_manager.update_question(question_id)
         return redirect('/question/' + question_id)
     return render_template('modify_data_layout/update_question.html', text_id=text_id, text_name=name, question=question)
 
@@ -52,19 +51,23 @@ def add_new_answer(data_id):
     return render_template('modify_data_layout/new_answer.html', text_id=text_id, text_name=name, data_id=data_id)
 
 
+@app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
+def add_new_comment(question_id):
+    if request.method == "POST":
+        comment = data_manager.add_comment_with_basic_headers(question_id, True)
+        data_manager.save_new_comment(comment)
+        return redirect('/list')
+    return render_template('modify_data_layout/add_new_comment.html', question_id=question_id)
+
+
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
-    if data_type == 'question':
-        filepath = data_manager.QUESTIONS_FILE
-    else:
-        filepath = data_manager.ANSWERS_FILE
+    if data_type == 'answer':
         question_id = data_manager.get_question_id_for_answer(data_id)
-    data_manager.delete_dictionary(filepath, data_id)
-    if data_type == 'question':
-        filepath = data_manager.ANSWERS_FILE
-        data_manager.delete_related_answers(filepath, data_id)
-        return redirect('/list')
-    return redirect('/question/' + question_id)
+    data_manager.delete_entry(data_type, data_id)
+    if data_type == 'answer':
+        return redirect('/question/' + question_id)
+    return redirect('/list')
 
 
 @app.route('/')

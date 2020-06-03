@@ -5,6 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+COMMENTS_HEADERS = ['id', 'submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
 VOTE_UP = 1
 VOTE_DOWN = -1
 
@@ -40,30 +41,16 @@ def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
 
 
 @connection.connection_handler
+def delete_entry(cursor: RealDictCursor, data_type, data_id):
+    query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
+    cursor.execute(query)
+
+
+@connection.connection_handler
 def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
-    query = "SELECT question_id FROM answer WHERE id = %(data_id)s"
-    cursor.execute(query, {'data_id': data_id})
-    return cursor.fetchall()
-
-
-def delete_dictionary(filename, id):
-    data = connection.read_data(filename)
-    dict_to_delete = fetch_dictionary(id, data)
-    data.remove(dict_to_delete)
-    connection.overwrite_data(filename, data)
-
-
-def delete_related_answers(filename, id):
-    if 'question' in filename:
-        data = connection.read_data(filename)
-        dict_to_delete = fetch_dictionary(id, data)
-        data.remove(dict_to_delete)
-        connection.overwrite_data(filename, data)
-    else:
-        data = connection.read_data(filename)
-        for dict in fetch_answers(id):
-            data.remove(dict)
-        connection.overwrite_data(filename, data)
+    query = "SELECT question_id FROM answer WHERE id = {0}".format(data_id)
+    cursor.execute(query)
+    return str(cursor.fetchone()['question_id'])
 
 
 def add_question_with_basic_headers():
@@ -106,6 +93,7 @@ def add_answer_with_basic_headers(question_id):
             answer[header] = request.form.get(header)
     return answer
 
+
 @connection.connection_handler
 def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
     query = f"""
@@ -116,18 +104,48 @@ def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
                            'vo_n': answer['vote_number'], 'm': answer['message'], 'i': answer['image']})
 
 
+def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
+    comment = {}
+    for header in COMMENTS_HEADERS:
+        if header == 'submission_time':
+            comment[header] = util.generate_seconds_since_epoch()
+        elif header == 'edited_count':
+            comment[header] = 0
+        elif header == 'question_id' and is_this_comment_for_question:
+            comment[header] = data_id
+        elif header == 'answer_id' and not is_this_comment_for_question:
+            comment[header] = data_id
+        else:
+            comment[header] = request.form.get(header)
+    return comment
+
+
+@connection.connection_handler
+def save_new_comment(cursor: RealDictCursor, comment: dict):
+    query = f"""
+    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
+    VALUES (%(s_t)s ,%(q_i)s, %(a_i)s, %(e_c)s, %(m)s)
+    """
+    cursor.execute(query, {'s_t': comment['submission_time'], 'q_i': comment['question_id'],
+                           'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
+
+
 @connection.connection_handler
 def update_view_number(cursor: RealDictCursor, key_to_find: str):
     query = "UPDATE question SET view_number = view_number + 1 WHERE  id = %(key_to_find)s"
     cursor.execute(query, {'key_to_find': key_to_find})
 
 
-def update_question(file_name, data, key_to_find):
-    for dictionary in data:
-        if dictionary['id'] == key_to_find:
-            dictionary['message'] = request.form.get('message')
-            dictionary['title'] = request.form.get('title')
-    connection.overwrite_data(file_name, data)
+@connection.connection_handler
+def update_question(cursor: RealDictCursor, question_id: str):
+    message = request.form.get('message')
+    title = request.form.get('title')
+    query = """
+        UPDATE question
+        SET message = %(m)s, title = %(t)s
+        WHERE id = %(q_i)s
+    """
+    cursor.execute(query, {'m': message, 'q_i': question_id, 't': title})
 
 
 @connection.connection_handler

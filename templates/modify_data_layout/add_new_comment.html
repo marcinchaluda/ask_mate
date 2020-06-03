@@ -1,0 +1,16 @@
+{% extends 'modify_data_layout/modify_data_layout.html' %}
+{% block title %}
+    Add comment
+{% endblock title %}
+{% block header %}
+    Add new comment
+{% endblock header %}
+{% block label %}
+    Comment
+{% endblock label %}
+{% block action %}
+    "/question/{{ question_id }}/new-comment"
+{% endblock action %}
+{% block button %}
+    Post comment
+{% endblock button %}
