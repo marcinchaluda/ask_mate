@@ -9,7 +9,11 @@
     Comment
 {% endblock label %}
 {% block action %}
-    "/question/{{ question_id }}/new-comment"
+    {% if question_id %}
+        "/question/{{ question_id }}/new-comment"
+    {% else %}
+        "/answer/{{ answer_id }}/new-comment"
+    {% endif %}
 {% endblock action %}
 {% block button %}
     Post comment
