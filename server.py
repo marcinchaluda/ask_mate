@@ -113,8 +113,9 @@ def display_answers(question_id):
     answer_details = data_manager.fetch_answers(question_id)
     question_details = data_manager.fetch_dictionary(question_id)
     data_manager.update_view_number(question_id)
+    comments = data_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
-                           question_details=question_details, answer_headers=answer_headers)
+                           question_details=question_details, answer_headers=answer_headers, comments=comments)
 
 
 @app.route('/<library_type>/<datum_id>/<vote>')

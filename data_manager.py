@@ -145,7 +145,7 @@ def get_question_tags(cursor: RealDictCursor) -> dict:
 
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT question_id, message, submission_time FROM comment")
+    cursor.execute("SELECT question_id, answer_id, message, submission_time FROM comment")
     return cursor.fetchall()
 
 
