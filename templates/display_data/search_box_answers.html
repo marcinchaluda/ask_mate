@@ -1,0 +1,30 @@
+{% extends 'display_data/display_data_layout.html' %}
+{% block links%}
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+{% endblock links %}
+{% block title %}
+    Search Phrase | Ask-Mate
+{% endblock title %}
+{% block header %}
+    Matching answers
+{% endblock header %}
+{% block main_menu %}
+{% endblock main_menu %}
+{% block title_header %}
+    {% for header in question_headers %}
+        <th>{{ header.replace("_", " ").title() }}</th>
+    {% endfor %}
+{% endblock title_header %}
+{% block content %}
+    {% for question in questions %}
+        <tr>
+        {% for question_key, question_value in question.items() %}
+            <td>
+                <p>{{ question_value }}</p>
+            </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+{% endblock content %}

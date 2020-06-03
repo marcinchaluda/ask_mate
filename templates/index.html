@@ -25,10 +25,10 @@
             </aside>
         </div>
         <div class='input_container'>
-            <form class='question_form' action="#">
-                <label for="question">Type your question below</label><br>
-                <input type="text" id="question" name="question" placeholder="Insert a question" required><br>
-                <a href="#" type="button">Get answers!</a>
+            <form class='question_form' action="/search" method="get">
+                <label for="q">Type your question below</label><br>
+                <input type="text" id="q" name="q" placeholder="Insert a question" required><br>
+                <input class="input_submit" type="submit" value="Get answers!">
             </form>
             <a href="/list" type="button">Display All Questions</a>
             <a class="hidden" href="#" type="button" name="latest_questions" id="latest_questions">Display Latest Questions</a>

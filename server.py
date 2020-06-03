@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images/'
+NUMBER_OF_LATEST_QUESTIONS = 5
 
 
 @app.route("/add_question", methods=['GET', 'POST'])
@@ -83,7 +84,7 @@ def delete(data_type, data_id):
 
 @app.route('/')
 def home():
-    questions = data_manager.fetch_n_number_of_rows(5)
+    questions = data_manager.fetch_n_number_of_rows(NUMBER_OF_LATEST_QUESTIONS)
     print(questions)
     return render_template('index.html', questions=questions)
 
@@ -118,6 +119,15 @@ def get_vote(library_type, datum_id, vote):
         answers = data_manager.get_question_id_for_answer(datum_id)
         return redirect('/question/' + str(answers[0]['question_id']))
     return redirect('/list')
+
+
+@app.route('/search')
+def search_phrase():
+    phrase = request.args.get('q')
+    questions = data_manager.get_phrase_match_data(phrase)
+    question_headers = data_manager.QUESTION_HEADERS
+    return render_template('display_data/search_box_answers.html', questions=questions,
+                           question_headers=question_headers)
 
 
 if __name__ == "__main__":
