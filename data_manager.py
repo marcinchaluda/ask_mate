@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-COMMENTS_HEADERS = ['id', 'submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
+COMMENTS_HEADERS = ['submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
 VOTE_UP = 1
 VOTE_DOWN = -1
 

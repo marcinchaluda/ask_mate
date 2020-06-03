@@ -52,12 +52,21 @@ def add_new_answer(data_id):
 
 
 @app.route("/question/<question_id>/new-comment", methods=['GET', 'POST'])
-def add_new_comment(question_id):
+def add_new_comment_to_question(question_id):
     if request.method == "POST":
         comment = data_manager.add_comment_with_basic_headers(question_id, True)
         data_manager.save_new_comment(comment)
         return redirect('/list')
     return render_template('modify_data_layout/add_new_comment.html', question_id=question_id)
+
+
+@app.route("/answer/<answer_id>/new-comment", methods=['GET', 'POST'])
+def add_new_comment_to_answer(answer_id):
+    if request.method == "POST":
+        comment = data_manager.add_comment_with_basic_headers(answer_id, False)
+        data_manager.save_new_comment(comment)
+        return redirect('/list')
+    return render_template('modify_data_layout/add_new_comment.html', answer_id=answer_id)
 
 
 @app.route("/<data_type>/<data_id>/delete")
