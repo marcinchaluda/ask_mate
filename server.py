@@ -65,7 +65,9 @@ def add_new_comment_to_answer(answer_id):
     if request.method == "POST":
         comment = data_manager.add_comment_with_basic_headers(answer_id, False)
         data_manager.save_new_comment(comment)
-        return redirect('/list')
+        answer = data_manager.fetch_answers_by_answer_id(answer_id)
+        question_id = answer['question_id']
+        return redirect('/question/' + str(question_id))
     return render_template('modify_data_layout/add_new_comment.html', answer_id=answer_id)
 
 

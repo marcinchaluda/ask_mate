@@ -41,6 +41,13 @@ def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
 
 
 @connection.connection_handler
+def fetch_answers_by_answer_id(cursor: RealDictCursor, key_to_find: str) -> dict:
+    query = "SELECT * FROM answer WHERE id = %(key_to_find)s"
+    cursor.execute(query, {'key_to_find': key_to_find})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
 def delete_entry(cursor: RealDictCursor, data_type, data_id):
     query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
     cursor.execute(query)
@@ -104,7 +111,7 @@ def save_new_answer(cursor: RealDictCursor, answer: dict, data_id: str):
                            'vo_n': answer['vote_number'], 'm': answer['message'], 'i': answer['image']})
 
 
-def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
+def   add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: bool):
     comment = {}
     for header in COMMENTS_HEADERS:
         if header == 'submission_time':
