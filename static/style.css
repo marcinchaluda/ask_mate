@@ -64,7 +64,7 @@ a {
     color: black;
 }
 
-.hover_highlight:hover, .comment_redirect:hover {
+.hover_highlight:hover {
     color: cornsilk;
     background-color: #47A9FF;
 }
@@ -120,14 +120,18 @@ input[type=submit] {
     align-self: flex-end;
     padding: 0 1% 0 10%;
     margin: 2% 0 2% 0;
-    color: grey;
+    color: black;
     text-align: left;
+    opacity: 0.7;
 }
 
 .comments {
     border: 0px;
     align-self: flex-start;
+    margin: 1% auto;
     padding: 0;
+    background-color: lightgray;
+    width: 95%;
 }
 
 i {
@@ -149,7 +153,7 @@ i:hover {
     justify-content: center;
 }
 
-.add_question a {
+.add_question a, .buttons a {
     width: 210px;
     padding: 10px 20px;
     border-radius: 8px;
@@ -162,7 +166,7 @@ i:hover {
     color: black;
 }
 
-.add_question a:hover {
+.add_question a:hover, .buttons a:hover {
     background-color: grey;
     color: white;
 }

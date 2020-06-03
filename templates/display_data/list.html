@@ -72,7 +72,10 @@
                             <p class="comment_redirect">Comments</p>
                             {% for comment in comments %}
                                 {% if comment['question_id'] == question['id'] %}
-                            <p>{{ comment['submission_time'] }}|    {{ comment['message'] }}</p>
+                                    <div class="comment_details">
+                                        {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}
+                                        <a href="#"><i class="fas fa-trash-alt" title="Delete Answer"></i></a>
+                                    </div>
                                 {% endif %}
                             {% endfor %}
                         </div>
