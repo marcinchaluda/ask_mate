@@ -168,7 +168,8 @@ def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
 @connection.connection_handler
 def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
     question_query = """
-        SELECT * 
+        SELECT question.id, question.submission_time, question.view_number, question.vote_number, question.title, 
+        question.message, question.image 
         FROM question
         FULL JOIN answer ON answer.question_id = question.id 
         WHERE question.title LIKE %(phrase)s 

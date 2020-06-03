@@ -18,13 +18,13 @@
     {% endfor %}
 {% endblock title_header %}
 {% block content %}
-    <ol>
-        {% for datum in match_data %}
-        <li>
-            <p><span>Title:</span> {{ datum['title'] }}</p>
-            <p><span>Message:</span> {{ datum['message'] }}</p>
-        </li>
-        <br>
+    {% for question in questions %}
+        <tr>
+        {% for question_key, question_value in question.items() %}
+            <td>
+                <p>{{ question_value }}</p>
+            </td>
         {% endfor %}
-    </ol>
+        </tr>
+    {% endfor %}
 {% endblock content %}

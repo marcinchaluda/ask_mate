@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images/'
 NUMBER_OF_LATEST_QUESTIONS = 5
 
+
 @app.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
     text_id = "question_input"
@@ -121,9 +122,10 @@ def get_vote(library_type, datum_id, vote):
 @app.route('/search')
 def search_phrase():
     phrase = request.args.get('q')
-    match_data = data_manager.get_phrase_match_data(phrase)
-    print(match_data)
-    return render_template('display_data/search_box_answers.html', match_data=match_data)
+    questions = data_manager.get_phrase_match_data(phrase)
+    question_headers = data_manager.QUESTION_HEADERS
+    return render_template('display_data/search_box_answers.html', questions=questions,
+                           question_headers=question_headers)
 
 
 if __name__ == "__main__":
