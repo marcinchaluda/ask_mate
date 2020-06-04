@@ -64,10 +64,17 @@ def search_phrase():
 
 @app.route("/<data_type>/<data_id>/delete")
 def delete(data_type, data_id):
+    question_id = None
     if data_type == 'answer':
         question_id = data_manager.get_question_id_for_answer(data_id)
+    if data_type == 'comment':
+        answer_id = data_manager.get_answer_id_for_comment(data_id)
+        if answer_id:
+            question_id = data_manager.get_question_id_for_answer(answer_id)
     data_manager.delete_entry(data_type, data_id)
     if data_type == 'answer':
+        return redirect('/question/' + question_id)
+    if data_type == 'comment' and question_id:
         return redirect('/question/' + question_id)
     return redirect('/list')
 

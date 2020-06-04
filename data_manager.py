@@ -62,6 +62,16 @@ def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
     return str(cursor.fetchone()['question_id'])
 
 
+@connection.connection_handler
+def get_answer_id_for_comment(cursor: RealDictCursor, data_id: str):
+    query = "SELECT answer_id FROM comment WHERE id = {0}".format(data_id)
+    cursor.execute(query)
+    try:
+        return cursor.fetchone()['answer_id']
+    except TypeError:
+        return None
+
+
 def add_question_with_basic_headers():
     question = {}
     for header in QUESTION_HEADERS:
@@ -146,7 +156,7 @@ def save_comment(data_id, is_question):
 
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT question_id, answer_id, message, submission_time FROM comment")
+    cursor.execute("SELECT id, question_id, answer_id, message, submission_time FROM comment")
     return cursor.fetchall()
 
 
