@@ -49,6 +49,12 @@ def fetch_answers_by_answer_id(cursor: RealDictCursor, key_to_find: str) -> dict
 
 
 @connection.connection_handler
+def fetch_comments_by_id(cursor: RealDictCursor, key_to_find: str) -> dict:
+    query = "SELECT * FROM answer WHERE id = %(key_to_find)s"
+    cursor.execute(query, {'key_to_find': key_to_find})
+    return cursor.fetchone()
+
+@connection.connection_handler
 def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
     query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
     cursor.execute(query)
@@ -142,11 +148,10 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
 @connection.connection_handler
 def save_new_comment(cursor: RealDictCursor, comment: dict):
     query = f"""
-    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
-    VALUES (%(s_t)s ,%(q_i)s, %(a_i)s, %(e_c)s, %(m)s)
+    INSERT INTO comment (edited_count, message)
+    VALUES (%(e_c)s, %(m)s)
     """
-    cursor.execute(query, {'s_t': comment['submission_time'], 'q_i': comment['question_id'],
-                           'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
+    cursor.execute(query, {'e_c': comment['edited_count']+1, 'm': comment['message']})
 
 
 def save_comment(data_id, is_question):
@@ -172,7 +177,7 @@ def add_tag(cursor: RealDictCursor, tag_name: str):
 @connection.connection_handler
 def get_question_tags(cursor: RealDictCursor) -> dict:
     query = """
-            SELECT tag.name, question_tag.question_id
+            SELECT tag.name, tag.id, question_tag.question_id
             FROM tag
             FULL JOIN question_tag ON question_tag.tag_id = tag.id 
             """
@@ -212,6 +217,17 @@ def update_question(cursor: RealDictCursor, question_id: str):
         WHERE id = %(q_i)s
     """
     cursor.execute(query, {'m': message, 'q_i': question_id, 't': title})
+
+
+@connection.connection_handler
+def update_comment(cursor: RealDictCursor, comment_id: str):
+    message = request.form.get('message')
+    query = """
+        UPDATE comment
+        SET message = %(m)s
+        WHERE id = %(c_i)s
+    """
+    cursor.execute(query, {'m': message, 'c_i': comment_id})
 
 
 @connection.connection_handler
@@ -266,4 +282,12 @@ def check_for_id_duplicate(data, id_to_check):
 @connection.connection_handler
 def delete_entry(cursor: RealDictCursor, data_type, data_id):
     query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def delete_tag(cursor: RealDictCursor, question_id, tag_id):
+    query = "DELETE FROM ONLY question_tag WHERE question_id = {0}".format(question_id)
+    cursor.execute(query)
+    query = "DELETE FROM ONLY tag WHERE id = {0}".format(tag_id)
     cursor.execute(query)

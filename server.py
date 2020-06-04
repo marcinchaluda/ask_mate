@@ -79,6 +79,12 @@ def delete(data_type, data_id):
     return redirect('/list')
 
 
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_tag(question_id, tag_id):
+    data_manager.delete_tag(question_id, tag_id)
+    return redirect('/list')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 

@@ -1,0 +1,17 @@
+{% extends 'modify_data_layout/modify_data_layout.html' %}
+{% block title %}
+    Update coment
+{% endblock title %}
+{% block header %}
+    Update comment
+{% endblock header %}
+{% block label %}
+    Comment
+{% endblock label %}
+{% block action %}
+    "/comment/{{ comment['id'] }}/edit"
+{% endblock action %}
+{% block content %}{{ comment['message'] }}{% endblock content %}
+{% block button %}
+    Update comment
+{% endblock button %}
