@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     font-family: Arial;
+
 }
 
 html {
@@ -112,8 +113,11 @@ aside {
 }
 
 .question_form label {
-    font-size: 20px;
+    font-size: 2em;
     text-transform: uppercase;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 0.2em;
+    border-radius: 10px;
 }
 
 input[type="text"] {

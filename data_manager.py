@@ -178,7 +178,7 @@ def add_tag(cursor: RealDictCursor, tag_name: str):
 @connection.connection_handler
 def get_question_tags(cursor: RealDictCursor) -> dict:
     query = """
-            SELECT tag.name, question_tag.question_id
+            SELECT tag.name, tag.id, question_tag.question_id
             FROM tag
             FULL JOIN question_tag ON question_tag.tag_id = tag.id 
             """
@@ -241,6 +241,10 @@ def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     cursor.execute(query)
 
 
+def check_for_id_duplicate(no_duplicates, param):
+    pass
+
+
 @connection.connection_handler
 def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
     question_query = """
@@ -252,10 +256,39 @@ def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
         OR question.message LIKE %(phrase)s
         OR answer.message LIKE %(phrase)s"""
     cursor.execute(question_query, {'phrase': '%' + phrase + '%'})
-    return cursor.fetchall()
+    data = remove_duplicates(cursor.fetchall())
+    return data
+
+
+def remove_duplicates(data):
+    no_duplicates = []
+    for datum in data:
+        if not no_duplicates:
+            no_duplicates.append(datum)
+        else:
+            duplicate = check_for_id_duplicate(no_duplicates, datum['id'])
+            if not duplicate:
+                no_duplicates.append(datum)
+    print(no_duplicates)
+    return no_duplicates
+
+
+def check_for_id_duplicate(data, id_to_check):
+    for element in data:
+        if element['id'] == id_to_check:
+            return True
+    return False
 
 
 @connection.connection_handler
 def delete_entry(cursor: RealDictCursor, data_type, data_id):
     query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
+    cursor.execute(query)
+
+
+@connection.connection_handler
+def delete_tag(cursor: RealDictCursor, question_id, tag_id):
+    query = "DELETE FROM ONLY question_tag WHERE question_id = {0}".format(question_id)
+    cursor.execute(query)
+    query = "DELETE FROM ONLY tag WHERE id = {0}".format(tag_id)
     cursor.execute(query)

@@ -52,7 +52,9 @@
                             {% for tag in tags %}
                                 {% if tag['question_id'] == question['id'] %}
                                     {{ tag['name'] }}
-                                    <a href="#"><i class="fas fa-trash-alt" title="Delete Tag"></i></a> |
+                                    <a href="/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete">
+                                        <i class="fas fa-trash-alt" title="Delete Tag"></i>
+                                    </a> |
                                 {% endif %}
                             {% endfor %}
                         </div>
