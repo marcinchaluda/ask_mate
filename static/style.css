@@ -19,7 +19,8 @@ body {
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid #ddd;
+    border-top: none;
     border-collapse: collapse;
     padding: 10px;
     background-color: whitesmoke;
@@ -27,6 +28,7 @@ table, th, td {
 
 th {
     background-color: #47A9FF;
+    border: none;
     white-space: nowrap;
 }
 
