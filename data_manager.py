@@ -262,7 +262,7 @@ def delete_entry(cursor: RealDictCursor, data_type, data_id):
 
 @connection.connection_handler
 def delete_tag(cursor: RealDictCursor, question_id, tag_id):
-    query = "DELETE FROM ONLY question_tag WHERE question_id = {0}".format(question_id)
+    query = "DELETE FROM ONLY question_tag WHERE tag_id = {0} AND question_id = {1}".format(tag_id, question_id)
     cursor.execute(query)
     query = "DELETE FROM ONLY tag WHERE id = {0}".format(tag_id)
     cursor.execute(query)
