@@ -236,10 +236,11 @@ def update_comment(cursor: RealDictCursor, comment: dict):
     message = request.form.get('message')
     query = """
         UPDATE comment
-        SET message = %(m)s, edited_count = %(e_c)s
+        SET message = %(m)s, edited_count = %(e_c)s, submission_time = %(s_t)s
         WHERE id = %(c_i)s
     """
-    cursor.execute(query, {'e_c': comment['edited_count']+1, 'm': message, 'c_i': comment['id']})
+    cursor.execute(query, {'e_c': comment['edited_count']+1, 'm': message, 'c_i': comment['id'],
+                           's_t': util.generate_seconds_since_epoch()})
 
 
 @connection.connection_handler
