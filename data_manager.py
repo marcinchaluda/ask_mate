@@ -49,9 +49,10 @@ def fetch_answers_by_answer_id(cursor: RealDictCursor, key_to_find: str) -> dict
 
 
 @connection.connection_handler
-def delete_entry(cursor: RealDictCursor, data_type, data_id):
-    query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
+def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
+    query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
     cursor.execute(query)
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -129,27 +130,6 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
 
 
 @connection.connection_handler
-def add_tag(cursor: RealDictCursor, tag_name: str):
-    query = """
-    INSERT INTO tag (name) 
-    VALUES name = %(tag_name)s
-    """
-    cursor.execute(query, {'name': tag_name})
-
-
-@connection.connection_handler
-def get_question_tags(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT name FROM tag")
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_question_comments(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT question_id, answer_id, message, submission_time FROM comment")
-    return cursor.fetchall()
-
-
-@connection.connection_handler
 def save_new_comment(cursor: RealDictCursor, comment: dict):
     query = f"""
     INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
@@ -162,6 +142,27 @@ def save_new_comment(cursor: RealDictCursor, comment: dict):
 def save_comment(data_id, is_question):
     comment = add_comment_with_basic_headers(data_id, is_question)
     save_new_comment(comment)
+
+
+@connection.connection_handler
+def get_question_comments(cursor: RealDictCursor) -> dict:
+    cursor.execute("SELECT question_id, answer_id, message, submission_time FROM comment")
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_tag(cursor: RealDictCursor, tag_name: str):
+    query = """
+    INSERT INTO tag (name) 
+    VALUES name = %(tag_name)s
+    """
+    cursor.execute(query, {'name': tag_name})
+
+
+@connection.connection_handler
+def get_question_tags(cursor: RealDictCursor) -> dict:
+    cursor.execute("SELECT name FROM tag")
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -193,13 +194,6 @@ def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
 
 
 @connection.connection_handler
-def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
-    query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
 def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
     question_query = """
         SELECT question.id, question.submission_time, question.view_number, question.vote_number, question.title, 
@@ -211,3 +205,9 @@ def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
         OR answer.message LIKE %(phrase)s"""
     cursor.execute(question_query, {'phrase': '%' + phrase + '%'})
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_entry(cursor: RealDictCursor, data_type, data_id):
+    query = "DELETE FROM ONLY {0} WHERE id = {1}".format(data_type, data_id)
+    cursor.execute(query)

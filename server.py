@@ -1,83 +1,13 @@
-from flask import Flask, render_template, redirect, request, url_for
-import data_manager, util
+from flask import Flask, render_template, redirect, request
+import data_manager
 import os
+from update import update_data
+from add import add_data
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'static/images/'
+app.register_blueprint(update_data)
+app.register_blueprint(add_data)
 NUMBER_OF_LATEST_QUESTIONS = 5
-
-
-@app.route("/add_question", methods=['GET', 'POST'])
-def add_new_question():
-    if request.method == "POST":
-        question = data_manager.add_question_with_basic_headers()
-        file = request.files['file']
-        filename = file.filename
-        if filename != '':
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            img_path = 'static/images/' + filename
-            question['image'] = img_path
-        question_id = data_manager.save_new_question(question)
-        return redirect('/question/' + str(question_id))
-    return render_template('modify_data_layout/add_question.html')
-
-
-@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
-def update_question(question_id):
-    question = data_manager.fetch_dictionary(question_id)[0]
-    if request.method == "POST":
-        data_manager.update_question(question_id)
-        return redirect('/question/' + question_id)
-    return render_template('modify_data_layout/update_question.html', question=question)
-
-
-@app.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
-def add_new_answer(data_id):
-    if request.method == "POST":
-        answer = data_manager.add_answer_with_basic_headers(data_id)
-        file = request.files['file']
-        filename = file.filename
-        if filename != '':
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            img_path = 'static/images/' + filename
-            answer['image'] = img_path
-        data_manager.save_new_answer(answer, data_id)
-        return redirect('/question/' + data_id)
-    return render_template('modify_data_layout/new_answer.html', data_id=data_id)
-
-
-@app.route("/<data_type>/<data_id>/new-comment", methods=['GET', 'POST'])
-def add_new_comment_to_question(data_type, data_id):
-    if request.method == "POST":
-        is_question = data_type == "question"
-        if is_question:
-            data_manager.save_comment(data_id, is_question)
-            return redirect('/list')
-        else:
-            data_manager.save_comment(data_id, is_question)
-            answer = data_manager.fetch_answers_by_answer_id(data_id)
-            question_id = answer['question_id']
-            return redirect('/question/' + str(question_id))
-    return render_template('modify_data_layout/add_new_comment.html', data_type=data_type, data_id=data_id)
-
-
-@app.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
-def add_new_tag(question_id):
-    if request.method == "POST":
-        tag_name = request.form.get('text_id')
-        data_manager.add_tag(tag_name, question_id)
-        return redirect('/list')
-    return render_template('modify_data_layout/add_tag.html')
-
-
-@app.route("/<data_type>/<data_id>/delete")
-def delete(data_type, data_id):
-    if data_type == 'answer':
-        question_id = data_manager.get_question_id_for_answer(data_id)
-    data_manager.delete_entry(data_type, data_id)
-    if data_type == 'answer':
-        return redirect('/question/' + question_id)
-    return redirect('/list')
 
 
 @app.route('/')
@@ -130,6 +60,16 @@ def search_phrase():
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/search_box_answers.html', questions=questions,
                            question_headers=question_headers)
+
+
+@app.route("/<data_type>/<data_id>/delete")
+def delete(data_type, data_id):
+    if data_type == 'answer':
+        question_id = data_manager.get_question_id_for_answer(data_id)
+    data_manager.delete_entry(data_type, data_id)
+    if data_type == 'answer':
+        return redirect('/question/' + question_id)
+    return redirect('/list')
 
 
 if __name__ == "__main__":
