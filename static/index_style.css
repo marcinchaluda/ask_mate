@@ -1,8 +1,16 @@
 * {
-   margin: 0;
-   padding: 0;
-   background-color: #47A9FF;
-   font-family: Arial;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+html {
+    background-image: url("/static/images/lamp.jpg");
+    background-position: top;
+    background-color: #222;
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    background-blend-mode: screen;
 }
 
 .wrapper {

@@ -12,3 +12,12 @@ def update_question(question_id):
         data_manager.update_question(question_id)
         return redirect('/question/' + question_id)
     return render_template('modify_data_layout/update_question.html', question=question)
+
+
+@update_data.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
+def update_comment(comment_id):
+    comment = data_manager.fetch_comments_by_id(comment_id)
+    if request.method == "POST":
+        data_manager.update_comment(comment_id)
+        return redirect('/list')
+    return render_template('modify_data_layout/update_comment.html', comment=comment)
