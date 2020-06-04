@@ -90,6 +90,14 @@
                         </div>
                     </div>
                 </td>
+            {% elif question_key == 'image' %}
+                {% if question_value != None %}
+                    <td>
+                        <img src="/{{ question_value }}" height="100px">
+                    </td>
+                    {% else %}
+                    <td></td>
+                {% endif %}
             {% else %}
             <td>
                     <p>{{ question_value }}</p>

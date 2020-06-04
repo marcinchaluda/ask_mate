@@ -230,6 +230,10 @@ i:hover {
     display: flex;
 }
 
+#title {
+    margin-bottom: 5px;
+}
+
 select option[value='text_area_enabled']:focus {
     background-color: red;
 }

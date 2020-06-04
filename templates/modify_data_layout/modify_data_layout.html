@@ -13,13 +13,14 @@
     <div class="table_container">
         <div class="data_table">
             <form action={% block action %}  {% endblock action %} method="post"  enctype=multipart/form-data>
-                {% block optional_title %}{% endblock optional_title %}
-                {% block tag_list %}{% endblock tag_list %}
                 <p>
                     <label for="question_input">{% block label %}{% endblock label %}:</label>
-                </p><br>
+                </p>
 
-                <textarea id="question_input" name="message" rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
+                {% block optional_title %}{% endblock optional_title %}
+                {% block tag_list %}{% endblock tag_list %}
+
+                <textarea id="question_input" name="message" rows="4" cols="50" >{% block content %}{% endblock content %}</textarea><br>
                 {% block file_input %}{% endblock file_input %}
                 <div class="buttons">
                     <button type="submit">{% block button %}{% endblock button %}</button>
