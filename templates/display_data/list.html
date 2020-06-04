@@ -53,7 +53,7 @@
                                 {% if tag['question_id'] == question['id'] %}
                                     {{ tag['name'] }}
                                     <a href="/question/{{ question['id'] }}/tag/{{ tag['id'] }}/delete">
-                                        <i class="fas fa-trash-alt" title="Delete Tag"></i>
+                                        <i class="fas fa-trash-alt redhover" title="Delete Tag"></i>
                                     </a> |
                                 {% endif %}
                             {% endfor %}
@@ -82,7 +82,7 @@
                                         <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
                                         <a href="/comment/{{ comment['id'] }}/delete"
                                            onclick="return confirm('Delete this comment?');">
-                                            <i class="fas fa-trash-alt" title="Delete Comment"></i>
+                                            <i class="fas fa-trash-alt redhover" title="Delete Comment"></i>
                                         </a>
                                     </div>
                                 {% endif %}
