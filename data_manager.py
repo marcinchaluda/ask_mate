@@ -162,17 +162,38 @@ def get_question_comments(cursor: RealDictCursor) -> dict:
 
 @connection.connection_handler
 def add_tag(cursor: RealDictCursor, tag_name: str):
-    query = """
+    query = f"""
     INSERT INTO tag (name) 
-    VALUES name = %(tag_name)s
+    VALUES (%(tag_name)s)
     """
-    cursor.execute(query, {'name': tag_name})
+    cursor.execute(query, {'tag_name': tag_name})
 
 
 @connection.connection_handler
 def get_question_tags(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT name FROM tag")
+    query = """
+            SELECT tag.name, question_tag.question_id
+            FROM tag
+            FULL JOIN question_tag ON question_tag.tag_id = tag.id 
+            """
+    cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_tag_id(cursor: RealDictCursor) -> dict:
+    query = """SELECT id FROM tag ORDER BY id DESC FETCH FIRST ROW ONLY"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def add_tag_to_question_id(cursor: RealDictCursor, question_id: int, tag_id: int):
+    query = f"""
+        INSERT INTO question_tag (question_id, tag_id) 
+        VALUES (%(question_id)s, %(tag_id)s)
+        """
+    cursor.execute(query, {'question_id': int(question_id), 'tag_id': int(tag_id)})
 
 
 @connection.connection_handler

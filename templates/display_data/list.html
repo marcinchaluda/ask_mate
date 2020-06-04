@@ -48,9 +48,12 @@
                 <td>
                     <div class="message_container">
                         <div class="tags">
-                            Tags |
+                            Tags ||
                             {% for tag in tags %}
-                                {{ tag }}
+                                {% if tag['question_id'] == question['id'] %}
+                                    {{ tag['name'] }}
+                                    <a href="#"><i class="fas fa-trash-alt" title="Delete Tag"></i></a> |
+                                {% endif %}
                             {% endfor %}
                         </div>
                         <div class="message"><p>{{ question_value }}</p></div>

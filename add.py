@@ -50,10 +50,12 @@ def add_new_comment(data_type, data_id):
     return render_template('modify_data_layout/add_new_comment.html', data_type=data_type, data_id=data_id)
 
 
-@add_data.route("/question/<question_id>/new-tag", methods=['GET', 'POST'])
+@add_data.route("/question/<int:question_id>/new-tag", methods=['GET', 'POST'])
 def add_new_tag(question_id):
     if request.method == "POST":
-        tag_name = request.form.get('text_id')
-        data_manager.add_tag(tag_name, question_id)
+        tag_name = request.form.get('message')
+        data_manager.add_tag(tag_name)
+        tag_id = data_manager.get_tag_id()[0]['id']
+        data_manager.add_tag_to_question_id(question_id, tag_id)
         return redirect('/list')
-    return render_template('modify_data_layout/add_tag.html')
+    return render_template('modify_data_layout/add_tag.html', question_id=question_id)
