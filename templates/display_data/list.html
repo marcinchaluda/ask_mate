@@ -78,7 +78,10 @@
                                     <div class="comment_details">
                                         {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}
                                         <a href="#"><i class="fas fa-pen" title="Edit Comment"></i></a>
-                                        <a href="#"><i class="fas fa-trash-alt" title="Delete Comment"></i></a>
+                                        <a href="/comment/{{ comment['id'] }}/delete"
+                                           onclick="return confirm('Delete this comment?');">
+                                            <i class="fas fa-trash-alt" title="Delete Comment"></i>
+                                        </a>
                                     </div>
                                 {% endif %}
                             {% endfor %}
