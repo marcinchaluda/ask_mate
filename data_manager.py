@@ -50,7 +50,7 @@ def fetch_answers_by_answer_id(cursor: RealDictCursor, key_to_find: str) -> dict
 
 @connection.connection_handler
 def fetch_comments_by_id(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = "SELECT * FROM answer WHERE id = %(key_to_find)s"
+    query = "SELECT * FROM comment WHERE id = %(key_to_find)s"
     cursor.execute(query, {'key_to_find': key_to_find})
     return cursor.fetchone()
 
@@ -148,10 +148,11 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
 @connection.connection_handler
 def save_new_comment(cursor: RealDictCursor, comment: dict):
     query = f"""
-    INSERT INTO comment (edited_count, message)
-    VALUES (%(e_c)s, %(m)s)
+    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
+    VALUES (%(s_t)s ,%(q_i)s, %(a_i)s, %(e_c)s, %(m)s)
     """
-    cursor.execute(query, {'e_c': comment['edited_count']+1, 'm': comment['message']})
+    cursor.execute(query, {'s_t': comment['submission_time'], 'q_i': comment['question_id'],
+                           'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
 
 
 def save_comment(data_id, is_question):
@@ -161,7 +162,7 @@ def save_comment(data_id, is_question):
 
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT id, question_id, answer_id, message, submission_time FROM comment")
+    cursor.execute("SELECT id, question_id, answer_id, message, submission_time, edited_count FROM comment")
     return cursor.fetchall()
 
 
@@ -220,14 +221,14 @@ def update_question(cursor: RealDictCursor, question_id: str):
 
 
 @connection.connection_handler
-def update_comment(cursor: RealDictCursor, comment_id: str):
+def update_comment(cursor: RealDictCursor, comment: dict):
     message = request.form.get('message')
     query = """
         UPDATE comment
-        SET message = %(m)s
+        SET message = %(m)s, edited_count = %(e_c)s
         WHERE id = %(c_i)s
     """
-    cursor.execute(query, {'m': message, 'c_i': comment_id})
+    cursor.execute(query, {'e_c': comment['edited_count']+1, 'm': message, 'c_i': comment['id']})
 
 
 @connection.connection_handler
@@ -238,6 +239,10 @@ def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     else:
         query = f"UPDATE question SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
     cursor.execute(query)
+
+
+def check_for_id_duplicate(no_duplicates, param):
+    pass
 
 
 @connection.connection_handler
@@ -251,7 +256,28 @@ def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
         OR question.message LIKE %(phrase)s
         OR answer.message LIKE %(phrase)s"""
     cursor.execute(question_query, {'phrase': '%' + phrase + '%'})
-    return cursor.fetchall()
+    data = remove_duplicates(cursor.fetchall())
+    return data
+
+
+def remove_duplicates(data):
+    no_duplicates = []
+    for datum in data:
+        if not no_duplicates:
+            no_duplicates.append(datum)
+        else:
+            duplicate = check_for_id_duplicate(no_duplicates, datum['id'])
+            if not duplicate:
+                no_duplicates.append(datum)
+    print(no_duplicates)
+    return no_duplicates
+
+
+def check_for_id_duplicate(data, id_to_check):
+    for element in data:
+        if element['id'] == id_to_check:
+            return True
+    return False
 
 
 @connection.connection_handler

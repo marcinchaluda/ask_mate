@@ -78,8 +78,8 @@
                             {% for comment in comments %}
                                 {% if comment['question_id'] == question['id'] %}
                                     <div class="comment_details">
-                                        {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}
-                                        <a href="#"><i class="fas fa-pen" title="Edit Comment"></i></a>
+                                        {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}<span> |</span> Number of edits: {{ comment['edited_count'] }}
+                                        <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
                                         <a href="/comment/{{ comment['id'] }}/delete"
                                            onclick="return confirm('Delete this comment?');">
                                             <i class="fas fa-trash-alt" title="Delete Comment"></i>
