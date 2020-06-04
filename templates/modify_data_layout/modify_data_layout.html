@@ -11,15 +11,19 @@
         <h1>{% block header %}{% endblock header %}</h1>
     </div>
     <div class="table_container">
-        <form action={% block action %}  {% endblock action %} method="post"  enctype=multipart/form-data>
-            {% block optional_title %}{% endblock optional_title %}
-            <label for="question_input">{% block label %}{% endblock label %}:</label><br>
-            <textarea id="question_input" name="message" rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
-            {% block file_input %}{% endblock file_input %}
-            <div class="buttons">
-                <button type="submit">{% block button %}{% endblock button %}</button>
-            </div>
-        </form>
+        <div class="data_table">
+            <form action={% block action %}  {% endblock action %} method="post"  enctype=multipart/form-data>
+                {% block optional_title %}{% endblock optional_title %}
+                <p>
+                    <label for="question_input">{% block label %}{% endblock label %}:</label>
+                </p><br>
+                <textarea id="question_input" name="message" rows="4" cols="50">{% block content %}{% endblock content %}</textarea><br>
+                {% block file_input %}{% endblock file_input %}
+                <div class="buttons">
+                    <button type="submit">{% block button %}{% endblock button %}</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
