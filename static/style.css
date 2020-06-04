@@ -199,3 +199,15 @@ i:hover {
     text-transform: uppercase;
     color: black;
 }
+
+.hidden {
+    display: none;
+}
+
+.hide_textarea:focus + .hidden {
+    display: flex;
+}
+
+select option[value='text_area_enabled']:focus {
+    background-color: red;
+}

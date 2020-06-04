@@ -26,7 +26,6 @@ def display_data():
         questions = data_manager.get_all_questions()
     tags = data_manager.get_question_tags()
     comments = data_manager.get_question_comments()
-    print(tags)
     question_headers = data_manager.QUESTION_HEADERS
     return render_template('display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
                            comments=comments)

@@ -6,11 +6,19 @@
     Add new tag
 {% endblock header %}
 {% block label %}
-    Tag
+    Input Tag
 {% endblock label %}
 {% block action %}
     "/question/{{ question_id }}/new-tag"
 {% endblock action %}
+{% block tag_list %}
+    <label for="tag_list">Choose tag from list: </label>
+    <select name="tag_list" id="tag_list">
+        {% for tag in tags %}
+            <option value="{{ tag['name'] }}">{{ tag['name'] }}</option>
+        {% endfor %}
+    </select><br>
+{% endblock tag_list %}
 {% block file_input %}
 {% endblock file_input %}
 {% block button %}

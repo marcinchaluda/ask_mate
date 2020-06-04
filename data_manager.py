@@ -1,7 +1,7 @@
 import connection
 import util
 from flask import request
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import RealDictCursor, RealDictRow
 
 QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
@@ -185,11 +185,22 @@ def get_question_tags(cursor: RealDictCursor) -> dict:
     return cursor.fetchall()
 
 
+def get_tag_list():
+    return remove_duplicates(get_question_tags(), 'name')
+
+
 @connection.connection_handler
 def get_tag_id(cursor: RealDictCursor) -> dict:
     query = """SELECT id FROM tag ORDER BY id DESC FETCH FIRST ROW ONLY"""
     cursor.execute(query)
-    return cursor.fetchall()
+    return cursor.fetchone()['id']
+
+
+@connection.connection_handler
+def get_tag_id_by_tag_name(cursor: RealDictCursor, tag_name: str) -> dict:
+    query = """SELECT id FROM tag WHERE name = %(tag_name)s"""
+    cursor.execute(query, {'tag_name': tag_name})
+    return cursor.fetchone()['id']
 
 
 @connection.connection_handler
@@ -240,10 +251,6 @@ def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     cursor.execute(query)
 
 
-def check_for_id_duplicate(no_duplicates, param):
-    pass
-
-
 @connection.connection_handler
 def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
     question_query = """
@@ -255,26 +262,25 @@ def get_phrase_match_data(cursor: RealDictCursor, phrase: str) -> dict:
         OR question.message LIKE %(phrase)s
         OR answer.message LIKE %(phrase)s"""
     cursor.execute(question_query, {'phrase': '%' + phrase + '%'})
-    data = remove_duplicates(cursor.fetchall())
+    data = remove_duplicates(cursor.fetchall(), 'id')
     return data
 
 
-def remove_duplicates(data):
+def remove_duplicates(data, key_to_find):
     no_duplicates = []
     for datum in data:
         if not no_duplicates:
             no_duplicates.append(datum)
         else:
-            duplicate = check_for_id_duplicate(no_duplicates, datum['id'])
+            duplicate = check_for_id_duplicate(no_duplicates, key_to_find, datum['id'])
             if not duplicate:
                 no_duplicates.append(datum)
-    print(no_duplicates)
     return no_duplicates
 
 
-def check_for_id_duplicate(data, id_to_check):
+def check_for_id_duplicate(data, key_to_find, id_to_check):
     for element in data:
-        if element['id'] == id_to_check:
+        if element[key_to_find] == id_to_check:
             return True
     return False
 
