@@ -65,7 +65,7 @@ def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
 def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
     query = "SELECT question_id FROM answer WHERE id = {0}".format(data_id)
     cursor.execute(query)
-    return str(cursor.fetchone()['question_id'])
+    return cursor.fetchone()['question_id']
 
 
 @connection.connection_handler

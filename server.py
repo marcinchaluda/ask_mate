@@ -48,7 +48,7 @@ def get_vote(library_type, datum_id, vote):
     data_manager.update_votes(table_type, datum_id, vote)
     if table_type == 'answer':
         answers = data_manager.get_question_id_for_answer(datum_id)
-        return redirect('/question/' + str(answers[0]['question_id']))
+        return redirect("/question/{0}".format(answers))
     return redirect('/list')
 
 
