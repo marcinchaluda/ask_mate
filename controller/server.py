@@ -1,10 +1,10 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, session
 import model.data_manager as data_manager
 from controller.update import update_data
 from controller.add import add_data
 from controller.user_operations import user_data
 
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder="../view/templates", static_folder="../view/static")
 app.register_blueprint(update_data)
 app.register_blueprint(add_data)
 app.register_blueprint(user_data)
@@ -13,8 +13,11 @@ NUMBER_OF_LATEST_QUESTIONS = 5
 
 @app.route('/')
 def home():
+    email = ''
+    if email in session:
+        email = session['email']
     questions = data_manager.fetch_n_number_of_rows(NUMBER_OF_LATEST_QUESTIONS)
-    return render_template('index.html', questions=questions)
+    return render_template('index.html', questions=questions, email=email)
 
 
 @app.route('/list', methods=['GET', 'POST'])
@@ -35,8 +38,10 @@ def display_data():
 @app.route('/question/<question_id>')
 def display_answers(question_id):
     answer_headers = data_manager.ANSWER_HEADER
-    answer_details = data_manager.fetch_answers(question_id)
-    question_details = data_manager.fetch_dictionary(question_id)
+    answer_details = data_manager.fetch_data(question_id, 'answer')
+    question_details = data_manager.fetch_data(question_id, 'question')
+    print(answer_details)
+    print(question_details)
     data_manager.update_view_number(question_id)
     comments = data_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
@@ -83,6 +88,13 @@ def delete(data_type, data_id):
 def delete_tag(question_id, tag_id):
     data_manager.delete_tag(question_id, tag_id)
     return redirect('/list')
+
+
+@app.route('/users')
+def display_users():
+    user_headers = data_manager.USERS_HEADERS
+    users = data_manager.get_all_users()
+    return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
 
 
 if __name__ == "__main__":

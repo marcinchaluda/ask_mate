@@ -1,12 +1,14 @@
-import connection
-import util
+from model import connection, util
 from flask import request
-from psycopg2.extras import RealDictCursor, RealDictRow
+import re
+from psycopg2.extras import RealDictCursor
+from psycopg2 import sql
 
 QUESTION_HEADERS = ['id', 'user_id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_HEADER = ['id', 'user_id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 COMMENTS_HEADERS = ['submission_time', 'user_id', 'question_id', 'answer_id', 'message', 'edited_count']
-TAG_HEADERS = ['name']
+USERS_HEADERS = ['email', 'user_name', 'registration_time', 'count_of_asked_questions', 'count_of_answers',
+                 'count_of_comments', 'reputation']
 VOTE_UP = 1
 VOTE_DOWN = -1
 
@@ -14,6 +16,13 @@ VOTE_DOWN = -1
 @connection.connection_handler
 def get_all_questions(cursor: RealDictCursor) -> dict:
     query = "SELECT * FROM question"
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_users(cursor: RealDictCursor) -> dict:
+    query = "SELECT * FROM new_user"
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -28,37 +37,26 @@ def get_sorted_questions(cursor: RealDictCursor, sorting_key, reverse_bool) -> l
 
 
 @connection.connection_handler
-def fetch_dictionary(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = "SELECT * FROM question WHERE id = %(key_to_find)s"
-    cursor.execute(query, {'key_to_find': key_to_find})
+def fetch_data(cursor: RealDictCursor, key_to_find: str, data_table: str) -> dict:
+    query = sql.SQL("SELECT * FROM ") + sql.SQL("{table} WHERE id={id}").format(table=sql.Identifier(data_table),
+                                                                                id=sql.Literal(key_to_find))
+    cursor.execute(query)
     return cursor.fetchall()
 
-
-@connection.connection_handler
-def fetch_answers(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = "SELECT * FROM answer WHERE question_id = %(key_to_find)s"
-    cursor.execute(query, {'key_to_find': key_to_find})
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def fetch_answers_by_answer_id(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = "SELECT * FROM answer WHERE id = %(key_to_find)s"
-    cursor.execute(query, {'key_to_find': key_to_find})
-    return cursor.fetchone()
-
-
-@connection.connection_handler
-def fetch_comments_by_id(cursor: RealDictCursor, key_to_find: str) -> dict:
-    query = "SELECT * FROM comment WHERE id = %(key_to_find)s"
-    cursor.execute(query, {'key_to_find': key_to_find})
-    return cursor.fetchone()
 
 @connection.connection_handler
 def fetch_n_number_of_rows(cursor: RealDictCursor, rows_number: int) -> dict:
     query = f"SELECT * FROM question ORDER BY {'submission_time'} {'DESC'} FETCH FIRST {int(rows_number)} ROW ONLY"
     cursor.execute(query)
     return cursor.fetchall()
+
+
+# @connection.connection_handler
+# def get_data_id(cursor: RealDictCursor, column: str, data_id: str, data_table: str):
+#     query = sql.SQL("SELECT {column} FROM ").format(column=sql.Literal(column)) +
+#     sql.SQL("{table} WHERE id={data_id}").format(table=sql.Identifier(data_table), data_id=sql.Literal(data_id))
+#     cursor.execute(query)
+#     return cursor.fetchone()["id"]
 
 
 @connection.connection_handler

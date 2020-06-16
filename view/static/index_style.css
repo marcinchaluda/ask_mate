@@ -6,7 +6,7 @@
 }
 
 html {
-    background-image: url("/static/images/lamp.jpg");
+    background-image: url('../static/images/lamp.jpg');
     background-position: top;
     background-color: #222;
     background-repeat: no-repeat;

@@ -12,8 +12,12 @@
 {% endblock header %}
 {% block title_header %}
     <div class="question_data">
-        <p>Question title: {{ question_details[0]['title'] }}</p>
-        <p>Question message: {{ question_details[0]['message'] }}</p>
+        {% if answer_details == [] %}
+                <p>No answers has been given for above questions</p>
+        {% else %}
+            <p>Question title: {{ question_details['title'] }}</p>
+            <p>Question message: {{ question_details['message'] }}</p>
+        {% endif %}
     </div>
     {% if answer_details != [] %}
             {% for header in answer_headers %}
