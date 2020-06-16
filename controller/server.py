@@ -27,7 +27,7 @@ def display_data():
         reverse_bool = request.args['order_descending']
         questions = data_manager.get_sorted_questions(sorting_key, reverse_bool)
     else:
-        questions = data_manager.get_all_questions()
+        questions = data_manager.get_all_data('question')
     tags = data_manager.get_question_tags()
     comments = data_manager.get_question_comments()
     question_headers = data_manager.QUESTION_HEADERS
@@ -93,7 +93,7 @@ def delete_tag(question_id, tag_id):
 @app.route('/users')
 def display_users():
     user_headers = data_manager.USERS_HEADERS
-    users = data_manager.get_all_users()
+    users = data_manager.get_all_data('new_user')
     return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
 
 

@@ -14,15 +14,8 @@ VOTE_DOWN = -1
 
 
 @connection.connection_handler
-def get_all_questions(cursor: RealDictCursor) -> dict:
-    query = "SELECT * FROM question"
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_all_users(cursor: RealDictCursor) -> dict:
-    query = "SELECT * FROM new_user"
+def get_all_data(cursor: RealDictCursor, data_table: str) -> dict:
+    query = sql.SQL('SELECT * FROM ') + sql.SQL('{table}').format(table=sql.Identifier(data_table))
     cursor.execute(query)
     return cursor.fetchall()
 
