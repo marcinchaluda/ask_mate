@@ -69,7 +69,12 @@ CREATE TABLE tag (
 DROP TABLE IF EXISTS public.new_user;
 CREATE TABLE new_user (
     email text PRIMARY KEY NOT NULL,
+    user_name text,
     registration_time timestamp without time zone,
+    count_of_asked_questions integer,
+    count_of_answers integer,
+    count_of_comments integer,
+    reputation integer,
     password text
 );
 
@@ -112,13 +117,13 @@ ALTER TABLE ONLY answer
 ALTER TABLE ONLY comment
     ADD CONSTRAINT fk_email FOREIGN KEY (user_id) REFERENCES new_user(email) ON DELETE CASCADE;
 
-INSERT INTO new_user VALUES('test@test.pl', '2017-01-08 06:00:00', 'pass');
-INSERT INTO new_user VALUES('test@test1.pl', '2017-03-10 08:29:00', 'pass1');
-INSERT INTO new_user VALUES('test@test2.pl', '2017-08-19 08:29:00', 'pass2');
-INSERT INTO new_user VALUES('test@test3.pl', '2017-05-07 08:29:00', 'pass3');
-INSERT INTO new_user VALUES('test@test4.pl', '2017-07-14 08:29:00', 'pass4');
-INSERT INTO new_user VALUES('test@test5.pl', '2017-12-21 08:29:00', 'pass5');
-INSERT INTO new_user VALUES('test@test6.pl', '2017-10-20 08:29:00', 'pass6');
+INSERT INTO new_user VALUES('test@test.pl', 'user', '2017-01-08 06:00:00', 0, 6, 0, 5, 'pass');
+INSERT INTO new_user VALUES('test@test1.pl', 'user1', '2017-03-10 08:29:00', 1, 5, 0, 12, 'pass1');
+INSERT INTO new_user VALUES('test@test2.pl', 'user2', '2017-08-19 08:29:00', 2, 4, 0, 8, 'pass2');
+INSERT INTO new_user VALUES('test@test3.pl', 'user3', '2017-05-07 08:29:00', 3, 3, 0, 20, 'pass3');
+INSERT INTO new_user VALUES('test@test4.pl', 'user4', '2017-07-14 08:29:00', 4, 2 ,0, 3, 'pass4');
+INSERT INTO new_user VALUES('test@test5.pl', 'user5', '2017-12-21 08:29:00', 5, 1, 0, 17, 'pass5');
+INSERT INTO new_user VALUES('test@test6.pl', 'user6', '2017-10-20 08:29:00', 6, 0, 0, 6, 'pass6');
 
 INSERT INTO question VALUES (0, 'test@test5.pl', '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, 'test@test6.pl', '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();' ||
