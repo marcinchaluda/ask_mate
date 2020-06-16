@@ -14,6 +14,7 @@ app = Flask(__name__, template_folder="../view/templates", static_folder="../vie
 app.register_blueprint(update_data)
 app.register_blueprint(add_data)
 app.register_blueprint(user_data)
+app.secret_key = b'\xd7S@C\xe00\xf8\x11\xefj\xf1\xbcN\xb1$\xd5'
 NUMBER_OF_LATEST_QUESTIONS = 5
 
 

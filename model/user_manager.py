@@ -6,3 +6,8 @@ USERS_HEADERS = ['email', 'user_name', 'registration_time', 'count_of_asked_ques
                  'count_of_comments', 'reputation']
 
 
+@connection.connection_handler
+def get_user_by_email(cursor: RealDictCursor, email: str):
+    query = "SELECT * FROM new_user WHERE email = %s;"
+    cursor.execute(query, (email, ))
+    return cursor.fetchone()
