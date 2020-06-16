@@ -44,7 +44,7 @@ def add_new_comment(data_type, data_id):
             return redirect('/list')
         else:
             data_manager.save_comment(data_id, is_question)
-            answer = data_manager.fetch_answers_by_answer_id(data_id)
+            answer = data_manager.fetch_data(data_id, 'answer')
             question_id = answer['question_id']
             return redirect('/question/' + str(question_id))
     return render_template('modify_data_layout/add_new_comment.html', data_type=data_type, data_id=data_id)
