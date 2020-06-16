@@ -1,5 +1,5 @@
-from flask import Flask, render_template, redirect, request, Blueprint
-import data_manager
+from flask import render_template, redirect, request, Blueprint
+import model.data_manager as data_manager
 import os
 add_data = Blueprint('add_data', __name__)
 UPLOAD_FOLDER = 'static/images/'

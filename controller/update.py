@@ -1,6 +1,5 @@
-from flask import Flask, render_template, redirect, request, Blueprint
-import data_manager
-import os
+from flask import render_template, redirect, request, Blueprint
+import model.data_manager as data_manager
 update_data = Blueprint('update_data', __name__)
 NUMBER_OF_LATEST_QUESTIONS = 5
 
