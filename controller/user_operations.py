@@ -14,5 +14,10 @@ def login():
             session['email'] = request.form['email']
             return redirect(url_for('display_data'))
         message = 'Wrong password.'
-
     return render_template('login.html', message=message)
+
+
+@user_data.route('/logout')
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('display_data'))
