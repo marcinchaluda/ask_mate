@@ -290,3 +290,11 @@ def delete_tag(cursor: RealDictCursor, question_id, tag_id):
     cursor.execute(query)
     query = "DELETE FROM ONLY tag WHERE id = {0}".format(tag_id)
     cursor.execute(query)
+
+
+@connection.connection_handler
+def add_new_user(cursor: RealDictCursor, new_user_data):
+    query = """
+        INSERT INTO new_user VALUES(%(user_id)s, %(user_name)s, %(submission_time)s, 0, 0, 0, 0, %(password)s);
+        """
+    cursor.execute(query, new_user_data)

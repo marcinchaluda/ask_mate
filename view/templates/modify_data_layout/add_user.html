@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>New user registration</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div>
+        <h1>Sign up</h1>
+    {%  if mail_already_taken %}
+        <h2 style="color: red; margin: 5% 0 0 5%; font-weight: normal;">Error: This email is already connected with an existing account.</h2>
+    {%  endif %}
+    {% if user %}
+        <h2 style="color: red; margin: 5% 0 0 5%; font-weight: normal;">You are already signed in! If you want to create another account, please log out first.</h2>
+    {% else %}
+        <form action="registration" method="post" style="margin: 5% 0 0 10%;">
+            <div>
+                <label for="username">Email:</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            <div>
+                <label for="first_name">First name:</label>
+                <input type="text" name="first_name" id="first_name" required>
+            </div>
+            <div>
+                <label for="last_name">Last name:</label>
+                <input type="text" name="last_name" id="last_name" required>
+            </div>
+            <div>
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div>
+                <input type="submit" id="" value="Create an account">
+            </div>
+        </form>
+    </div>
+    {%  endif %}
+</body>
+</html>
