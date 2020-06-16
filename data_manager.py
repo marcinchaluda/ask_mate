@@ -3,9 +3,9 @@ import util
 from flask import request
 from psycopg2.extras import RealDictCursor, RealDictRow
 
-QUESTION_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-COMMENTS_HEADERS = ['submission_time', 'question_id', 'answer_id', 'message', 'edited_count']
+QUESTION_HEADERS = ['id', 'user_id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+ANSWER_HEADER = ['id', 'user_id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+COMMENTS_HEADERS = ['submission_time', 'user_id', 'question_id', 'answer_id', 'message', 'edited_count']
 TAG_HEADERS = ['name']
 VOTE_UP = 1
 VOTE_DOWN = -1
