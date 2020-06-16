@@ -237,10 +237,9 @@ def update_comment(cursor: RealDictCursor, comment: dict):
 @connection.connection_handler
 def update_votes(cursor: RealDictCursor, table_type: str, datum_id: str, vote):
     update_vote = VOTE_UP if vote == 'vote_up' else VOTE_DOWN
-    if table_type == 'answer':
-        query = f"UPDATE answer SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
-    else:
-        query = f"UPDATE question SET vote_number = vote_number + {int(update_vote)} WHERE id = {datum_id}"
+    query = sql.SQL('UPDATE {table} SET vote_number = vote_number + {update_vote} WHERE id = {datum_id}').\
+        format(table=sql.Identifier(table_type), update_vote=sql.Literal(int(update_vote)),
+               datum_id=sql.Literal(datum_id))
     cursor.execute(query)
 
 
