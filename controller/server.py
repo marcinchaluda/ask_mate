@@ -1,12 +1,13 @@
 from flask import Flask, render_template, redirect, request
-import data_manager
-import os
-from update import update_data
-from add import add_data
+import model.data_manager as data_manager
+from controller.update import update_data
+from controller.add import add_data
+from controller.user_operations import user_data
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 app.register_blueprint(update_data)
 app.register_blueprint(add_data)
+app.register_blueprint(user_data)
 NUMBER_OF_LATEST_QUESTIONS = 5
 
 
@@ -27,7 +28,7 @@ def display_data():
     tags = data_manager.get_question_tags()
     comments = data_manager.get_question_comments()
     question_headers = data_manager.QUESTION_HEADERS
-    return render_template('display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
+    return render_template('./display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
                            comments=comments)
 
 
