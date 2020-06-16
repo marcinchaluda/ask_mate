@@ -1,4 +1,3 @@
-import model.data_manager as data_manager
 import model.user_manager as user_manager
 from flask import render_template, redirect, request, Blueprint, url_for, session
 from psycopg2 import errors
