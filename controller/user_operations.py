@@ -1,4 +1,5 @@
 import model.data_manager as data_manager
+import model.user_manager as user_manager
 from flask import render_template, redirect, request, Blueprint, url_for, session
 from psycopg2 import errors
 from model.util import generate_seconds_since_epoch
@@ -40,7 +41,7 @@ def process_registration():
     except BadRequestKeyError:
         return redirect(url_for('user_operations.show_signup_form'))
     try:
-        data_manager.add_new_user(new_user_data)
+        user_manager.add_new_user(new_user_data)
     except errors.UniqueViolation:
         return redirect(url_for('user_operations.show_signup_form', mail_already_taken=True))
     return redirect(url_for('home'))
