@@ -1,5 +1,5 @@
 from model import connection, util
-from flask import request
+from flask import request, session
 from psycopg2.extras import RealDictCursor
 
 QUESTION_HEADERS = ['id', 'user_id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -28,6 +28,8 @@ def add_question_with_basic_headers():
             question[header] = 0
         elif header == 'submission_time':
             question[header] = util.generate_seconds_since_epoch()
+        elif header == 'user_id':
+            question[header] = session['email']
         else:
             question[header] = request.form.get(header)
     return question
@@ -36,12 +38,11 @@ def add_question_with_basic_headers():
 @connection.connection_handler
 def save_new_question(cursor: RealDictCursor, question: dict):
     query = f"""
-    INSERT INTO question (submission_time ,view_number, vote_number, title, message, image) 
-    VALUES (%(s_t)s ,%(v_n)s, %(vo_n)s, %(t)s, %(m)s, %(i)s )
+    INSERT INTO question (submission_time, user_id, view_number, vote_number, title, message, image) 
+    VALUES (%(submission_time)s, %(user_id)s ,%(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s )
     RETURNING id
     """
-    cursor.execute(query, {'s_t': question['submission_time'], 'v_n': question['view_number'], 'vo_n': question['vote_number'],
-                           't': question['title'], 'm': question['message'], 'i': question['image']})
+    cursor.execute(query, question)
     question_id = cursor.fetchone()['id']
     return question_id
 
