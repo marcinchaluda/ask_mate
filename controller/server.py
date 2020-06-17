@@ -58,7 +58,7 @@ def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
     data_manager.update_votes(table_type, datum_id, vote)
     if is_logged_in():
-        user_id = session['user']
+        user_id = session['email']
         user_manager.update_reputation(user_id, table_type, vote)
     if table_type == 'answer':
         answers = data_manager.get_question_id_for_answer(datum_id)
@@ -86,9 +86,9 @@ def delete(data_type, data_id):
             question_id = data_manager.get_question_id_for_answer(answer_id)
     delete_manager.delete_entry(data_type, data_id)
     if data_type == 'answer':
-        return redirect('/question/' + question_id)
+        return redirect('/question/' + str(question_id))
     if data_type == 'comment' and question_id:
-        return redirect('/question/' + question_id)
+        return redirect('/question/' + str(question_id))
     return redirect('/list')
 
 
