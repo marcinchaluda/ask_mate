@@ -8,6 +8,26 @@ from werkzeug.exceptions import BadRequestKeyError
 user_data = Blueprint('user_operations', __name__)
 
 
+@user_data.route('/login', methods=['GET', 'POST'])
+def login():
+    message = ''
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = user_manager.get_user_by_email(email)
+        if email in user['email'] and password in user['password']:
+            session['email'] = request.form['email']
+            return redirect(url_for('display_data'))
+        message = 'Wrong password.'
+    return render_template('login.html', message=message)
+
+
+@user_data.route('/logout')
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('display_data'))
+
+
 def hash_password(plain_text_password):
     hashed_password = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
     return hashed_password.decode('utf-8')

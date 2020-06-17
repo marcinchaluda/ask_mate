@@ -7,6 +7,13 @@ USERS_HEADERS = ['email', 'user_name', 'registration_time', 'count_of_asked_ques
 
 
 @connection.connection_handler
+def get_user_by_email(cursor: RealDictCursor, email: str):
+    query = "SELECT * FROM new_user WHERE email = %s;"
+    cursor.execute(query, (email, ))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
 def add_new_user(cursor: RealDictCursor, new_user_data):
     query = sql.SQL('''INSERT INTO new_user
     VALUES({user_id}, {user_name}, {submission_time}, 0, 0, 0, 0, {password})''').format(
