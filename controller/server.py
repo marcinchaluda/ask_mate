@@ -36,7 +36,7 @@ def display_data():
     comments = comment_manager.get_question_comments()
     question_headers = question_manager.QUESTION_HEADERS
     return render_template('./display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
-                           comments=comments, is_logged_in=is_logged_in())
+                           comments=comments, is_logged_in=is_logged_in(), user_id=get_current_user())
 
 
 @app.route('/question/<question_id>')

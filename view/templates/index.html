@@ -13,6 +13,7 @@
     <div class="wrapper">
         {% if is_logged_in %}
             <a href="/logout" class="login_link">log out</a>
+            <a href="/users" class="login_link">view users</a>
             <a href="/user/{{ user_id }}" class="login_link">profile</a>
         {% else %}
             <a href="/login" class="login_link">sign in</a>
