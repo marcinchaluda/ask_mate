@@ -66,18 +66,20 @@
                         </div>
                         <div class="message"><p>{{ question_value }}</p></div>
                         <div class="vote">
-                            <a href="/question/{{ question['id'] }}/vote_up">
-                                <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
-                            </a>
-                            <a href="/question/{{ question['id'] }}/vote_down">
-                                <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
-                            </a>
                             <a href="/question/{{ question['id'] }}/new-comment">
                                     <i class="fas fa-comment" title="Add Comment"></i>
                             </a>
                             <a href="/question/{{ question['id'] }}/new-tag">
                                     <i class="fas fa-tag" title="Add Tag"></i>
                             </a>
+                            {% if is_logged_in %}
+                                <a href="/question/{{ question['id'] }}/vote_up">
+                                    <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
+                                </a>
+                                <a href="/question/{{ question['id'] }}/vote_down">
+                                    <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
+                                </a>
+                            {% endif %}
                         </div>
                         <div class="comments">
                             <p class="comment_redirect">Comments</p>

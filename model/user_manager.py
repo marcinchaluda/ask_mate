@@ -17,6 +17,14 @@ def get_user_by_email(cursor: RealDictCursor, email: str):
 
 
 @connection.connection_handler
+def get_user_id(cursor: RealDictCursor, data_table: str, data_id: str):
+    query = sql.SQL("SELECT user_id FROM {table} WHERE id={id}"). \
+        format(table=sql.Identifier(data_table), id=sql.Literal(data_id))
+    cursor.execute(query)
+    return cursor.fetchone()['user_id']
+
+
+@connection.connection_handler
 def add_new_user(cursor: RealDictCursor, new_user_data):
     query = sql.SQL('''INSERT INTO new_user
     VALUES({user_id}, {user_name}, {submission_time}, 0, 0, 0, 0, {password})''').format(
@@ -30,7 +38,7 @@ def add_new_user(cursor: RealDictCursor, new_user_data):
 
 @connection.connection_handler
 def update_reputation(cursor: RealDictCursor, user_id: str, table_type: str, vote: str):
-    reputation_points = REPUTATION_POINTS[f"{table_type}_{vote}"]
+    reputation_points = int(REPUTATION_POINTS[f"{table_type}_{vote}"])
     query = sql.SQL('UPDATE new_user SET reputation = reputation + {reputation_points} WHERE email = {user_id}').\
         format(reputation_points=sql.Literal(reputation_points), user_id=sql.Literal(user_id))
     cursor.execute(query)

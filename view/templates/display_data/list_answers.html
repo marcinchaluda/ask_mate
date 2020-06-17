@@ -38,17 +38,17 @@
                         <div class="message_container">
                             <div class="message"><p>{{ answer_value }}</p></div>
                             <div class="vote">
-                                <a href="/answer/{{ dictionary['id'] }}/vote_up">
-                                    <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
-                                </a>
-                                <a href="/answer/{{ dictionary['id'] }}/vote_down">
-                                    <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
-                                </a>
                                 <a href="/answer/{{ dictionary['id'] }}/new-comment">
                                     <i class="fas fa-comment" title="Add comment"></i>
                                 </a>
                                 <a href="/answer/{{ dictionary['id'] }}/delete">
                                     <i class="fas fa-trash-alt" title="Delete Answer"></i>
+                                </a>
+                                <a href="/answer/{{ dictionary['id'] }}/vote_up">
+                                    <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
+                                </a>
+                                <a href="/answer/{{ dictionary['id'] }}/vote_down">
+                                    <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
                                 </a>
                                 <a href="/answer/{{ dictionary['id'] }}/accepted">
                                     <i class="fas fa-check-circle" title="Check as the best answer"></i>

@@ -44,8 +44,6 @@ def display_answers(question_id):
     answer_headers = answer_manager.ANSWER_HEADER
     answer_details = data_manager.fetch_data(question_id, 'answer')
     question_details = data_manager.fetch_data(question_id, 'question')
-    print(answer_details)
-    print(question_details)
     question_manager.update_view_number(question_id)
     comments = comment_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
@@ -58,11 +56,11 @@ def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
     data_manager.update_votes(table_type, datum_id, vote)
     if is_logged_in():
-        user_id = data_manager.fetch_data(datum_id, table_type)[0]['user_id']
+        user_id = user_manager.get_user_id(table_type, datum_id)
         user_manager.update_reputation(user_id, table_type, vote)
-    if table_type == 'answer':
-        answers = data_manager.fetch_data(datum_id, 'question')[0]['id']
-        return redirect("/question/{0}".format(answers))
+        if table_type == 'answer':
+            answers = data_manager.get_question_id_for_answer(datum_id)
+            return redirect("/question/{0}".format(answers))
     return redirect('/list')
 
 
