@@ -135,6 +135,8 @@
         {% endfor %}
         </tbody>
     </table>
+    {% else %}
+        <p>User hasn't asked any questions yet.</p>
     {% endif %}
     <h2 class="profile_h2">User answers</h2>
     {% if answer_details %}
@@ -207,8 +209,46 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <p>User hasn't provided any answers yet.</p>
     {% endif %}
-
+    <h2 class="profile_h2">User comments</h2>
+    {% if user_comments %}
+        <table id="prifle_comment_table">
+            <thead>
+                <tr>
+                    {% for column in user_comments[0].keys() %}
+                        <th>
+                            {{ column.replace("_", " ").title() }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in user_comments %}
+                    <tr>
+                        {% for column, cell in comment.items() %}
+                            <td>
+                                {% if column == 'question_id' %}
+                                    {% if cell %}
+                                    <a href="/question/{{ cell }}">{{ cell }}</a>
+                                    {% endif %}
+                                {% elif column == 'answer_id' %}
+                                    {% if cell %}
+                                        <p>{{ cell }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p>{{ cell }}</p>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>The user has not give any comments yet.</p>
+    {% endif %}
 {% endblock lower_section %}
 {% block buttons %}
     <div class="buttons">

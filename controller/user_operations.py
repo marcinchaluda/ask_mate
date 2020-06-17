@@ -87,12 +87,13 @@ def show_user_page(user_id=None):
         # answers
         answer_headers = answer_manager.ANSWER_HEADER
         answer_details = data_manager.get_all_data('answer', user_id=user_id)
-        # question_details = data_manager.fetch_data(question_id, 'question')
-        # answer_comments = comment_manager.get_question_comments()
+        #comments
+        user_comments = data_manager.get_all_data('comment', user_id=user_id)
         try:
             return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
-                                   questions=questions, question_headers=question_headers, tags=tags,
-                                   comments=comments, answer_headers=answer_headers, answer_details=answer_details)
+                                   question_headers=question_headers, questions=questions, tags=tags, comments=comments,
+                                   answer_headers=answer_headers, answer_details=answer_details,
+                                   user_comments=user_comments)
         except UndefinedError:
             return render_template('display_data/breaking.html')
     return render_template('display_data/breaking.html')

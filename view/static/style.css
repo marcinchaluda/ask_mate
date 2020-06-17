@@ -258,7 +258,7 @@ select option[value='text_area_enabled']:focus {
   }
 }
 
-#profile_question_table, #profile_answer_table {
+#profile_question_table, #profile_answer_table, #prifle_comment_table {
     width: 80vw;
 }
 
