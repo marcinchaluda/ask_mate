@@ -15,10 +15,10 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = user_manager.get_user_by_email(email)
-        if email in user['email'] and password in user['password']:
+        if email in user['email'] and verify_password(password, user['password']):
             session['email'] = request.form['email']
             return redirect(url_for('display_data'))
-        message = 'Wrong password.'
+        message = 'Wrong email or password.'
     return render_template('login.html', message=message)
 
 

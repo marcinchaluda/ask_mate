@@ -13,8 +13,9 @@ UPLOAD_FOLDER = 'static/images/'
 @add_data.route("/add_question", methods=['GET', 'POST'])
 def add_new_question():
     if request.method == "GET":
+        if 'email' not in session:
+            return redirect('/login')
         return render_template('modify_data_layout/add_question.html')
-
     question = question_manager.add_question_with_basic_headers()
     file = request.files['file']
     filename = file.filename
@@ -29,6 +30,8 @@ def add_new_question():
 @add_data.route("/question/<data_id>/new_answer", methods=['GET', 'POST'])
 def add_new_answer(data_id):
     if request.method == "GET":
+        if 'email' not in session:
+            return redirect('/login')
         return render_template('modify_data_layout/new_answer.html', data_id=data_id)
     answer = answer_manager.add_answer_with_basic_headers(data_id)
     file = request.files['file']
@@ -44,6 +47,8 @@ def add_new_answer(data_id):
 @add_data.route("/<data_type>/<data_id>/new-comment", methods=['GET', 'POST'])
 def add_new_comment(data_type, data_id):
     if request.method == "GET":
+        if 'email' not in session:
+            return redirect('/login')
         return render_template('modify_data_layout/add_new_comment.html', data_type=data_type, data_id=data_id)
     is_question = data_type == "question"
     if is_question:
