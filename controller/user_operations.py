@@ -64,3 +64,11 @@ def process_registration():
     except errors.UniqueViolation:
         return redirect(url_for('user_operations.show_signup_form', mail_already_taken=True))
     return redirect(url_for('home'))
+
+
+@user_data.route('/user/<user_id>')
+@user_data.route('/user/')
+def show_user_page(user_id=None):
+    if user_id:
+        return render_template('display_data/user_page.html', user_id=user_id)
+    return render_template('display_data/breaking.html')
