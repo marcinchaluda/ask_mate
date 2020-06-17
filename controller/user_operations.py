@@ -1,5 +1,9 @@
 import model.user_manager as user_manager
 import model.data_manager as data_manager
+import model.question_manager as question_manager
+import model.comment_manager as comment_manager
+import model.tag_manager as tag_manager
+import model.answer_manager as answer_manager
 from flask import render_template, redirect, request, Blueprint, url_for, session
 from psycopg2 import errors
 from model.util import generate_seconds_since_epoch
@@ -75,8 +79,20 @@ def show_user_page(user_id=None):
     if user_id:
         user_headers = user_manager.USERS_HEADERS
         user = data_manager.get_all_data('new_user', email=user_id)[0]
+        # questions
+        question_headers = question_manager.QUESTION_HEADERS
+        questions = data_manager.get_all_data('question', user_id=user_id)
+        tags = tag_manager.get_question_tags()
+        comments = comment_manager.get_question_comments()
+        # answers
+        answer_headers = answer_manager.ANSWER_HEADER
+        answer_details = data_manager.get_all_data('answer', user_id=user_id)
+        # question_details = data_manager.fetch_data(question_id, 'question')
+        # answer_comments = comment_manager.get_question_comments()
         try:
-            return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user)
+            return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
+                                   questions=questions, question_headers=question_headers, tags=tags,
+                                   comments=comments, answer_headers=answer_headers, answer_details=answer_details)
         except UndefinedError:
             return render_template('display_data/breaking.html')
     return render_template('display_data/breaking.html')
