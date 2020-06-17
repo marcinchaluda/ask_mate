@@ -1,4 +1,5 @@
 import model.user_manager as user_manager
+import model.data_manager as data_manager
 from flask import render_template, redirect, request, Blueprint, url_for, session
 from psycopg2 import errors
 from model.util import generate_seconds_since_epoch
@@ -70,5 +71,7 @@ def process_registration():
 @user_data.route('/user/')
 def show_user_page(user_id=None):
     if user_id:
-        return render_template('display_data/user_page.html', user_id=user_id)
+        user_headers = user_manager.USERS_HEADERS
+        user = data_manager ?
+        return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user)
     return render_template('display_data/breaking.html')

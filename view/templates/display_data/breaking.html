@@ -1,4 +1,9 @@
 {% extends 'display_data/display_data_layout.html' %}
+{% block links%}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+{% endblock links %}
 {% block body %}
 <h1 style="text-align: center; margin-top: 3vh">
     <marquee class="glow" style="color: pink; background-color: black; width: 50%;" scrollamount="25">
