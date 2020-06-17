@@ -55,8 +55,11 @@ def display_answers(question_id):
 def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
     data_manager.update_votes(table_type, datum_id, vote)
+    if is_logged_in():
+        user_id = data_manager.fetch_data(datum_id, table_type)[0]['user_id']
+        user_manager.update_reputation(user_id, table_type, vote)
     if table_type == 'answer':
-        answers = data_manager.get_question_id_for_answer(datum_id)
+        answers = data_manager.fetch_data(datum_id, 'question')[0]['id']
         return redirect("/question/{0}".format(answers))
     return redirect('/list')
 
@@ -95,9 +98,11 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/users')
 def display_users():
-    user_headers = user_manager.USERS_HEADERS
-    users = data_manager.get_all_data('new_user')
-    return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
+    if is_logged_in():
+        user_headers = user_manager.USERS_HEADERS
+        users = data_manager.get_all_data('new_user')
+        return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
+    return redirect('/login')
 
 
 def is_logged_in():

@@ -15,8 +15,8 @@
         {% if answer_details == [] %}
                 <p>No answers has been given for above questions</p>
         {% else %}
-            <p>Question title: {{ question_details['title'] }}</p>
-            <p>Question message: {{ question_details['message'] }}</p>
+            <p>Question title: {{ question_details[0]['title'] }}</p>
+            <p>Question message: {{ question_details[0]['message'] }}</p>
         {% endif %}
     </div>
     {% if answer_details != [] %}
@@ -53,6 +53,9 @@
                                 </a>
                                 <a href="/answer/{{ dictionary['id'] }}/delete">
                                     <i class="fas fa-trash-alt" title="Delete Answer"></i>
+                                </a>
+                                <a href="/answer/{{ dictionary['id'] }}/accepted">
+                                    <i class="fas fa-check-circle" title="Check as the best answer"></i>
                                 </a>
                             </div>
                             <div class="comments">
