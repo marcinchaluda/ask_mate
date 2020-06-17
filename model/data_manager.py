@@ -15,8 +15,9 @@ def get_all_data(cursor: RealDictCursor, data_table: str) -> dict:
 
 @connection.connection_handler
 def fetch_data(cursor: RealDictCursor, key_to_find: str, data_table: str) -> dict:
-    query = sql.SQL("SELECT * FROM {table} WHERE id={id}").format(table=sql.Identifier(data_table),
-                                                                  id=sql.Literal(key_to_find))
+    current_id = 'question_id' if data_table == 'answer' else 'id'
+    query = sql.SQL("SELECT * FROM {table} WHERE {current_id}={id}").\
+        format(table=sql.Identifier(data_table), current_id=sql.Identifier(current_id), id=sql.Literal(key_to_find))
     cursor.execute(query)
     return cursor.fetchall()
 

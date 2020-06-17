@@ -1,5 +1,5 @@
 from model import connection, util
-from flask import request
+from flask import request, session
 from psycopg2.extras import RealDictCursor
 
 COMMENTS_HEADERS = ['submission_time', 'user_id', 'question_id', 'answer_id', 'message', 'edited_count']
@@ -16,6 +16,8 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
             comment[header] = data_id
         elif header == 'answer_id' and not is_this_comment_for_question:
             comment[header] = data_id
+        elif header == 'user_id':
+            comment[header] = session['email']
         else:
             comment[header] = request.form.get(header)
     return comment
@@ -24,11 +26,10 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
 @connection.connection_handler
 def save_new_comment(cursor: RealDictCursor, comment: dict):
     query = f"""
-    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message) 
-    VALUES (%(s_t)s ,%(q_i)s, %(a_i)s, %(e_c)s, %(m)s)
+    INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message, user_id) 
+    VALUES (%(submission_time)s ,%(question_id)s, %(answer_id)s, %(edited_count)s, %(message)s, %(user_id)s)
     """
-    cursor.execute(query, {'s_t': comment['submission_time'], 'q_i': comment['question_id'],
-                           'a_i': comment['answer_id'], 'm': comment['message'], 'e_c': comment['edited_count']})
+    cursor.execute(query, comment)
 
 
 def save_comment(data_id, is_question):

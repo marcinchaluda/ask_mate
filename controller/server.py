@@ -44,6 +44,8 @@ def display_answers(question_id):
     answer_headers = answer_manager.ANSWER_HEADER
     answer_details = data_manager.fetch_data(question_id, 'answer')
     question_details = data_manager.fetch_data(question_id, 'question')
+    print(answer_details)
+    print(question_details)
     question_manager.update_view_number(question_id)
     comments = comment_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
@@ -84,9 +86,9 @@ def delete(data_type, data_id):
             question_id = data_manager.get_question_id_for_answer(answer_id)
     delete_manager.delete_entry(data_type, data_id)
     if data_type == 'answer':
-        return redirect('/question/' + question_id)
+        return redirect('/question/' + str(question_id))
     if data_type == 'comment' and question_id:
-        return redirect('/question/' + question_id)
+        return redirect('/question/' + str(question_id))
     return redirect('/list')
 
 
