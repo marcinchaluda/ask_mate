@@ -21,7 +21,7 @@ NUMBER_OF_LATEST_QUESTIONS = 5
 @app.route('/')
 def home():
     questions = question_manager.fetch_n_number_of_rows(NUMBER_OF_LATEST_QUESTIONS)
-    return render_template('index.html', questions=questions, is_logged_in=is_logged_in())
+    return render_template('index.html', questions=questions, is_logged_in=is_logged_in(), user_id=get_current_user())
 
 
 @app.route('/list', methods=['GET', 'POST'])
@@ -109,6 +109,11 @@ def display_users():
 
 def is_logged_in():
     return 'email' in session
+
+
+def get_current_user():
+    if is_logged_in():
+        return session['email']
 
 
 if __name__ == "__main__":
