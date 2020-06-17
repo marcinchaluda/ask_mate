@@ -100,9 +100,11 @@ def delete_tag(question_id, tag_id):
 
 @app.route('/users')
 def display_users():
-    user_headers = user_manager.USERS_HEADERS
-    users = data_manager.get_all_data('new_user')
-    return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
+    if is_logged_in():
+        user_headers = user_manager.USERS_HEADERS
+        users = data_manager.get_all_data('new_user')
+        return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
+    return redirect('/login')
 
 
 def is_logged_in():
