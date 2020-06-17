@@ -14,7 +14,7 @@ NUMBER_OF_LATEST_QUESTIONS = 5
 @app.route('/')
 def home():
     email = ''
-    if email in session:
+    if 'email' in session:
         email = session['email']
     questions = data_manager.fetch_n_number_of_rows(NUMBER_OF_LATEST_QUESTIONS)
     return render_template('index.html', questions=questions, email=email)
