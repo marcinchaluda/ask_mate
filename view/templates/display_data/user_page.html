@@ -104,11 +104,13 @@
                                     {% if comment['question_id'] == question['id'] %}
                                         <div class="comment_details">
                                             {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}<span> |</span> Number of edits: {{ comment['edited_count'] }}
+                                            {% if user_id == comment['user_id'] %}
                                             <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
                                             <a href="/comment/{{ comment['id'] }}/delete"
                                                onclick="return confirm('Delete this comment?');">
                                                 <i class="fas fa-trash-alt redhover" title="Delete Comment"></i>
                                             </a>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -174,11 +176,13 @@
                                             {% if comment['answer_id'] == dictionary['id'] %}
                                                 <div class="comment_details">
                                                     {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}<span> |</span> Number of edits: {{ comment['edited_count'] }}
+                                                    {% if user_id == comment['user_id'] %}
                                                     <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
                                                     <a href="/comment/{{ comment['id'] }}/delete"
                                                        onclick="return confirm('Delete this comment?');">
                                                         <i class="fas fa-trash-alt" title="Delete Comment"></i>
                                                     </a>
+                                                    {% endif %}
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
@@ -192,7 +196,7 @@
                                     <img src="/{{ answer_value }}" height="100px">
                                 {% endif %}
                             {% elif answer_key == 'question_id' %}
-                                <a href="../question/{{ answer_value }}" class="hover_highlight">{{ answer_value }}</a>
+                                <a href="/question/{{ answer_value }}" class="hover_highlight">{{ answer_value }}</a>
                             {% else %}
                                 <p>{{ answer_value }}</p>
                             {% endif %}
