@@ -91,8 +91,13 @@
 {% block buttons %}
     <div class="buttons">
         <a href="/list" type="button">Go Back!</a>
-        <a href="{{ question_details[0]['id'] }}/new_answer" type="button">Add new answer</a>
-        <a href="{{ question_details[0]['id'] }}/edit" type="button">Edit this question</a>
-        <a href="{{ question_details[0]['id'] }}/delete" type="button">Delete this question</a>
+        {% if is_logged_in %}
+            <a href="{{ question_details[0]['id'] }}/new_answer" type="button">Add new answer</a>
+            <a href="{{ question_details[0]['id'] }}/edit" type="button">Edit this question</a>
+            <a href="{{ question_details[0]['id'] }}/delete" type="button">Delete this question</a>
+            <a href="/logout" type="button">Log out</a>
+        {% else %}
+             <a href="/login" type="button">Login</a>
+        {% endif %}
     </div>
 {% endblock  buttons %}

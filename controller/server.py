@@ -39,7 +39,7 @@ def display_data():
     comments = comment_manager.get_question_comments()
     question_headers = question_manager.QUESTION_HEADERS
     return render_template('./display_data/list.html', questions=questions, question_headers=question_headers, tags=tags,
-                           comments=comments)
+                           comments=comments, is_logged_in=is_logged_in())
 
 
 @app.route('/question/<question_id>')
@@ -50,7 +50,8 @@ def display_answers(question_id):
     question_manager.update_view_number(question_id)
     comments = comment_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
-                           question_details=question_details, answer_headers=answer_headers, comments=comments)
+                           question_details=question_details, answer_headers=answer_headers,
+                           comments=comments, is_logged_in=is_logged_in())
 
 
 @app.route('/<library_type>/<datum_id>/<vote>')
@@ -100,6 +101,10 @@ def display_users():
     user_headers = user_manager.USERS_HEADERS
     users = data_manager.get_all_data('new_user')
     return render_template('display_data/list_users.html', users=users, user_headers=user_headers)
+
+
+def is_logged_in():
+    return 'email' in session
 
 
 if __name__ == "__main__":
