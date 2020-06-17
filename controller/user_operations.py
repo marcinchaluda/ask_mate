@@ -74,7 +74,7 @@ def process_registration():
 def show_user_page(user_id=None):
     if user_id:
         user_headers = user_manager.USERS_HEADERS
-        user = data_manager.get_all_data('new_user', email=user_id)
+        user = data_manager.get_all_data('new_user', email=user_id)[0]
         try:
             return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user)
         except UndefinedError:

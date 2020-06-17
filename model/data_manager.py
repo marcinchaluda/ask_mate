@@ -7,8 +7,13 @@ VOTE_DOWN = -1
 
 
 @connection.connection_handler
-def get_all_data(cursor: RealDictCursor, data_table: str) -> dict:
+def get_all_data(cursor: RealDictCursor, data_table: str, **kwargs) -> dict:
     query = sql.SQL('SELECT * FROM ') + sql.SQL('{table}').format(table=sql.Identifier(data_table))
+    if kwargs:
+        for column_name, row_value in kwargs.items():
+            query_clause = sql.SQL(" WHERE {column} = {value}").format(column=sql.Identifier(column_name),
+                                                                      value=sql.Literal(row_value))
+            query = query + query_clause
     cursor.execute(query)
     return cursor.fetchall()
 
