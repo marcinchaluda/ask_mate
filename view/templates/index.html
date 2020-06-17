@@ -11,6 +11,8 @@
 </head>
 <body>
     <div class="wrapper">
+        <a href="/login" class="login_link">sign in</a>
+        <a href="/registration" class="login_link">sign up</a>
         <h1>Ask mate</h1>
         <div class="ghost">
             <section class="avatar">
@@ -31,9 +33,6 @@
                 <input class="input_submit" type="submit" value="Get answers!">
             </form>
             <a href="/list" type="button">Display All Questions</a>
-                {% if email != '' %}
-                    <a href="/users" type="button">Display All Users</a>
-                {% endif %}
             <a class="hidden" href="#" type="button" name="latest_questions" id="latest_questions">Display Latest Questions</a>
             <div class="latest_questions">
                 <ol>

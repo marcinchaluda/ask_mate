@@ -12,7 +12,13 @@
 {% endblock header %}
 {% block main_menu %}
     <div class="add_question">
-        <a href="/add_question" type="button">Add new question</a>
+        {% if is_logged_in%}
+            <a href="/add_question" type="button">Add new question</a>
+            <a href="/logout" type="button">Logout</a>
+        {% else %}
+            <a href="/login" type="button">Login</a>
+        {% endif %}
+
     </div>
 {% endblock main_menu %}
 {% block title_header %}
