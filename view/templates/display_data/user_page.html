@@ -154,7 +154,7 @@
                     {% for dictionary in answer_details %}
                     <tr class="white_row_color">
                     {% for answer_key, answer_value in dictionary.items() %}
-                        {% if answer_key != 'accepted_answer' %}
+
                             {% if answer_key == "message" %}
                                 <td>
                                     <div class="message_container">
@@ -205,7 +205,6 @@
                                 {% endif %}
                                 </td>
                             {% endif %}
-                        {% endif %}
                     {% endfor %}
                     </tr>
                 {% endfor %}

@@ -16,11 +16,13 @@
         <p>Question message: {{ question_details[0]['message'] }}</p>
     </div>
     {% if answer_details != [] %}
-            {% for header in answer_headers %}
+        {% for header in answer_headers %}
+            {% if header != 'accepted_answer' %}
                 <th>
                     {{ header.replace("_", " ").title() }}
                 </th>
-            {% endfor %}
+            {% endif %}
+        {% endfor %}
     {% endif %}
 {% endblock title_header %}
 {% block content %}
