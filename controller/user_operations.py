@@ -78,7 +78,10 @@ def process_registration():
 def show_user_page(user_id=None):
     if user_id:
         user_headers = user_manager.USERS_HEADERS
-        user = data_manager.get_all_data('new_user', email=user_id)[0]
+        try:
+            user = data_manager.get_all_data('new_user', email=user_id)[0]
+        except IndexError:
+            return render_template('display_data/breaking.html')
         # questions
         question_headers = question_manager.QUESTION_HEADERS
         questions = data_manager.get_all_data('question', user_id=user_id)
