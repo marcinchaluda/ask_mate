@@ -1,0 +1,32 @@
+{% extends 'display_data/display_data_layout.html' %}
+{% block links%}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Contrail+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+{% endblock links %}
+{% block title %}
+    Tags list | Ask-Mate
+{% endblock title %}
+{% block header %}
+    Tags List
+{% endblock header %}
+{%  if tags_metadata %}
+    {% block title_header %}
+        {% for tag_metadata_header in tags_metadata[0] %}
+            <th>
+                {{ tag_metadata_header.replace("_", " ").title() }}
+            </th>
+        {% endfor %}
+    {% endblock title_header %}
+    {% block content %}
+        {% for tag in tags_metadata %}
+            <tr>
+                {% for datum in tag.values() %}
+                    <td>{{ datum }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endblock content %}
+{% else %}
+<h2>Sorry, there are no tags yet.</h2>
+{% endif %}

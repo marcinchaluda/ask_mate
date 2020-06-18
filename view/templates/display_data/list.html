@@ -16,12 +16,13 @@
             <a href="/add_question" type="button">Add new question</a>
             <a href="/user/{{ user_id }}" type="button">My profile</a>
             <a href="/users" type="button">View users</a>
+            <a href="/tags" type="button">View tags</a>
             <a href="/logout" type="button">Logout</a>
         {% else %}
+            <a href="/tags" type="button">View tags</a>
             <a href="/login" type="button">Login</a>
-            <a href="/registration">Sign up</a>
+            <a href="/registration" type="button">Sign up</a>
         {% endif %}
-
     </div>
 {% endblock main_menu %}
 {% block title_header %}

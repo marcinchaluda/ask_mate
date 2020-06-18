@@ -105,6 +105,12 @@ def display_users():
     return redirect('/login')
 
 
+@app.route('/tags')
+def show_tags():
+    tags_metadata = data_manager.get_tags_with_metadata()
+    return render_template('display_data/tags.html', tags_metadata=tags_metadata)
+
+
 def is_logged_in():
     return 'email' in session
 
