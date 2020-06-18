@@ -3,16 +3,20 @@
     <head>
         <meta charset="UTF-8" />
         <title>Login</title>
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <p>Login:</p>
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
-        <form method="POST">
-            <input type="email" name="email" placeholder="email" /><br />
-            <input type="password" name="password" placeholder="password" /><br />
-            <button type="submit" value="Submit" >login</button>
-        </form>
+        <div class="table_container">
+            <p>Login:</p>
+            {% if message %}
+                <p>{{ message }}</p>
+            {% endif %}
+            <form method="POST">
+                <input type="email" name="email" placeholder="email" /><br />
+                <input type="password" name="password" placeholder="password" /><br />
+                <button type="submit" value="Submit" >login</button>
+            </form>
+        </div>
+
     </body>
 </html>

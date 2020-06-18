@@ -24,6 +24,13 @@ def add_comment_with_basic_headers(data_id: str, is_this_comment_for_question: b
 
 
 @connection.connection_handler
+def get_question_id_from_answer(cursor: RealDictCursor, answer_id):
+    query = "SELECT question_id FROM answer WHERE id = %s"
+    cursor.execute(query, (answer_id, ))
+    return cursor.fetchone()
+
+
+@connection.connection_handler
 def save_new_comment(cursor: RealDictCursor, comment: dict):
     query = f"""
     INSERT INTO comment (submission_time ,question_id, answer_id, edited_count, message, user_id) 
