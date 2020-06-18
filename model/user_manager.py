@@ -5,6 +5,8 @@ import model.data_manager as data_manger
 
 USERS_HEADERS = ['email', 'user_name', 'registration_time', 'count_of_asked_questions', 'count_of_answers',
                  'count_of_comments', 'reputation']
+REPUTATION_POINTS = {'question_vote_up': 5, 'question_vote_down': -2, 'answer_vote_up': 10, 'answer_vote_down': -2,
+                     'answer_accepted': 15}
 
 
 @connection.connection_handler
@@ -12,6 +14,14 @@ def get_user_by_email(cursor: RealDictCursor, email: str):
     query = "SELECT * FROM new_user WHERE email = %s;"
     cursor.execute(query, (email, ))
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_id(cursor: RealDictCursor, data_table: str, data_id: str):
+    query = sql.SQL("SELECT user_id FROM {table} WHERE id={id}"). \
+        format(table=sql.Identifier(data_table), id=sql.Literal(data_id))
+    cursor.execute(query)
+    return cursor.fetchone()['user_id']
 
 
 @connection.connection_handler
@@ -28,8 +38,7 @@ def add_new_user(cursor: RealDictCursor, new_user_data):
 
 @connection.connection_handler
 def update_reputation(cursor: RealDictCursor, user_id: str, table_type: str, vote: str):
-    update_vote = data_manger.VOTE_UP if vote == 'vote_up' else data_manger.VOTE_DOWN
-    reputation_points = ""
-    query = sql.SQL('UPDATE new_user SET reputation = reputaion + {reputation_points} WHERE id = {user_id}').\
+    reputation_points = int(REPUTATION_POINTS[f"{table_type}_{vote}"])
+    query = sql.SQL('UPDATE new_user SET reputation = reputation + {reputation_points} WHERE email = {user_id}').\
         format(reputation_points=sql.Literal(reputation_points), user_id=sql.Literal(user_id))
     cursor.execute(query)
