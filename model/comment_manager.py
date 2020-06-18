@@ -46,7 +46,7 @@ def save_comment(data_id, is_question):
 
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor) -> dict:
-    cursor.execute("SELECT id, question_id, answer_id, message, submission_time, edited_count FROM comment")
+    cursor.execute("SELECT id, user_id, question_id, answer_id, message, submission_time, edited_count FROM comment")
     return cursor.fetchall()
 
 

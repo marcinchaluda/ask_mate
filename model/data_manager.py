@@ -32,12 +32,15 @@ def fetch_data(cursor: RealDictCursor, key_to_find: str, data_table: str) -> dic
     return cursor.fetchall()
 
 
-# @connection.connection_handler
-# def get_data_id(cursor: RealDictCursor, column: str, data_id: str, data_table: str):
-#     query = sql.SQL("SELECT {column} FROM ").format(column=sql.Literal(column)) + \
-#             sql.SQL("{table} WHERE id={data_id}").format(table=sql.Identifier(data_table), data_id=sql.Literal(data_id))
-#     cursor.execute(query)
-#     return cursor.fetchone()[column]
+@connection.connection_handler
+def update_user_count(cursor: RealDictCursor, column: str, email: str, is_delete: bool):
+    if is_delete:
+        query = sql.SQL("UPDATE new_user SET {column} = {column} - 1 WHERE email = {email}").\
+            format(column=sql.Identifier(column), email=sql.Literal(email))
+    else:
+        query = sql.SQL("UPDATE new_user SET {column} = {column} + 1 WHERE email = {email}")\
+            .format(column=sql.Identifier(column), email=sql.Literal(email))
+    cursor.execute(query)
 
 
 @connection.connection_handler
@@ -51,10 +54,9 @@ def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
 def get_answer_id_for_comment(cursor: RealDictCursor, data_id: str):
     query = "SELECT answer_id FROM comment WHERE id = {0}".format(data_id)
     cursor.execute(query)
-    try:
-        return cursor.fetchone()['answer_id']
-    except TypeError:
-        return None
+    requested_data = cursor.fetchone()
+    if requested_data:
+        return requested_data['answer_id']
 
 
 @connection.connection_handler
@@ -98,3 +100,12 @@ def check_for_id_duplicate(data, key_to_find, id_to_check):
         if element[key_to_find] == id_to_check:
             return True
     return False
+
+
+@connection.connection_handler
+def get_tags_with_metadata(cursor: RealDictCursor):
+    query = "SELECT name, COUNT(question_id) AS usage_count FROM tag LEFT JOIN question_tag qt ON tag.id = qt.tag_id GROUP BY name"
+    cursor.execute(query)
+    return cursor.fetchall()
+
+

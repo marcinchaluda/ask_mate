@@ -22,9 +22,10 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = user_manager.get_user_by_email(email)
-        if email in user['email'] and verify_password(password, user['password']):
-            session['email'] = request.form['email']
-            return redirect(url_for('display_data'))
+        if user is not None:
+            if email in user['email'] and verify_password(password, user['password']):
+                session['email'] = request.form['email']
+                return redirect(url_for('display_data'))
         message = 'Wrong email or password.'
     return render_template('login.html', message=message)
 
@@ -76,9 +77,12 @@ def process_registration():
 @user_data.route('/user/<user_id>')
 @user_data.route('/user/')
 def show_user_page(user_id=None):
-    if user_id:
+    if user_id and session:
         user_headers = user_manager.USERS_HEADERS
-        user = data_manager.get_all_data('new_user', email=user_id)[0]
+        try:
+            user = data_manager.get_all_data('new_user', email=user_id)[0]
+        except IndexError:
+            return render_template('display_data/breaking.html')
         # questions
         question_headers = question_manager.QUESTION_HEADERS
         questions = data_manager.get_all_data('question', user_id=user_id)
@@ -90,7 +94,7 @@ def show_user_page(user_id=None):
         #comments
         user_comments = data_manager.get_all_data('comment', user_id=user_id)
         try:
-            return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
+                return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
                                    question_headers=question_headers, questions=questions, tags=tags, comments=comments,
                                    answer_headers=answer_headers, answer_details=answer_details,
                                    user_comments=user_comments)
