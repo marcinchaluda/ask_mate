@@ -58,11 +58,10 @@ def display_answers(question_id):
 @app.route('/<library_type>/<datum_id>/<vote>')
 def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
-    if vote == 'accepted' and vote == 'uncheck':
+    if vote != 'accepted' and vote != 'uncheck':
         data_manager.update_votes(table_type, datum_id, vote)
     if is_logged_in():
         user_id = user_manager.get_user_id(table_type, datum_id)
-        print(datum_id)
         user_manager.update_reputation(user_id, table_type, vote, datum_id)
         if table_type == 'answer':
             answers = data_manager.get_question_id_for_answer(datum_id)
