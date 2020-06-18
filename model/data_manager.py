@@ -18,7 +18,7 @@ def append_where_if_kwargs(query, parameters):
     if parameters:
         for column_name, row_value in parameters.items():
             query_clause = sql.SQL(" WHERE {column} = {value}").format(column=sql.Identifier(column_name),
-                                                                      value=sql.Literal(row_value))
+                                                                       value=sql.Literal(row_value))
             return query + query_clause
     return query
 
