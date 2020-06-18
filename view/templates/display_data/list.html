@@ -47,7 +47,7 @@
 {% endblock title_header %}
 {% block content %}
     {% for question in questions %}
-        <tr>
+        <tr class="white_row_color">
         {% for question_key, question_value in question.items() %}
             {% if question_key == "title" %}
                 <td>

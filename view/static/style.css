@@ -22,8 +22,7 @@ table, th, td {
     border: 1px solid #ddd;
     border-top: none;
     border-collapse: collapse;
-    padding: 10px;
-    background-color: whitesmoke;
+    padding: 0.7em;
 }
 
 th {
@@ -39,9 +38,9 @@ th {
 
 button {
     width: 210px;
-    padding: 10px 20px;
-    margin-top: 10px;
-    border-radius: 8px;
+    padding: 0.7em 1.25em;
+    margin-top: 0.7em;
+    border-radius: 0.5em;
     background-color: white;
     text-transform: uppercase;
 }
@@ -58,7 +57,7 @@ div h1 {
     width: 40vw;
     text-align: center;
     font-family: 'Contrail One', cursive;
-    font-size: 80px;
+    font-size: 5em;
     color: white;
     overflow: auto;
     border-bottom-left-radius: 5em;
@@ -81,11 +80,11 @@ a {
 }
 
 .sort_triangle_up {
-    width: 12px;
+    width: 0.75em;
 }
 
 .sort_triangle_down {
-    width: 12px;
+    width: 0.75em;
     transform: rotate(180deg);
 }
 
@@ -110,18 +109,13 @@ a {
     position: relative;
 }
 
-.trashico {
-    width: 18px;
-    vertical-align: top;
-}
-
 .redhover:hover {
     color: #FF000A;
-    font-size: 14px;
+    font-size: 0.9em;
 }
 
 .answers li {
-    margin-bottom: 8px;
+    margin-bottom: 0.5em;
 }
 
 .message_container {
@@ -131,7 +125,7 @@ a {
 }
 
 .tags, .comments {
-    font-size: 14px;
+    font-size: 0.9em;
     align-self: flex-end;
     padding: 0 1% 0 10%;
     margin: 2% 0 2% 0;
@@ -181,7 +175,7 @@ i:hover {
 
 .add_question a, .buttons a , .buttons button{
     width: 210px;
-    padding: 10px 20px;
+    padding: 0.6em 1.3em;
     border-radius: 8px;
     margin-top: 2vh;
     border: 1px solid black;
@@ -208,7 +202,7 @@ i:hover {
     margin-bottom: 1%;
     text-align: center;
     font-family: 'Contrail One', cursive;
-    font-size: 22px;
+    font-size: 1.4em;
     color: black;
 }
 
@@ -217,7 +211,7 @@ i:hover {
     margin-bottom: 5%;
     text-align: center;
     font-family: 'Contrail One', cursive;
-    font-size: 28px;
+    font-size: 1.8em;
     text-transform: uppercase;
     color: black;
 }
@@ -264,4 +258,16 @@ select option[value='text_area_enabled']:focus {
 
 .profile_h2 {
     margin: 2vh 0 1vh 0;
+}
+
+.accepted_answer {
+    background-color: lightgreen;
+}
+
+.white_row_color {
+    background-color: whitesmoke;
+}
+
+i.red {
+    color: red;
 }

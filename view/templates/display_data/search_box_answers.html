@@ -19,7 +19,7 @@
 {% endblock title_header %}
 {% block content %}
     {% for question in questions %}
-        <tr>
+        <tr class="white_row_color">
         {% for question_key, question_value in question.items() %}
             <td>
                 <p>{{ question_value }}</p>
