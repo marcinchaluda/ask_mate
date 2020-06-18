@@ -18,7 +18,7 @@
     {% endfor %}
 {% endblock title_header %}
 {% block content %}
-    <tr>
+    <tr class="white_row_color">
     {% for user_key, user_value in user.items() %}
         {% if user_key == "user_name" %}
             <td>
@@ -63,7 +63,7 @@
         </thead>
         <tbody>
             {% for question in questions %}
-            <tr>
+            <tr class="white_row_color">
             {% for question_key, question_value in question.items() %}
                 {% if question_key == "title" %}
                     <td>
@@ -152,57 +152,59 @@
             </thead>
                 <tbody>
                     {% for dictionary in answer_details %}
-                    <tr>
+                    <tr class="white_row_color">
                     {% for answer_key, answer_value in dictionary.items() %}
-                        {% if answer_key == "message" %}
-                            <td>
-                                <div class="message_container">
-                                    <div class="message"><p>{{ answer_value }}</p></div>
-                                    <div class="vote">
-                                        <a href="/answer/{{ dictionary['id'] }}/vote_up">
-                                            <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
-                                        </a>
-                                        <a href="/answer/{{ dictionary['id'] }}/vote_down">
-                                            <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
-                                        </a>
-                                        <a href="/answer/{{ dictionary['id'] }}/new-comment">
-                                            <i class="fas fa-comment" title="Add comment"></i>
-                                        </a>
-                                        <a href="/answer/{{ dictionary['id'] }}/delete">
-                                            <i class="fas fa-trash-alt" title="Delete Answer"></i>
-                                        </a>
+                        {% if answer_key != 'accepted_answer' %}
+                            {% if answer_key == "message" %}
+                                <td>
+                                    <div class="message_container">
+                                        <div class="message"><p>{{ answer_value }}</p></div>
+                                        <div class="vote">
+                                            <a href="/answer/{{ dictionary['id'] }}/vote_up">
+                                                <i class="fas fa-arrow-circle-up" title="Vote Up"></i>
+                                            </a>
+                                            <a href="/answer/{{ dictionary['id'] }}/vote_down">
+                                                <i class="fas fa-arrow-circle-down" title="Vote Down"></i>
+                                            </a>
+                                            <a href="/answer/{{ dictionary['id'] }}/new-comment">
+                                                <i class="fas fa-comment" title="Add comment"></i>
+                                            </a>
+                                            <a href="/answer/{{ dictionary['id'] }}/delete">
+                                                <i class="fas fa-trash-alt" title="Delete Answer"></i>
+                                            </a>
+                                        </div>
+                                        <div class="comments">
+                                            <p class="comment_redirect">Comments</p>
+                                            {% for comment in comments %}
+                                                {% if comment['answer_id'] == dictionary['id'] %}
+                                                    <div class="comment_details">
+                                                        {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}<span> |</span> Number of edits: {{ comment['edited_count'] }}
+                                                        {% if user_id == comment['user_id'] %}
+                                                        <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
+                                                        <a href="/comment/{{ comment['id'] }}/delete"
+                                                           onclick="return confirm('Delete this comment?');">
+                                                            <i class="fas fa-trash-alt" title="Delete Comment"></i>
+                                                        </a>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                    <div class="comments">
-                                        <p class="comment_redirect">Comments</p>
-                                        {% for comment in comments %}
-                                            {% if comment['answer_id'] == dictionary['id'] %}
-                                                <div class="comment_details">
-                                                    {{ comment['submission_time'] }}<span>|</span>{{ comment['message']}}<span> |</span> Number of edits: {{ comment['edited_count'] }}
-                                                    {% if user_id == comment['user_id'] %}
-                                                    <a href="/comment/{{ comment['id'] }}/edit"><i class="fas fa-pen" title="Edit Comment"></i></a>
-                                                    <a href="/comment/{{ comment['id'] }}/delete"
-                                                       onclick="return confirm('Delete this comment?');">
-                                                        <i class="fas fa-trash-alt" title="Delete Comment"></i>
-                                                    </a>
-                                                    {% endif %}
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </td>
-                        {% else %}
-                            <td>
-                            {% if answer_key == 'image' %}
-                                {% if answer_value != '' %}
-                                    <img src="/{{ answer_value }}" height="100px">
-                                {% endif %}
-                            {% elif answer_key == 'question_id' %}
-                                <a href="/question/{{ answer_value }}" class="hover_highlight">{{ answer_value }}</a>
+                                </td>
                             {% else %}
-                                <p>{{ answer_value }}</p>
+                                <td>
+                                {% if answer_key == 'image' %}
+                                    {% if answer_value != '' %}
+                                        <img src="/{{ answer_value }}" height="100px">
+                                    {% endif %}
+                                {% elif answer_key == 'question_id' %}
+                                    <a href="/question/{{ answer_value }}" class="hover_highlight">{{ answer_value }}</a>
+                                {% else %}
+                                    <p>{{ answer_value }}</p>
+                                {% endif %}
+                                </td>
                             {% endif %}
-                            </td>
                         {% endif %}
                     {% endfor %}
                     </tr>
@@ -226,7 +228,7 @@
             </thead>
             <tbody>
                 {% for comment in user_comments %}
-                    <tr>
+                    <tr class="white_row_color">
                         {% for column, cell in comment.items() %}
                             <td>
                                 {% if column == 'question_id' %}

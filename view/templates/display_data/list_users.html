@@ -19,7 +19,7 @@
 {% endblock title_header %}
 {% block content %}
      {% for user in users %}
-        <tr>
+        <tr class="white_row_color">
         {% for user_key, user_value in user.items() %}
             {% if user_key == "user_name" %}
                 <td>

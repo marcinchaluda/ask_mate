@@ -41,23 +41,29 @@ def display_data():
 
 @app.route('/question/<question_id>')
 def display_answers(question_id):
+    current_user = get_current_user()
     answer_headers = answer_manager.ANSWER_HEADER
     answer_details = data_manager.fetch_data(question_id, 'answer')
     question_details = data_manager.fetch_data(question_id, 'question')
+    best_answer = user_manager.is_best_answer_selected(question_id)
+    answer_id = user_manager.get_best_answer(question_id)
     question_manager.update_view_number(question_id)
     comments = comment_manager.get_question_comments()
     return render_template('display_data/list_answers.html', answer_details=answer_details,
                            question_details=question_details, answer_headers=answer_headers,
-                           comments=comments, is_logged_in=is_logged_in())
+                           comments=comments, is_logged_in=is_logged_in(), current_user=current_user,
+                           answer_id=answer_id, best_answer=best_answer)
 
 
 @app.route('/<library_type>/<datum_id>/<vote>')
 def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
-    data_manager.update_votes(table_type, datum_id, vote)
+    if vote == 'accepted' and vote == 'uncheck':
+        data_manager.update_votes(table_type, datum_id, vote)
     if is_logged_in():
         user_id = user_manager.get_user_id(table_type, datum_id)
-        user_manager.update_reputation(user_id, table_type, vote)
+        print(datum_id)
+        user_manager.update_reputation(user_id, table_type, vote, datum_id)
         if table_type == 'answer':
             answers = data_manager.get_question_id_for_answer(datum_id)
             return redirect("/question/{0}".format(answers))
