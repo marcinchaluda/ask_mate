@@ -24,6 +24,7 @@ def add_new_question():
         img_path = 'static/images/' + filename
         question['image'] = img_path
     question_id = question_manager.save_new_question(question)
+    data_manager.update_user_count('count_of_asked_questions', session['email'], False)
     return redirect('/question/' + str(question_id))
 
 
@@ -41,6 +42,7 @@ def add_new_answer(data_id):
         img_path = 'static/images/' + filename
         answer['image'] = img_path
     answer_manager.save_new_answer(answer, data_id)
+    data_manager.update_user_count('count_of_answers', session['email'], False)
     return redirect('/question/' + data_id)
 
 
@@ -53,9 +55,11 @@ def add_new_comment(data_type, data_id):
     is_question = data_type == "question"
     if is_question:
         comment_manager.save_comment(data_id, is_question)
+        data_manager.update_user_count('count_of_comments', session['email'], False)
         return redirect('/list')
     else:
         comment_manager.save_comment(data_id, is_question)
+        data_manager.update_user_count('count_of_comments', session['email'], False)
         answer = comment_manager.get_question_id_from_answer(data_id)
         question_id = answer['question_id']
         return redirect('/question/' + str(question_id))

@@ -32,12 +32,15 @@ def fetch_data(cursor: RealDictCursor, key_to_find: str, data_table: str) -> dic
     return cursor.fetchall()
 
 
-# @connection.connection_handler
-# def get_data_id(cursor: RealDictCursor, column: str, data_id: str, data_table: str):
-#     query = sql.SQL("SELECT {column} FROM ").format(column=sql.Literal(column)) + \
-#             sql.SQL("{table} WHERE id={data_id}").format(table=sql.Identifier(data_table), data_id=sql.Literal(data_id))
-#     cursor.execute(query)
-#     return cursor.fetchone()[column]
+@connection.connection_handler
+def update_user_count(cursor: RealDictCursor, column: str, email: str, is_delete: bool):
+    if is_delete:
+        query = sql.SQL("UPDATE new_user SET {column} = {column} - 1 WHERE email = {email}").\
+            format(column=sql.Identifier(column), email=sql.Literal(email))
+    else:
+        query = sql.SQL("UPDATE new_user SET {column} = {column} + 1 WHERE email = {email}")\
+            .format(column=sql.Identifier(column), email=sql.Literal(email))
+    cursor.execute(query)
 
 
 @connection.connection_handler

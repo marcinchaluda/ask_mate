@@ -78,10 +78,13 @@ def delete(data_type, data_id):
     question_id = None
     if data_type == 'answer':
         question_id = data_manager.get_question_id_for_answer(data_id)
+        data_manager.update_user_count('count_of_answers', session['email'], True)
     if data_type == 'comment':
         answer_id = data_manager.get_answer_id_for_comment(data_id)
+        data_manager.update_user_count('count_of_comments', session['email'], True)
         if answer_id:
             question_id = data_manager.get_question_id_for_answer(answer_id)
+    data_manager.update_user_count('count_of_asked_questions', session['email'], True)
     delete_manager.delete_entry(data_type, data_id)
     if data_type == 'answer':
         return redirect('/question/' + str(question_id))
