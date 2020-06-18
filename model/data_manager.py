@@ -100,3 +100,12 @@ def check_for_id_duplicate(data, key_to_find, id_to_check):
         if element[key_to_find] == id_to_check:
             return True
     return False
+
+
+@connection.connection_handler
+def get_tags_with_metadata(cursor: RealDictCursor):
+    query = "SELECT name, COUNT(question_id) AS usage_count FROM tag LEFT JOIN question_tag qt ON tag.id = qt.tag_id GROUP BY name"
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
