@@ -77,7 +77,7 @@ def process_registration():
 @user_data.route('/user/<user_id>')
 @user_data.route('/user/')
 def show_user_page(user_id=None):
-    if user_id:
+    if user_id and session:
         user_headers = user_manager.USERS_HEADERS
         try:
             user = data_manager.get_all_data('new_user', email=user_id)[0]
@@ -94,7 +94,7 @@ def show_user_page(user_id=None):
         #comments
         user_comments = data_manager.get_all_data('comment', user_id=user_id)
         try:
-            return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
+                return render_template('display_data/user_page.html', user_id=user_id, user_headers=user_headers, user=user,
                                    question_headers=question_headers, questions=questions, tags=tags, comments=comments,
                                    answer_headers=answer_headers, answer_details=answer_details,
                                    user_comments=user_comments)

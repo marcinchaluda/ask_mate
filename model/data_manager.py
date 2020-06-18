@@ -51,8 +51,9 @@ def get_question_id_for_answer(cursor: RealDictCursor, data_id: str):
 def get_answer_id_for_comment(cursor: RealDictCursor, data_id: str):
     query = "SELECT answer_id FROM comment WHERE id = {0}".format(data_id)
     cursor.execute(query)
-    if cursor.fetchone()['answer_id']:
-        return cursor.fetchone()['answer_id']
+    requested_data = cursor.fetchone()
+    if requested_data:
+        return requested_data['answer_id']
 
 
 @connection.connection_handler
