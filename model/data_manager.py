@@ -34,12 +34,9 @@ def fetch_data(cursor: RealDictCursor, key_to_find: str, data_table: str) -> dic
 
 @connection.connection_handler
 def update_user_count(cursor: RealDictCursor, column: str, email: str, is_delete: bool):
-    if is_delete:
-        query = sql.SQL("UPDATE new_user SET {column} = {column} - 1 WHERE email = {email}").\
-            format(column=sql.Identifier(column), email=sql.Literal(email))
-    else:
-        query = sql.SQL("UPDATE new_user SET {column} = {column} + 1 WHERE email = {email}")\
-            .format(column=sql.Identifier(column), email=sql.Literal(email))
+    vote = -1 if is_delete else 1
+    query = sql.SQL("UPDATE new_user SET {column} = {column} + {vote}  WHERE email = {email}").\
+        format(column=sql.Identifier(column), email=sql.Literal(email))
     cursor.execute(query)
 
 

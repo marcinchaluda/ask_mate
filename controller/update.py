@@ -22,7 +22,6 @@ def update_comment(comment_id):
         comment_manager.update_comment(comment)
         if comment['question_id']:
             return redirect('/list')
-        else:
-            answer = data_manager.fetch_data(comment['answer_id'], 'answer')
-            return redirect('/question/' + str(answer['question_id']))
+        answer = data_manager.fetch_data(comment['answer_id'], 'answer')
+        return redirect('/question/' + str(answer['question_id']))
     return render_template('modify_data_layout/update_comment.html', comment=comment)

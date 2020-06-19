@@ -65,7 +65,7 @@ def get_accepted_answer_column(cursor: RealDictCursor, question_id: str) -> dict
 
 def is_best_answer_selected(question_id):
     answers = [value['accepted_answer'] for value in get_accepted_answer_column(question_id)]
-    return True if True in answers else False
+    return True in answers
 
 
 def get_best_answer(question_id):

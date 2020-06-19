@@ -58,7 +58,7 @@ def display_answers(question_id):
 @app.route('/<library_type>/<datum_id>/<vote>')
 def get_vote(library_type, datum_id, vote):
     table_type = 'question' if library_type == 'question' else 'answer'
-    if vote != 'accepted' and vote != 'uncheck':
+    if vote not in ['accepted', 'uncheck']:
         data_manager.update_votes(table_type, datum_id, vote)
     if is_logged_in():
         user_id = user_manager.get_user_id(table_type, datum_id)
@@ -91,9 +91,7 @@ def delete(data_type, data_id):
             question_id = data_manager.get_question_id_for_answer(answer_id)
     data_manager.update_user_count('count_of_asked_questions', session['email'], True)
     delete_manager.delete_entry(data_type, data_id)
-    if data_type == 'answer':
-        return redirect('/question/' + str(question_id))
-    if data_type == 'comment' and question_id:
+    if data_type == 'answer' or (data_type == 'comment' and question_id):
         return redirect('/question/' + str(question_id))
     return redirect('/list')
 
